@@ -5,6 +5,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JButton;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -63,7 +64,7 @@ public class ExpensePanel extends JPanel
 		add(listPanel);
 		
 		table = new JTable(tableModel);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		table.getTableHeader().setReorderingAllowed(false);
 		
 		table.getTableHeader().addMouseListener(new MouseAdapter() {
@@ -79,6 +80,7 @@ public class ExpensePanel extends JPanel
 		    	sortTableByColumn(columnIndex, newOrder);	
 		    }
 		});
+		listPanel.setLayout(new BorderLayout(0, 0));
 		
 		scrollPane = new JScrollPane(table);
 		listPanel.add(scrollPane);
@@ -196,13 +198,25 @@ public class ExpensePanel extends JPanel
 	}
 	
 	private void onDeleteButtonPressed(ActionEvent e)
+	{		
+		int[] selectedRows = table.getSelectedRows();
+		Arrays.sort(selectedRows);	// make sure the rows are in accending order
+		
+		for(int i = selectedRows.length - 1; i >= 0; i--)
+		{
+			final int rowIndex = selectedRows[i];
+			deleteRow(rowIndex);
+		}
+	}
+	
+	private void deleteRow(int inRowIndex)
 	{
-		JOptionPane.showMessageDialog(null, "Delete Selected Entries");
+		tableModel.removeRow(inRowIndex);
 	}
 	
 	private void onEditButtonPressed(ActionEvent e)
 	{
-		JOptionPane.showMessageDialog(null, "Edit Selected Entries");
+		JOptionPane.showMessageDialog(null, "You want to exit an expense but that feature is missing.");
 	}
 	
 	private void onNewButtonPressed(ActionEvent e)
