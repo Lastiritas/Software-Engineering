@@ -36,6 +36,10 @@ import java.awt.event.MouseEvent;
 
 public class ExpensePanel extends JPanel
 {
+	static final int ACCENDING = 1;
+	static final int DECENDING = -1;
+	static final int NO_ORDER = 0;
+	
 	private final static String[] COLUMN_NAMES = { "ID", "Date", "Pay To", "Amount", "Decription", "Lables" };
 	
 	private JScrollPane scrollPane;
@@ -122,10 +126,6 @@ public class ExpensePanel extends JPanel
 		});
 		leftButtonPanel.add(deleteButton);
 	}
-	
-	static final int ACCENDING = 1;
-	static final int DECENDING = -1;
-	static final int NO_ORDER = 0;
 	
 	private int getOrderingForColumn(int inColumnIndex)
 	{	
