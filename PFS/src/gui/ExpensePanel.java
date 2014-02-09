@@ -1,3 +1,4 @@
+package gui;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -24,6 +25,10 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.SwingConstants;
 import javax.swing.ListSelectionModel;
 
+import domainobjects.Expense;
+import domainobjects.IDSet;
+import system.ExpenseSystem;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -47,8 +52,7 @@ public class ExpensePanel extends JPanel
 	
 	public ExpensePanel() 
 	{
-		tableModel = new DefaultTableModel()
-		{	
+		tableModel = new DefaultTableModel() {	
 			// make our table read only
 			public boolean isCellEditable(int row, int column) { return false; }
 		};
@@ -211,7 +215,16 @@ public class ExpensePanel extends JPanel
 	
 	private void deleteRow(int inRowIndex)
 	{
-		tableModel.removeRow(inRowIndex);
+		final int expenseID = ((Integer)tableModel.getValueAt(inRowIndex, 0)).intValue();
+		
+		if(ExpenseSystem.getCurrent().deleteExpense(expenseID))
+		{
+			tableModel.removeRow(inRowIndex);			
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(null, "Could not delete expense " + expenseID);
+		}
 	}
 	
 	private void onEditButtonPressed(ActionEvent e)
@@ -221,16 +234,31 @@ public class ExpensePanel extends JPanel
 	
 	private void onNewButtonPressed(ActionEvent e)
 	{
-		addExpenseToTable(tableModel.getRowCount());
+		final int newExpenseID = ExpenseSystem.getCurrent().newExpense();
+		
+		addExpenseToTable(newExpenseID);
 	}
 	
 	private void addExpenseToTable(int inExpenseID)
 	{
-		Date date = new Date();
-		String payTo = "A";
-		Money money = new Money(100, 50); 
-		String description = "This is a bad description";
-		String[] labels = {"Food", "School", "Work", "Play"};
+		final Expense expense = ExpenseSystem.getCurrent().getExpense(inExpenseID);
+		
+		if(expense == null)
+		{
+			return;
+		}
+		
+		Date date = expense.getDate();
+		String payTo = "" + expense.getPayTo();
+		Money money = new Money(expense.getDollars(), expense.getCents()); 
+		String description = expense.GetDescription();
+
+		IDSet labelIDs = expense.getLabels();
+		String[] labels = new String[labelIDs.getSize()];
+		for(int i = 0; i < labels.length; i++)
+		{
+			labels[i] = "" + i;
+		}
 		
 		
 		StringBuilder dateBuilder = new StringBuilder();
@@ -242,14 +270,18 @@ public class ExpensePanel extends JPanel
 		dateBuilder.append(date.getYear());	
 		
 		StringBuilder labelListBuilder = new StringBuilder();
+		
 		for(int i = 0; i < labels.length; i++)
 		{
 			labelListBuilder.append(labels[i]);
 			labelListBuilder.append(", ");
 		}
 		
-		// remove the last ", "
-		labelListBuilder.delete(labelListBuilder.length() - 2, labelListBuilder.length() - 1);
+		if(labels.length > 0)
+		{
+			// remove the last ", "
+			labelListBuilder.delete(labelListBuilder.length() - 2, labelListBuilder.length() - 1);
+		}
 		
 		String dateString = dateBuilder.toString();
 		String payToString = payTo;

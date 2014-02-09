@@ -1,3 +1,4 @@
+package gui;
 import javax.swing.JFrame;
 
 import java.awt.BorderLayout;
@@ -8,6 +9,7 @@ public class ExpenseViewWindow extends JFrame
 {
 	public ExpenseViewWindow() 
 	{
+		setTitle("Personal Finance System");
 		setSize(800, 600);
 		
 		addWindowListener(new WindowAdapter() {
