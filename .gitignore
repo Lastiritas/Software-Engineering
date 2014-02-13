@@ -1,8 +1,8 @@
 *.class
 
 # Package Files #
-*.jar
 *.war
+*.jar
 *.ear
 
 .metadata/
