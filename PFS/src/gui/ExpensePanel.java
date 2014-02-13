@@ -28,7 +28,8 @@ import javax.swing.ListSelectionModel;
 import domainobjects.Expense;
 import domainobjects.IDSet;
 import domainobjects.SimpleDate;
-import system.ExpenseSystem;
+import system.ExpenseManagement;
+import system.FPSystem;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -95,7 +96,7 @@ public class ExpensePanel extends JPanel
 				final int rowIndex = table.getSelectedRow();
 				final int id = ((Integer)table.getValueAt(rowIndex, 0)).intValue();
 				
-				final Expense expense = ExpenseSystem.getCurrent().getExpense(id);
+				final Expense expense = (Expense)FPSystem.getCurrent().getExpenseSystem().getDataByID(id);
 				
 				editorPanel.setExpense(expense);
 			}
@@ -176,7 +177,7 @@ public class ExpensePanel extends JPanel
 				
 				final int expenseID = ((Integer)table.getValueAt(rowIndex, 0)).intValue();
 				
-				ExpenseSystem.getCurrent().updateExpense(expenseID, newExpenseValue);
+				FPSystem.getCurrent().getExpenseSystem().update(expenseID, newExpenseValue);
 				setExpenseForRow(rowIndex, expenseID);
 			}
 		});
@@ -190,8 +191,8 @@ public class ExpensePanel extends JPanel
 			public void actionPerformed(ActionEvent e) {
 				Expense expense = editorPanel.getExpense();
 				
-				final int id = ExpenseSystem.getCurrent().newExpense();
-				ExpenseSystem.getCurrent().updateExpense(id, expense);
+				final int id = FPSystem.getCurrent().getExpenseSystem().create();
+				FPSystem.getCurrent().getExpenseSystem().update(id, expense);
 				
 				addExpenseToTable(id);
 			}
@@ -289,7 +290,7 @@ public class ExpensePanel extends JPanel
 	{
 		final int expenseID = ((Integer)tableModel.getValueAt(inRowIndex, 0)).intValue();
 		
-		if(ExpenseSystem.getCurrent().deleteExpense(expenseID))
+		if(FPSystem.getCurrent().getExpenseSystem().delete(expenseID))
 		{
 			tableModel.removeRow(inRowIndex);			
 		}
@@ -301,7 +302,7 @@ public class ExpensePanel extends JPanel
 	
 	private void onNewButtonPressed(ActionEvent e)
 	{
-		final int newExpenseID = ExpenseSystem.getCurrent().newExpense();
+		final int newExpenseID = FPSystem.getCurrent().getExpenseSystem().create();
 		
 		addExpenseToTable(newExpenseID);
 	}
@@ -315,7 +316,7 @@ public class ExpensePanel extends JPanel
 	
 	private void setExpenseForRow(int inRowIndex, int inExpenseID)
 	{
-		final Expense expense = ExpenseSystem.getCurrent().getExpense(inExpenseID);
+		final Expense expense = (Expense)FPSystem.getCurrent().getExpenseSystem().getDataByID(inExpenseID);
 		
 		if(expense == null)
 		{
