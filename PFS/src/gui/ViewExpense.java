@@ -38,6 +38,7 @@ public class ViewExpense {
 	private Button debitRadio;
 	private Button otherRadio;
 	private Button saveButton;
+	private List labelsList;
 	
 	/**
 	 * Launch the application.
@@ -133,7 +134,7 @@ public class ViewExpense {
 		lblDescriptoin.setBounds(20, 218, 83, 14);
 		lblDescriptoin.setText("Description");
 		
-		List labelsList = new List(editPanel, SWT.BORDER);
+		labelsList = new List(editPanel, SWT.BORDER);
 		labelsList.setBounds(20, 373, 213, 123);
 		
 		Button editLabelsButton = new Button(editPanel, SWT.NONE);
@@ -160,11 +161,34 @@ public class ViewExpense {
 				final TableItem[] items = expenseTable.getSelection();
 				
 				final int id = Integer.parseInt(items[0].getText(0));
+								
+				SimpleDate date = SimpleDate.Now();
+				date.setYear(datePicker.getYear());
+				date.setMonth(datePicker.getMonth());
+				date.setDay(datePicker.getDay());
+				
+				PaymentMethod method = PaymentMethod.CASH;
+				if(cashRadio.getSelection())
+				{
+					method = PaymentMethod.CASH;
+				}
+				else if(debitRadio.getSelection())
+				{
+					method = PaymentMethod.DEBIT;
+				}
+				else if(creditRadio.getSelection())
+				{
+					method = PaymentMethod.CREDIT;
+				}
+				else
+				{
+					method = PaymentMethod.OTHER;
+				}
 				
 				int[] data = {};
 				IDSet set = IDSet.createFromArray(data);
 				
-				Expense expense = new Expense(SimpleDate.Now(), new Money(), PaymentMethod.CASH, "", -1, set);
+				Expense expense = new Expense(date, Money.fromString(amountField.getText()), method, descriptionField.getText(), -1, set);
 				FPSystem.getCurrent().getExpenseSystem().update(id, expense);
 				
 				updateExpenseForRow(selectedIndex, id);
@@ -263,6 +287,18 @@ public class ViewExpense {
 				}
 				
 				descriptionField.setText(expense.getDescription());
+				
+				labelsList.removeAll();
+				
+				IDSet labelIDs = expense.getLabels();
+				for(int i = 0; i < labelIDs.getSize(); i++)
+				{
+					final int labelID = labelIDs.getValue(i);
+					domainobjects.Label label = (domainobjects.Label)FPSystem.getCurrent().getLabelSystem().getDataByID(labelID);
+					
+					labelsList.add(label.getLabelName());
+				}
+
 			}
 		});
 		expenseTable.setBounds(10, 10, 629, 577);
@@ -282,13 +318,34 @@ public class ViewExpense {
 		duplicateButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				final int id = FPSystem.getCurrent().getExpenseSystem().create();
-				addExpense(id);
+				if(expenseTable.getSelectionCount() == 0)
+				{
+					return;
+				}
+				
+				final TableItem[] items = expenseTable.getSelection();
+				
+				final int selectedID = Integer.parseInt(items[0].getText(0));
+				final Expense selectedExpense = (Expense)FPSystem.getCurrent().getExpenseSystem().getDataByID(selectedID);
+								
+				final int createdID = FPSystem.getCurrent().getExpenseSystem().create();
+				FPSystem.getCurrent().getExpenseSystem().update(createdID, selectedExpense);
+				
+				addExpense(createdID);
+								
 				expenseTable.select(expenseTable.getItemCount() - 1);
 			}
 		});
 		duplicateButton.setBounds(445, 593, 94, 28);
-		duplicateButton.setText("Duplicate");		
+		duplicateButton.setText("Duplicate");
+		
+		// add all exisiting expenses
+		IDSet expenseIDs = FPSystem.getCurrent().getExpenseSystem().getAllIDs();
+		for(int i = 0; i < expenseIDs.getSize(); i++)
+		{
+			final int id = expenseIDs.getValue(i);
+			addExpense(id);
+		}
 	}
 		
 	private void addExpense(int inExpenseID)
@@ -315,14 +372,6 @@ public class ViewExpense {
 		String payTo = "" + expense.getPayTo();
 		Money money = expense.getAmount(); 
 		String description = expense.getDescription();
-
-		IDSet labelIDs = expense.getLabels();
-		String[] labels = new String[labelIDs.getSize()];
-		for(int i = 0; i < labels.length; i++)
-		{
-			labels[i] = "" + i;
-		}
-		
 		
 		StringBuilder dateBuilder = new StringBuilder();
 		
