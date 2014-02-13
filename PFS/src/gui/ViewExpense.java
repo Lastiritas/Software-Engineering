@@ -18,11 +18,12 @@ import org.eclipse.swt.events.SelectionEvent;
 
 import domainobjects.Expense;
 import domainobjects.IDSet;
+import domainobjects.Money;
 import domainobjects.PaymentMethod;
 import domainobjects.SimpleDate;
 import system.FPSystem;
 
-public class ExpensePanel2 {
+public class ViewExpense {
 
 	protected Shell shell;
 	private Table expenseTable;
@@ -44,7 +45,7 @@ public class ExpensePanel2 {
 	 */
 	public static void main(String[] args) {
 		try {
-			ExpensePanel2 window = new ExpensePanel2();
+			ViewExpense window = new ViewExpense();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -86,7 +87,7 @@ public class ExpensePanel2 {
 		payToButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				MainWindow window = new MainWindow();
+				PaytoSelection window = new PaytoSelection();
 				window.open();
 			}
 		});
@@ -136,6 +137,13 @@ public class ExpensePanel2 {
 		labelsList.setBounds(20, 373, 213, 123);
 		
 		Button editLabelsButton = new Button(editPanel, SWT.NONE);
+		editLabelsButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				LabelMgmt window = new LabelMgmt();
+				window.open();
+			}
+		});
 		editLabelsButton.setBounds(141, 502, 94, 28);
 		editLabelsButton.setText("Edit Labels");
 		
@@ -156,7 +164,7 @@ public class ExpensePanel2 {
 				int[] data = {};
 				IDSet set = IDSet.createFromArray(data);
 				
-				Expense expense = new Expense(SimpleDate.Now(), 101, PaymentMethod.CASH, "", -1, set);
+				Expense expense = new Expense(SimpleDate.Now(), new Money(), PaymentMethod.CASH, "", -1, set);
 				FPSystem.getCurrent().getExpenseSystem().update(id, expense);
 				
 				updateExpenseForRow(selectedIndex, id);
@@ -223,7 +231,7 @@ public class ExpensePanel2 {
 				datePicker.setMonth(expense.getDate().getMonth());
 				datePicker.setDay(expense.getDate().getDay());
 				
-				Money money = new Money(expense.getDollars(), expense.getCents());
+				Money money = expense.getAmount();
 				amountField.setText(money.toString());
 				
 				switch(expense.getPaymentMethod())
@@ -305,7 +313,7 @@ public class ExpensePanel2 {
 		date.setYear(datePicker.getYear());
 				
 		String payTo = "" + expense.getPayTo();
-		Money money = new Money(expense.getDollars(), expense.getCents()); 
+		Money money = expense.getAmount(); 
 		String description = expense.getDescription();
 
 		IDSet labelIDs = expense.getLabels();

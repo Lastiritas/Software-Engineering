@@ -4,6 +4,8 @@ import org.eclipse.swt.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.events.*;
 
+import system.FPSystem;
+import util.StringMatch;
 import domainobjects.*;
 import dataAccessLayer.*;
 
@@ -11,7 +13,8 @@ public class LabelCreate {
 	protected Shell shell;
 	private Text textNewLabel;
 
-
+	private String labels[];
+	
 	/**
 	 * Open the window.
 	 * 
@@ -48,26 +51,40 @@ public class LabelCreate {
 		btnDone.setText("Done");
 		
 		final List listExsistingLabel = new List(shell, SWT.BORDER);
+		listExsistingLabel.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				if(listExsistingLabel.getSelectionCount() == 0)
+				{
+					return;
+				}
+				
+				textNewLabel.setText(listExsistingLabel.getSelection()[0]); 
+			}
+		});
 		listExsistingLabel.setBounds(10, 37, 298, 186);
 		
 		//list population
-		StubDatabase testDB = new StubDatabase();
-		int labelID[] = testDB.getAllLabelIDs();
-		String labels[] = new String[labelID.length];
+		IDSet labelIDs = FPSystem.getCurrent().getLabelSystem().getAllIDs();
+		labels = new String[labelIDs.getSize()];
 		
-		for(int i=0; i <labelID.length; i++)
+		for(int i=0; i <labelIDs.getSize(); i++)
 		{
-			labels[i] = labelID[i].getLabelName();
-			listLabel.add(labels[i]);
+			final int id = labelIDs.getValue(i);
+			domainobjects.Label label = (domainobjects.Label)FPSystem.getCurrent().getLabelSystem().getDataByID(id);
+			
+			labels[i] = label.getLabelName();
+			//listLabels.add(labels[i]);
 		}	
 		
 		
 		//listeners
 		textNewLabel.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
+				String input = textNewLabel.getText() + e.character;
+				
 				if(e.character >32 && e.character <127)
 				{
-					String input = textNewLabel.getText() + e.character;
 					for(int i=0; i<listExsistingLabel.getItemCount(); i++)
 					{
 						if(!StringMatch.match(listExsistingLabel.getItem(i),input))
@@ -85,7 +102,7 @@ public class LabelCreate {
 					 	{
 					 		for(int j=0; j<listExsistingLabel.getItemCount(); j++)
 					 		{
-					 			if(label[i].equalsIgnoreCase(listExsistingLabel.getItem(j)))
+					 			if(labels[i].equalsIgnoreCase(listExsistingLabel.getItem(j)))
 					 			{
 					 				found = true;
 					 				break;
@@ -107,7 +124,7 @@ public class LabelCreate {
 					 	{
 					 		for(int j=0; j<listExsistingLabel.getItemCount(); j++)
 					 		{
-					 			if(label[i].equalsIgnoreCase(listExsistingLabel.getItem(j)))
+					 			if(labels[i].equalsIgnoreCase(listExsistingLabel.getItem(j)))
 					 			{
 					 				found = true;
 					 				break;
@@ -124,14 +141,14 @@ public class LabelCreate {
 		btnCancel.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				shell.dispose();
+				shell.close();
 			}
 		});
 		
 		btnDone.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				shell.dispose();
+				shell.close();
 			}
 		});
 		

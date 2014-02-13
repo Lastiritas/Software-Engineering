@@ -1,7 +1,13 @@
-package gui;
+package domainobjects;
 
 public class Money implements Comparable
 {
+	public Money()
+	{
+		cents = 0;
+		dollars = 0;
+	}
+	
 	public Money(int inDollars, int inCents)
 	{
 		assert(inCents >= 0 && inCents < 100);
@@ -9,8 +15,6 @@ public class Money implements Comparable
 		
 		cents = inCents;
 		dollars = inDollars;
-		
-		stringForm = String.format("$%d.%02d", inDollars, inCents);
 	}
 	
 	@Override
@@ -46,20 +50,39 @@ public class Money implements Comparable
 		}
 	}
 
+	public int getDollars()
+	{
+		return dollars;
+	}
+	
+	public int getCents()
+	{
+		return cents;
+	}
+	
 	public int getTotalCents()
 	{
 		return dollars * 100 + cents;
 	}
 	
 	@Override
+	public boolean equals(Object object)
+	{
+		assert object instanceof Money;
+		
+		Money money = (Money)object;
+		
+		return cents == money.cents && dollars == money.dollars;
+	}
+	
+	@Override
 	public String toString()
 	{
-		return stringForm;
+		return String.format("$%d.%02d", dollars, cents);
 	}
 	
 	private int cents;
 	private int dollars;
-	private String stringForm;
 
 	public static Money fromString(String inString)
 	{

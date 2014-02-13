@@ -17,33 +17,24 @@ import domainobjects.IDSet;
 import domainobjects.PayTo;
 
 
-public class MainWindow {
+public class PaytoSelection 
+{
 
 	protected Shell shell;
 
 	/**
-	 * Launch the application.
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		try {
-			MainWindow window = new MainWindow();
-			window.open();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Open the window.
 	 */
-	public void open() {
+	public void open() 
+	{
 		Display display = Display.getDefault();
 		createContents();
 		shell.open();
 		shell.layout();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) {
+		while (!shell.isDisposed()) 
+		{
+			if (!display.readAndDispatch()) 
+			{
 				display.sleep();
 			}
 		}
@@ -52,7 +43,8 @@ public class MainWindow {
 	/**
 	 * Create contents of the window.
 	 */
-	protected void createContents() {
+	protected void createContents() 
+	{
 		
 		//***Place contents inside a panel***//
 		shell = new Shell();
@@ -60,9 +52,11 @@ public class MainWindow {
 		shell.setText("PayTo Manager");
 		
 		Button cancelButton = new Button(shell, SWT.NONE);
-		cancelButton.addSelectionListener(new SelectionAdapter() {
+		cancelButton.addSelectionListener(new SelectionAdapter() 
+		{
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(SelectionEvent e) 
+			{
 				shell.close();
 			}
 		});
@@ -70,9 +64,11 @@ public class MainWindow {
 		cancelButton.setText("Cancel");
 		
 		Button okayButton = new Button(shell, SWT.NONE);
-		okayButton.addSelectionListener(new SelectionAdapter() {
+		okayButton.addSelectionListener(new SelectionAdapter() 
+		{
 			@Override
-			public void widgetSelected(SelectionEvent arg0) {
+			public void widgetSelected(SelectionEvent arg0) 
+			{
 				shell.close();
 			}
 		});
@@ -80,9 +76,11 @@ public class MainWindow {
 		okayButton.setText("Okay");
 		
 		Button addButton = new Button(shell, SWT.NONE);
-		addButton.addSelectionListener(new SelectionAdapter() {
+		addButton.addSelectionListener(new SelectionAdapter() 
+		{
 			@Override
-			public void widgetSelected(SelectionEvent arg0) {
+			public void widgetSelected(SelectionEvent arg0) 
+			{
 				CreationWindow window = new CreationWindow();
 				window.open();
 			}

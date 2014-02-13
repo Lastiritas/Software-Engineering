@@ -1,5 +1,7 @@
+package utiltests;
 
 
+import util.StringMatch;
 import junit.framework.TestCase;
 
 

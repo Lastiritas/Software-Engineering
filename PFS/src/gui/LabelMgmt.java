@@ -4,8 +4,9 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.*;
 import org.eclipse.swt.events.*;
 
+import system.FPSystem;
+import util.StringMatch;
 import domainobjects.*;
-import dataAccessLayer.*;
 
 public class LabelMgmt {
 
@@ -16,7 +17,11 @@ public class LabelMgmt {
 	protected String transferFrom = null;
 	protected final int LIST_OPTIONS = SWT.MULTI | SWT.BORDER |SWT.V_SCROLL;
 
+	private List listLabel;
+	private List listPickLabel;
 	
+	private String labels[];
+		
 	public  void open() {
 		Display display = Display.getDefault();
 		createContents();
@@ -44,10 +49,10 @@ public class LabelMgmt {
 		textSearchPickLabel = new Text(shell, SWT.BORDER);
 		textSearchPickLabel.setBounds(355, 20, 200, 22);
 		
-		final List listLabel = new List(shell, LIST_OPTIONS);
+		listLabel = new List(shell, LIST_OPTIONS);
 		listLabel.setBounds(20, 50, 200, 260);
 		
-		final List listPickLabel = new List(shell, LIST_OPTIONS);
+		listPickLabel = new List(shell, LIST_OPTIONS);
 		listPickLabel.setBounds(355, 50, 200, 260);
 		
 		Button btnAdd = new Button(shell, SWT.PUSH);
@@ -71,23 +76,25 @@ public class LabelMgmt {
 		btnDone.setBounds(480,392, 75, 25);
 		
 		//list population
-		StubDatabase testDB = new StubDatabase();
-		int labelID[] = testDB.getAllLabelIDs();
-		String labels[] = new String[labelID.length];
+		IDSet labelIDs = FPSystem.getCurrent().getLabelSystem().getAllIDs();
+		labels = new String[labelIDs.getSize()];
 		
-		for(int i=0; i <labelID.length; i++)
+		for(int i=0; i <labelIDs.getSize(); i++)
 		{
-			labels[i] = labelID[i].getLabelName();
+			final int id = labelIDs.getValue(i);
+			domainobjects.Label label = (domainobjects.Label)FPSystem.getCurrent().getLabelSystem().getDataByID(id);
+			
+			labels[i] = label.getLabelName();
 			listLabel.add(labels[i]);
 		}	
-		
+				
 		
 		//listeners
 		textSearchLabel.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
+				String input = textSearchLabel.getText() + e.character;
 				if(e.character >32 && e.character <127)
 				{
-					String input = textSearchLabel.getText() + e.character;
 					for(int i=0; i<listLabel.getItemCount(); i++)
 					{
 						if(!StringMatch.match(listLabel.getItem(i),input))
@@ -105,7 +112,7 @@ public class LabelMgmt {
 					 	{
 					 		for(int j=0; j<listLabel.getItemCount(); j++)
 					 		{
-					 			if(label[i].equalsIgnoreCase(listLabel.getItem(j)))
+					 			if(labels[i].equalsIgnoreCase(listLabel.getItem(j)))
 					 			{
 					 				found = true;
 					 				break;
@@ -127,7 +134,7 @@ public class LabelMgmt {
 					 	{
 					 		for(int j=0; j<listLabel.getItemCount(); j++)
 					 		{
-					 			if(label[i].equalsIgnoreCase(listLabel.getItem(j)))
+					 			if(labels[i].equalsIgnoreCase(listLabel.getItem(j)))
 					 			{
 					 				found = true;
 					 				break;
@@ -143,9 +150,9 @@ public class LabelMgmt {
 		
 		textSearchPickLabel.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
+				String input = textSearchPickLabel.getText() + e.character;
 				if(e.character >32 && e.character <127)
 				{
-					String input = textSearchPickLabel.getText() + e.character;
 					int length = listPickLabel.getItemCount();
 					for(int i=0; i<length; i++)
 					{
@@ -165,7 +172,7 @@ public class LabelMgmt {
 					 	{
 					 		for(int j=0; j<listPickLabel.getItemCount(); j++)
 					 		{
-					 			if(label[i].equalsIgnoreCase(listPickLabel.getItem(j)))
+					 			if(labels[i].equalsIgnoreCase(listPickLabel.getItem(j)))
 					 			{
 					 				found = true;
 					 				break;
@@ -186,7 +193,7 @@ public class LabelMgmt {
 					 	{
 					 		for(int j=0; j<listPickLabel.getItemCount(); j++)
 					 		{
-					 			if(label[i].equalsIgnoreCase(listPickLabel.getItem(j)))
+					 			if(labels[i].equalsIgnoreCase(listPickLabel.getItem(j)))
 					 			{
 					 				found = true;
 					 				break;
@@ -250,14 +257,14 @@ public class LabelMgmt {
 		
 		btnCancel.addSelectionListener( new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				shell.dispose();
+				shell.close();
 			}
 		});
 		
 		btnDone.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				shell.dispose();
+				shell.close();
 			}
 		});
 	}

@@ -2,10 +2,10 @@ package domainobjects;
 
 public class Expense
 {
-	public Expense(SimpleDate inDate, int inTotalCents, PaymentMethod inMethod, String inDescription, int inPayTo, IDSet inLabels)
+	public Expense(SimpleDate inDate, Money inAmount, PaymentMethod inMethod, String inDescription, int inPayTo, IDSet inLabels)
 	{
 		date = inDate;
-		totalCents = inTotalCents;
+		amount = inAmount;
 		method = inMethod;
 		description = inDescription;
 		payTo = inPayTo;
@@ -17,21 +17,11 @@ public class Expense
 		return date;
 	}
 
-	public int getDollars()
+	public Money getAmount()
 	{
-		return totalCents / CENTS_IN_DOLLAR;
+		return amount;
 	}
-
-	public int getCents()
-	{
-		return totalCents % CENTS_IN_DOLLAR;
-	}
-
-	public int getTotalAmountInCents()
-	{
-		return totalCents;
-	}
-
+	
 	public PaymentMethod getPaymentMethod()
 	{
 		return method;
@@ -59,7 +49,7 @@ public class Expense
 		output.append(date);
 		output.append(" | ");
 
-		output.append(totalCents);
+		output.append(amount);
 		output.append(" | ");
 
 		output.append(method);
@@ -71,7 +61,7 @@ public class Expense
 	}
 
 	private final SimpleDate date;
-	private final int totalCents;
+	private final Money amount;
 	private final PaymentMethod method;
 	private final String description;
 	private final int payTo;

@@ -4,6 +4,7 @@ import dataAccessLayer.StubDatabase;
 import domainobjects.Expense;
 import domainobjects.IDSet;
 import domainobjects.Label;
+import domainobjects.Money;
 import domainobjects.PayTo;
 import domainobjects.PaymentMethod;
 import domainobjects.SimpleDate;
@@ -21,7 +22,7 @@ public class StubDatabaseTests extends TestCase
 		int newId = 0;
 		int[] setData = new int[]{1};
 		IDSet set = IDSet.createFromArray(setData);
-		Expense expectedExpense = new Expense(SimpleDate.Now(), 1000, PaymentMethod.CASH, "", 1, set);
+		Expense expectedExpense = new Expense(SimpleDate.Now(), new Money(10, 0), PaymentMethod.CASH, "", 1, set);
 		
 		newId = database.addExpense(expectedExpense);
 		Expense actualExpense = database.getExpenseByID(newId);
@@ -35,12 +36,12 @@ public class StubDatabaseTests extends TestCase
 		boolean updated;
 		int[] setData = new int[]{2};
 		IDSet set = IDSet.createFromArray(setData);
-		Expense addedExpense = new Expense(SimpleDate.Now(), 50, PaymentMethod.DEBIT, "", 2, set);
+		Expense addedExpense = new Expense(SimpleDate.Now(), new Money(0, 50), PaymentMethod.DEBIT, "", 2, set);
 		
 		newId = database.addExpense(addedExpense);
 		
 		//Update the expense by creating a new similar expense
-		Expense expectedExpense = new Expense(SimpleDate.Now(), 55, PaymentMethod.DEBIT, "", 2, set);
+		Expense expectedExpense = new Expense(SimpleDate.Now(), new Money(0, 55), PaymentMethod.DEBIT, "", 2, set);
 		updated = database.updateExpense(newId, expectedExpense);
 		Expense actualExpense = database.getExpenseByID(newId);
 		
@@ -54,7 +55,7 @@ public class StubDatabaseTests extends TestCase
 		int[] setData = new int[]{1};
 		IDSet expenseIds;
 		IDSet set = IDSet.createFromArray(setData);
-		Expense expense = new Expense(SimpleDate.Now(), 500, PaymentMethod.DEBIT, "", 1, set);
+		Expense expense = new Expense(SimpleDate.Now(), new Money(5, 0), PaymentMethod.DEBIT, "", 1, set);
 		
 		expectedId = database.addExpense(expense);
 		expenseIds = IDSet.createFromArray(database.getAllExpenseIDs());
@@ -69,7 +70,7 @@ public class StubDatabaseTests extends TestCase
 		int[] setData = new int[]{1};
 		IDSet expenseIds;
 		IDSet set = IDSet.createFromArray(setData);
-		Expense addedExpense = new Expense(SimpleDate.Now(), 100, PaymentMethod.DEBIT, "", 2, set);
+		Expense addedExpense = new Expense(SimpleDate.Now(), new Money(1, 0), PaymentMethod.DEBIT, "", 2, set);
 		
 		newId = database.addExpense(addedExpense);
 		deleted = database.deleteExpense(newId);
