@@ -1,13 +1,14 @@
 package dataAccessLayer;
 
-import java.util.Date;
 import java.util.Vector;
 
 import domainobjects.Expense;
 import domainobjects.IDSet;
 import domainobjects.Label;
+import domainobjects.Money;
 import domainobjects.PayTo;
 import domainobjects.PaymentMethod;
+import domainobjects.SimpleDate;
 
 public class StubDatabase implements IDatabase
 {
@@ -28,7 +29,7 @@ public class StubDatabase implements IDatabase
 		expenseIds = new Vector<Integer>();
 		expenses = new Vector<Expense>();
 		expenseIds.add(getNextExpenseId());
-		expenses.add(new Expense(new Date(), 1000, PaymentMethod.CASH, "", 1, set));
+		expenses.add(new Expense(SimpleDate.Now(), new Money(1, 0), PaymentMethod.CASH, "", 1, set));
 	}
 	
 	public void close()

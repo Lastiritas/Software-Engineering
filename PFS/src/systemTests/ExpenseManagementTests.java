@@ -9,6 +9,7 @@ import dataAccessLayer.IDatabase;
 import domainobjects.Expense;
 import domainobjects.IDSet;
 import domainobjects.PaymentMethod;
+import domainobjects.SimpleDate;
 import system.ExpenseManagement;
 
 public class ExpenseManagementTests extends MockObjectTestCase
@@ -38,7 +39,7 @@ public class ExpenseManagementTests extends MockObjectTestCase
 	public void test_Get_expense_by_id()
 	{
 		int setData[] = {1, 2, 3};
-		final Expense expectedExpense = new Expense(new Date(), 100, PaymentMethod.CASH, "Something to eat", 0, IDSet.createFromArray(setData));
+		final Expense expectedExpense = new Expense(SimpleDate.Now(), 100, PaymentMethod.CASH, "Something to eat", 0, IDSet.createFromArray(setData));
 		final int expenseId = 5;
 		Expense actualExpense;
         
@@ -70,7 +71,7 @@ public class ExpenseManagementTests extends MockObjectTestCase
 	public void test_Update_payTo_successfully()
 	{
 		int setData[] = {1, 2, 3};
-		final Expense expense = new Expense(new Date(), 1000, PaymentMethod.CASH, "Something to eat", 0, IDSet.createFromArray(setData));
+		final Expense expense = new Expense(SimpleDate.Now(), 1000, PaymentMethod.CASH, "Something to eat", 0, IDSet.createFromArray(setData));
 		final int expenseId = 3;
 		final boolean expectedResult = true;
 		boolean actualResult;
