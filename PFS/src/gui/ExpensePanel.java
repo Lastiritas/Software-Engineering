@@ -33,6 +33,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JList;
+import javax.swing.JTree;
 
 public class ExpensePanel extends JPanel
 {
@@ -42,20 +44,30 @@ public class ExpensePanel extends JPanel
 	
 	private final static String[] COLUMN_NAMES = { "ID", "Date", "Pay To", "Amount", "Decription", "Lables" };
 	
+	
+	private EditExpensePanel editorPanel;
+	
 	private JScrollPane scrollPane;
 	private JTable table;
 	private JPanel listPanel;
 	private JPanel buttonPanel;
 	private JButton deleteButton;
-	private JButton editButton;
 	private JButton addButton;
 	private JPanel rightVariablePanel;
 	private JPanel leftButtonPanel;
 	
 	private DefaultTableModel tableModel;
+	private JPanel panel;
+	private JButton saveButton;
+	private JButton duplicateButton;
+	private JPanel panel_1;
+	private JPanel panel_2;
+	private JPanel panel_3;
+	private JPanel panel_4;
 	
 	public ExpensePanel() 
 	{
+		
 		tableModel = new DefaultTableModel() {	
 			// make our table read only
 			public boolean isCellEditable(int row, int column) { return false; }
@@ -72,7 +84,22 @@ public class ExpensePanel extends JPanel
 		add(listPanel);
 		
 		table = new JTable(tableModel);
-		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent inEvent)
+			{
+				final int rowIndex = table.rowAtPoint(inEvent.getPoint());
+				
+				final int id = ((Integer)table.getValueAt(rowIndex, 0)).intValue();
+				
+				final Expense expense = ExpenseSystem.getCurrent().getExpense(id);
+				
+				editorPanel.setExpense(expense);
+			}
+		});
+		
 		table.getTableHeader().setReorderingAllowed(false);
 		
 		table.getTableHeader().addMouseListener(new MouseAdapter() {
@@ -101,14 +128,6 @@ public class ExpensePanel extends JPanel
 		rightVariablePanel = new JPanel();
 		buttonPanel.add(rightVariablePanel, BorderLayout.EAST);
 		
-		editButton = new JButton("Edit");
-		editButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) { onEditButtonPressed(e); }
-		});
-		rightVariablePanel.add(editButton);
-		editButton.setHorizontalAlignment(SwingConstants.RIGHT);
-		
 		addButton = new JButton("+");
 		addButton.addActionListener(new ActionListener() {
 			@Override
@@ -125,6 +144,32 @@ public class ExpensePanel extends JPanel
 			public void actionPerformed(ActionEvent e) { onDeleteButtonPressed(e); }
 		});
 		leftButtonPanel.add(deleteButton);
+		
+		panel = new JPanel();
+		add(panel, BorderLayout.NORTH);
+		panel.setLayout(new BorderLayout(0, 0));
+		
+		panel_2 = new JPanel();
+		panel.add(panel_2, BorderLayout.WEST);
+		panel_2.setLayout(new BorderLayout(0, 0));
+		editorPanel = new EditExpensePanel();
+		panel_2.add(editorPanel, BorderLayout.CENTER);
+		
+		panel_1 = new JPanel();
+		panel_2.add(panel_1, BorderLayout.SOUTH);
+		panel_1.setLayout(new BorderLayout(0, 0));
+		
+		panel_3 = new JPanel();
+		panel_1.add(panel_3, BorderLayout.EAST);
+		
+		saveButton = new JButton("Save");
+		panel_3.add(saveButton);
+		
+		panel_4 = new JPanel();
+		panel_1.add(panel_4, BorderLayout.WEST);
+		
+		duplicateButton = new JButton("Duplicate");
+		panel_4.add(duplicateButton);
 	}
 	
 	private int getOrderingForColumn(int inColumnIndex)
@@ -225,11 +270,6 @@ public class ExpensePanel extends JPanel
 		{
 			JOptionPane.showMessageDialog(null, "Could not delete expense " + expenseID);
 		}
-	}
-	
-	private void onEditButtonPressed(ActionEvent e)
-	{
-		JOptionPane.showMessageDialog(null, "You want to exit an expense but that feature is missing.");
 	}
 	
 	private void onNewButtonPressed(ActionEvent e)
