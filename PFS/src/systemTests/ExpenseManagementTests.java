@@ -2,9 +2,6 @@ package systemTests;
 
 import java.util.Date;
 
-import java.util.Arrays;
-import java.util.Vector;
-
 import org.jmock.integration.junit3.MockObjectTestCase;
 import org.jmock.Expectations;
 
@@ -24,11 +21,8 @@ public class ExpenseManagementTests extends MockObjectTestCase
 	
 	public void test_Get_all_expense_Ids()
 	{
-		Integer[] array = {1, 6, 15};
-		int [] intArray = {1, 6, 15};
-		final Vector<Integer> ids = new Vector<Integer>(Arrays.asList(array));
-		
-		IDSet expectedResult = IDSet.createFromArray(intArray);
+		final int [] ids = {1, 6, 15};
+		IDSet expectedResult = IDSet.createFromArray(ids);
 		IDSet actualResult;
         
         //Expectations
@@ -36,7 +30,7 @@ public class ExpenseManagementTests extends MockObjectTestCase
             oneOf (mockDatabase).getAllExpenseIDs(); will(returnValue(ids));
         }});
         
-        actualResult = expenseMgmt.getAllExpenseIDs();
+        actualResult = expenseMgmt.getAllIDs();
         assertTrue(expectedResult.equals(actualResult));
         verify();
 	}
@@ -53,7 +47,7 @@ public class ExpenseManagementTests extends MockObjectTestCase
             oneOf (mockDatabase).getExpenseByID(expenseId); will(returnValue(expectedExpense));
         }});
         
-        actualExpense = expenseMgmt.getExpenseByID(expenseId);
+        actualExpense = (Expense)expenseMgmt.getDataByID(expenseId);
         assertEquals(expectedExpense, actualExpense);
         verify();
 	}
@@ -68,7 +62,7 @@ public class ExpenseManagementTests extends MockObjectTestCase
             allowing (mockDatabase).addExpense(with(any(Expense.class))); will(returnValue(expectedExpenseId));
         }});
         
-        actualExpenseId = expenseMgmt.newExpense();
+        actualExpenseId = expenseMgmt.create();
         assertEquals(expectedExpenseId, actualExpenseId);
         verify();
 	}
@@ -86,7 +80,7 @@ public class ExpenseManagementTests extends MockObjectTestCase
             oneOf (mockDatabase).updateExpense(expenseId, expense); will(returnValue(expectedResult));
         }});
         
-        actualResult = expenseMgmt.updateExpense(expenseId, expense);
+        actualResult = expenseMgmt.update(expenseId, expense);
         assertEquals(expectedResult, actualResult);
         verify();
 	}

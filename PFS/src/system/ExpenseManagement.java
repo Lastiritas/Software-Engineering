@@ -1,10 +1,8 @@
 package system;
 
-import java.util.Vector;
 import java.util.Date;
 
 import dataAccessLayer.IDatabase;
-import dataAccessLayer.StubDatabase;
 import domainobjects.Expense;
 import domainobjects.IDSet;
 import domainobjects.PaymentMethod;
@@ -32,27 +30,27 @@ public class ExpenseManagement implements IIDReader, IDataReader, IDataModifer
 	{
 		assert inID >= 0 : "Invalid ID";
 
-		return database.getExpenseByID(inId);
+		return database.getExpenseByID(inID);
 	}
 
-	public boolean update(int inId, Object inNewValue)
+	public boolean update(int inID, Object inNewValue)
 	{
 		assert inID >= 0 : "Invalid ID";
 		assert inNewValue != null : "Cannot update expense with null value";
 
 		assert inNewValue instanceof Expense : "Can only use expenses in expense system";
 
-		return database.updateExpense(inId, inNewValue);
+		return database.updateExpense(inID, (Expense)inNewValue);
 	}
 
-	public boolean delete(int inId)
+	public boolean delete(int inID)
 	{
 		assert inID >= 0 : "Invalid ID";
 
-		return database.deleteExpense(inId);
+		return database.deleteExpense(inID);
 	}
 
-	public int new()
+	public int create()
 	{
 		final int[] emptySetData = new int[0];
 		final IDSet emptySet = IDSet.createFromArray(emptySetData);

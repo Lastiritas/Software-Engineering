@@ -1,6 +1,8 @@
 package system;
 
+import domainobjects.IDSet;
+
 public interface IIDReader
 {
-	 IDSet getAllIDS();
+	 IDSet getAllIDs();
 }

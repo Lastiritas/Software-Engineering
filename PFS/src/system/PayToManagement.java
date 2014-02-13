@@ -1,7 +1,5 @@
 package system;
 
-import java.util.Vector;
-
 import dataAccessLayer.*;
 import domainobjects.IDSet;
 import domainobjects.PayTo;
@@ -25,16 +23,16 @@ public class PayToManagement implements IIDReader, IDataReader, IDataModifer
 		return output;
 	}
 	
-	public Object getByID(int inId)
+	public Object getDataByID(int inId)
 	{
 		assert inId >= 0 : "Invalid id";
 
 		return database.getPayToByID(inId);
 	}
 	
-	public int new()
+	public int create()
 	{
-		PayTo newPayTo = new PayTo("Somewhere New");
+		PayTo newPayTo = new PayTo("Somewhere New", "");
 
 		return database.addPayTo(newPayTo);
 	}
@@ -45,7 +43,7 @@ public class PayToManagement implements IIDReader, IDataReader, IDataModifer
 		assert inNewValue != null : "Cannot update with null value";
 		assert inNewValue instanceof PayTo : "Can only update with PayTo objects";
 
-		return database.updatePayTo(inId, inNewValue);
+		return database.updatePayTo(inId, (PayTo)inNewValue);
 	}
 	
 	public boolean delete(int inID)

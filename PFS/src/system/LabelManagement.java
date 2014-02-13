@@ -1,7 +1,5 @@
 package system;
 
-import java.util.Vector;
-
 import dataAccessLayer.*;
 import domainobjects.IDSet;
 import domainobjects.Label;
@@ -17,7 +15,7 @@ public class LabelManagement implements IIDReader, IDataReader, IDataModifer
 	
 	public IDSet getAllIDs()
 	{
-		final int[] setData = databaes.getAllLabelIDs();
+		final int[] setData = database.getAllLabelIDs();
 		assert setData != null : "Database returned null array";
 
 		final IDSet output = IDSet.createFromArray(setData);
@@ -32,7 +30,7 @@ public class LabelManagement implements IIDReader, IDataReader, IDataModifer
 		return database.getLabelByID(inId);
 	}
 	
-	public int new()
+	public int create()
 	{
 		Label newLabel = new Label("New Label");
 		return database.addLabel(newLabel);
@@ -44,7 +42,7 @@ public class LabelManagement implements IIDReader, IDataReader, IDataModifer
 		assert inNewValue != null : "Can not update with null value";
 		assert inNewValue instanceof Label : "Can only update with a label";
 
-		return database.updateLabel(inId, inNewValue);
+		return database.updateLabel(inId, (Label)inNewValue);
 	}
 
 	public boolean delete(int inID)

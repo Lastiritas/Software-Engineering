@@ -1,7 +1,6 @@
 package dataAccessLayerTests;
 
 import java.util.Date;
-import java.util.Vector;
 
 import dataAccessLayer.StubDatabase;
 import domainobjects.Expense;
@@ -53,13 +52,13 @@ public class StubDatabaseTests extends TestCase
 	public void test_Getting_all_expense_Ids_should_return_the_previously_added_id()
 	{
 		int expectedId = 0;
-		Vector<Integer> expenseIds;
 		int[] setData = new int[]{1};
+		IDSet expenseIds;
 		IDSet set = IDSet.createFromArray(setData);
 		Expense expense = new Expense(new Date(), 500, PaymentMethod.DEBIT, "", 1, set);
 		
 		expectedId = database.addExpense(expense);
-		expenseIds = database.getAllExpenseIDs();
+		expenseIds = IDSet.createFromArray(database.getAllExpenseIDs());
 		
 		assertTrue(expenseIds.contains(expectedId));
 	}
@@ -68,14 +67,14 @@ public class StubDatabaseTests extends TestCase
 	{
 		int newId = 0;
 		boolean deleted;
-		Vector<Integer> expenseIds;
 		int[] setData = new int[]{1};
+		IDSet expenseIds;
 		IDSet set = IDSet.createFromArray(setData);
 		Expense addedExpense = new Expense(new Date(), 100, PaymentMethod.DEBIT, "", 2, set);
 		
 		newId = database.addExpense(addedExpense);
 		deleted = database.deleteExpense(newId);
-		expenseIds = database.getAllExpenseIDs();
+		expenseIds = IDSet.createFromArray(database.getAllExpenseIDs());
 		
 		assertTrue(deleted);
 		assertFalse(expenseIds.contains(newId));
@@ -112,11 +111,11 @@ public class StubDatabaseTests extends TestCase
 	public void test_Getting_all_label_Ids_should_return_the_previously_added_id()
 	{
 		int expectedId = 0;
-		Vector<Integer> labelIds;
+		IDSet labelIds;
 		Label label = new Label("Sports");
 		
 		expectedId = database.addLabel(label);
-		labelIds = database.getAllLabelIDs();
+		labelIds = IDSet.createFromArray(database.getAllLabelIDs());
 		
 		assertTrue(labelIds.contains(expectedId));
 	}
@@ -152,11 +151,11 @@ public class StubDatabaseTests extends TestCase
 	public void test_Getting_all_payTo_Ids_should_return_the_previously_added_id()
 	{
 		int expectedId = 0;
-		Vector<Integer> payToIds;
+		IDSet payToIds;
 		PayTo payTo = new PayTo("Tim Hortons", "EITC");
 		
 		expectedId = database.addPayTo(payTo);
-		payToIds = database.getAllPayToIDs();
+		payToIds = IDSet.createFromArray(database.getAllPayToIDs());
 		
 		assertTrue(payToIds.contains(expectedId));
 	}

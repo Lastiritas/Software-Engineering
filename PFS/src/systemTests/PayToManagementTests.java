@@ -1,8 +1,5 @@
 package systemTests;
 
-import java.util.Arrays;
-import java.util.Vector;
-
 import org.jmock.integration.junit3.MockObjectTestCase;
 import org.jmock.Expectations;
 
@@ -21,11 +18,8 @@ public class PayToManagementTests extends MockObjectTestCase
 	
 	public void test_Get_all_payTo_Ids()
 	{
-		Integer[] array = {3, 6, 7};
-		int [] intArray = {3, 6, 7};
-		final Vector<Integer> ids = new Vector<Integer>(Arrays.asList(array));
-		
-		IDSet expectedResult = IDSet.createFromArray(intArray);
+		final int [] ids = {3, 6, 7};
+		IDSet expectedResult = IDSet.createFromArray(ids);
 		IDSet actualResult;
         
         //Expectations
@@ -33,7 +27,7 @@ public class PayToManagementTests extends MockObjectTestCase
             oneOf (mockDatabase).getAllPayToIDs(); will(returnValue(ids));
         }});
         
-        actualResult = payToMgmt.getAllPayToIDs();
+        actualResult = payToMgmt.getAllIDs();
         assertTrue(expectedResult.equals(actualResult));
         verify();
 	}
@@ -49,23 +43,22 @@ public class PayToManagementTests extends MockObjectTestCase
             oneOf (mockDatabase).getPayToByID(payToId); will(returnValue(expectedPayTo));
         }});
         
-        actualPayTo = payToMgmt.getPayToByID(payToId);
+        actualPayTo = (PayTo)payToMgmt.getDataByID(payToId);
         assertEquals(expectedPayTo, actualPayTo);
         verify();
 	}
 	
-	public void test_Register_payTo_successfully()
+	public void test_Create_payTo_successfully()
 	{
-		final PayTo payTo = new PayTo("Indigo", "Polo Park");
 		final int expectedPayToId = 9;
 		int actualPayToId;
         
         //Expectations
         checking(new Expectations() {{
-            oneOf (mockDatabase).addPayTo(payTo); will(returnValue(expectedPayToId));
+            allowing (mockDatabase).addPayTo(with(any(PayTo.class))); will(returnValue(expectedPayToId));
         }});
         
-        actualPayToId = payToMgmt.registerPayTo(payTo);
+        actualPayToId = payToMgmt.create();
         assertEquals(expectedPayToId, actualPayToId);
         verify();
 	}
@@ -82,7 +75,7 @@ public class PayToManagementTests extends MockObjectTestCase
             oneOf (mockDatabase).updatePayTo(payToId, payTo); will(returnValue(expectedResult));
         }});
         
-        actualResult = payToMgmt.updatePayTo(payToId, payTo);
+        actualResult = payToMgmt.update(payToId, payTo);
         assertEquals(expectedResult, actualResult);
         verify();
 	}

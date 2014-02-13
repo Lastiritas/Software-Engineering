@@ -51,9 +51,14 @@ public class StubDatabase implements IDatabase
 	
 	public int[] getAllExpenseIDs()
 	{
-		int[] arrayIDs = new int[expenseIds.size()];
-		expenseIds.copyInto(arrayIDs);
-		return arrayIDs;
+		int[] ids = new int[expenseIds.size()];
+		
+		for(int i=0; i < ids.length; i++)
+		{
+			ids[i] = expenseIds.get(i).intValue();
+		}
+		
+		return ids;
 	}
 	
 	public int addExpense(Expense inNewValue)
@@ -111,9 +116,14 @@ public class StubDatabase implements IDatabase
 	
 	public int[] getAllLabelIDs()
 	{
-		int[] arrayIDs = new int[labelIds.size()];
-		labelIds.copyInto(arrayIDs);
-		return arrayIDs;
+		int[] ids = new int[labelIds.size()];
+		
+		for(int i=0; i < ids.length; i++)
+		{
+			ids[i] = labelIds.get(i).intValue();
+		}
+		
+		return ids;
 	}
 	
 	public int addLabel(Label inNewValue)
@@ -156,9 +166,14 @@ public class StubDatabase implements IDatabase
 	
 	public int[] getAllPayToIDs()
 	{
-		int[] arrayIDs = new int[payToIds.size()];
-		payToIds.copyInto(arrayIDs);
-		return arrayIDs;
+		int[] ids = new int[payToIds.size()];
+		
+		for(int i=0; i < ids.length; i++)
+		{
+			ids[i] = payToIds.get(i).intValue();
+		}
+		
+		return ids;
 	}
 	
 	public int addPayTo(PayTo inNewValue)

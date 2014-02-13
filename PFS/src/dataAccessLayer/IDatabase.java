@@ -1,7 +1,5 @@
 package dataAccessLayer;
 
-import java.util.Vector;
-
 import domainobjects.Expense;
 import domainobjects.Label;
 import domainobjects.PayTo;

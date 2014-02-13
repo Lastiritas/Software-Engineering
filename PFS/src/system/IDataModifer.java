@@ -2,7 +2,7 @@ package system;
 
 public interface IDataModifer
 {
-	int new();
+	int create();
 	boolean update(int id, Object data);
 	boolean delete(int id);
 }

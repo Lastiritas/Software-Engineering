@@ -1,8 +1,5 @@
 package systemTests;
 
-import java.util.Arrays;
-import java.util.Vector;
-
 import org.jmock.integration.junit3.MockObjectTestCase;
 import org.jmock.Expectations;
 
@@ -21,19 +18,16 @@ public class LabelManagementTests extends MockObjectTestCase
 	
 	public void test_Get_all_label_Ids()
 	{
-		Integer[] array = {1, 2, 4};
-		int [] intArray = {1, 2, 4};
-		final Vector<Integer> ids = new Vector<Integer>(Arrays.asList(array));
-		
+		final int [] intArray = {1, 2, 4};
 		IDSet expectedResult = IDSet.createFromArray(intArray);
 		IDSet actualResult;
         
         //Expectations
         checking(new Expectations() {{
-            oneOf (mockDatabase).getAllLabelIDs(); will(returnValue(ids));
+            oneOf (mockDatabase).getAllLabelIDs(); will(returnValue(intArray));
         }});
         
-        actualResult = labelMgmt.getAllLabelIDs();
+        actualResult = labelMgmt.getAllIDs();
         assertTrue(expectedResult.equals(actualResult));
         verify();
 	}
@@ -49,23 +43,22 @@ public class LabelManagementTests extends MockObjectTestCase
             oneOf (mockDatabase).getLabelByID(labelId); will(returnValue(expectedLabel));
         }});
         
-        actualLabel = labelMgmt.getLabelByID(labelId);
+        actualLabel = (Label)labelMgmt.getDataByID(labelId);
         assertEquals(expectedLabel, actualLabel);
         verify();
 	}
 	
-	public void test_Register_label_successfully()
+	public void test_Create_label_successfully()
 	{
-		final Label label = new Label("Junk Food");
 		final int expectedLabelId = 4;
 		int actualLabelId;
         
         //Expectations
         checking(new Expectations() {{
-            oneOf (mockDatabase).addLabel(label); will(returnValue(expectedLabelId));
+            allowing (mockDatabase).addLabel(with(any(Label.class))); will(returnValue(expectedLabelId));
         }});
         
-        actualLabelId = labelMgmt.registerLabel(label);
+        actualLabelId = labelMgmt.create();
         assertEquals(expectedLabelId, actualLabelId);
         verify();
 	}
@@ -82,7 +75,7 @@ public class LabelManagementTests extends MockObjectTestCase
             oneOf (mockDatabase).updateLabel(labelId, label); will(returnValue(expectedResult));
         }});
         
-        actualResult = labelMgmt.updateLabel(labelId, label);
+        actualResult = labelMgmt.update(labelId, label);
         assertEquals(expectedResult, actualResult);
         verify();
 	}
