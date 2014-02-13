@@ -63,16 +63,30 @@ public class MainWindow {
 		cancelButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				shell.close();
 			}
 		});
 		cancelButton.setBounds(10, 227, 75, 25);
 		cancelButton.setText("Cancel");
 		
 		Button okayButton = new Button(shell, SWT.NONE);
+		okayButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				shell.close();
+			}
+		});
 		okayButton.setBounds(349, 227, 75, 25);
 		okayButton.setText("Okay");
 		
 		Button addButton = new Button(shell, SWT.NONE);
+		addButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				CreationWindow window = new CreationWindow();
+				window.open();
+			}
+		});
 		addButton.setBounds(180, 227, 75, 25);
 		addButton.setText("+");
 		
