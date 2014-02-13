@@ -3,47 +3,47 @@ public class StringMatch {
 
 	/**
 	 * String matching algorithm
-	 * The algorithm looks for a match and returns its position
-	 *  in the original string once it finds it, so if I send in 
-	 *  THESIS and search for IS then it will return 4 and
-	 *  consider it a match
+	 * The algorithm looks for a match and returns true once it finds match
+	 * accepts string and its pattern to look for
 	 */
-	 public static int match(String toFind, String search)
+	 public static boolean match(String search, String toFind)
 	 {
-		 int next[] = new int[search.length()];
-		 int n = toFind.length(), m=search.length();
-		 int i=1, j=0;
+		 if (search.length() == 0)
+			 return false;
+		 search = search.toLowerCase();
+		 toFind = toFind.toLowerCase();
 		 
-		//init next
-		 next[0]=0;
-		 do {
-			 if(j==0 || search.substring(i, i+1).equalsIgnoreCase(search.substring(j, j+1)))
-			 {
-				 i++;
-				 j++;
-				 next[i]=j;
-			 }
-			 else
-				 j=next[j];
-		 } while (i<=m) ;
+		 int n=search.length(), m=toFind.length();
+		 int next[] = new int[m];
+		 int j=0;
 		 
-		 //do search
-		 i=1;
-		 j=1;
-		 do{
-			 if( j==0 || toFind.substring(i, i+1).equalsIgnoreCase(search.substring(j, j+1)))
-			 {
-				 i++;
-				 j++;
-			 }
-			 else
-				 j = next[j];
-		 } while (j<=m & i<=n) ;
+		 for(int i = 1; i < m; i++) 
+		 {
+			 while (j > 0 && toFind.charAt(j) != toFind.charAt(i))  
+				 j = next[j - 1];
+			 
+			 if(toFind.charAt(j) == toFind.charAt(i)) 
+				 j++; 
+			 
+			 next[i] = j;
+	    }
+
 		 
-		 //return
-		 if(j>m)
-			 return (i-j);
-		 else
-			 return -1;
+		j = 0;
+		
+		for (int i = 0; i < n; i++) 
+		{
+		      while (j > 0 && toFind.charAt(j) != search.charAt(i))
+		    	  j = next[j - 1];
+		      
+		      if (toFind.charAt(j) == search.charAt(i))
+		    	  j++;
+		      
+		      if (j == m) 
+		        return true;
+		}
+		return false;
+		 
+		
 	 }
 }
