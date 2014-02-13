@@ -5,31 +5,27 @@ import junit.framework.TestCase;
 
 public class PayToTest extends TestCase 
 {
-	public void test_Create_a_payTo()
+	public void test_Create_a_payTo_with_Branch()
 	{
-		PayTo expected;
-		int actualID = 5;
-		String actualPayToName = "Burger King";
-		String actualPayToBranch = "St. Vital";
+		PayTo actual;
+		String expectedPayToName = "Burger King";
+		String expectedPayToBranch = "St. Vital";
 		
-		expected = new PayTo(actualID, actualPayToName, actualPayToBranch);
+		actual = new PayTo(expectedPayToName, expectedPayToBranch);
 		
-		assertEquals("The PayTo ID is incorrect.", expected.getPayToID(), actualID);
-		assertEquals("The PayTo Name is incorrect.", expected.getPayToName(), actualPayToName);
-		assertEquals("The PayTo Branch is incorrect.", expected.getPayToBranch(), actualPayToBranch);
+		assertEquals("The PayTo Name is incorrect.", expectedPayToName, actual.getPayToName());
+		assertEquals("The PayTo Branch is incorrect.", expectedPayToBranch, actual.getPayToBranch());
 	}
 	
-	public void test_Create_a_payTo_without_ID()
+	public void test_Create_a_payTo_without_Branch()
 	{
-		PayTo expected;
-		int expectedID = 0;
-		String actualPayToName = "Burger King";
-		String actualPayToBranch = "St. Vital";
+		PayTo actual;
+		String expectedPayToName = "Burger King";
+		String expectedPayToBranch = "";
 		
-		expected = new PayTo(actualPayToName, actualPayToBranch);
+		actual = new PayTo(expectedPayToName);
 		
-		assertEquals("The PayTo ID is incorrect.", expected.getPayToID(), expectedID);
-		assertEquals("The PayTo Name is incorrect.", expected.getPayToName(), actualPayToName);
-		assertEquals("The PayTo Branch is incorrect.", expected.getPayToBranch(), actualPayToBranch);
+		assertEquals("The PayTo Name is incorrect.", expectedPayToName, actual.getPayToName());
+		assertEquals("The PayTo Branch is incorrect.", expectedPayToBranch, actual.getPayToBranch());
 	}
 }
