@@ -19,6 +19,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import domainobjects.Expense;
 import domainobjects.IDSet;
 import domainobjects.Money;
+import domainobjects.PayTo;
 import domainobjects.PaymentMethod;
 import domainobjects.SimpleDate;
 import system.FPSystem;
@@ -149,9 +150,11 @@ public class ViewExpense {
 		editLabelsButton.setText("Edit Labels");
 		
 		saveButton = new Button(editPanel, SWT.NONE);
-		saveButton.addSelectionListener(new SelectionAdapter() {
+		saveButton.addSelectionListener(new SelectionAdapter() 
+		{
 			@Override
-			public void widgetSelected(SelectionEvent arg0) {
+			public void widgetSelected(SelectionEvent arg0) 
+			{
 				if(expenseTable.getSelectionCount() == 0)
 				{
 					return;
@@ -161,37 +164,8 @@ public class ViewExpense {
 				final TableItem[] items = expenseTable.getSelection();
 				
 				final int id = Integer.parseInt(items[0].getText(0));
-								
-				SimpleDate date = SimpleDate.Now();
-				date.setYear(datePicker.getYear());
-				date.setMonth(datePicker.getMonth());
-				date.setDay(datePicker.getDay());
 				
-				PaymentMethod method = PaymentMethod.CASH;
-				if(cashRadio.getSelection())
-				{
-					method = PaymentMethod.CASH;
-				}
-				else if(debitRadio.getSelection())
-				{
-					method = PaymentMethod.DEBIT;
-				}
-				else if(creditRadio.getSelection())
-				{
-					method = PaymentMethod.CREDIT;
-				}
-				else
-				{
-					method = PaymentMethod.OTHER;
-				}
-				
-				int[] data = {};
-				IDSet set = IDSet.createFromArray(data);
-				
-				Expense expense = new Expense(date, Money.fromString(amountField.getText()), method, descriptionField.getText(), -1, set);
-				FPSystem.getCurrent().getExpenseSystem().update(id, expense);
-				
-				updateExpenseForRow(selectedIndex, id);
+				saveExpenseFromEditingPane(selectedIndex, id);
 			}
 		});
 		saveButton.setBounds(139, 593, 94, 28);
@@ -239,7 +213,8 @@ public class ViewExpense {
 		expenseTable = new Table(composite_1, SWT.BORDER | SWT.FULL_SELECTION);
 		expenseTable.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent arg0) {
+			public void widgetSelected(SelectionEvent arg0) 
+			{
 				if(expenseTable.getSelectionCount() == 0)
 				{
 					return;
@@ -248,57 +223,8 @@ public class ViewExpense {
 				final TableItem[] items = expenseTable.getSelection();
 				
 				final int id = Integer.parseInt(items[0].getText(0));
-
-				final Expense expense = (Expense)FPSystem.getCurrent().getExpenseSystem().getDataByID(id);
-			
-				datePicker.setYear(expense.getDate().getYear());
-				datePicker.setMonth(expense.getDate().getMonth());
-				datePicker.setDay(expense.getDate().getDay());
 				
-				Money money = expense.getAmount();
-				amountField.setText(money.toString());
-				
-				switch(expense.getPaymentMethod())
-				{
-				case CASH:	
-					cashRadio.setSelection(true);
-					debitRadio.setSelection(false);
-					creditRadio.setSelection(false);
-					otherRadio.setSelection(false);
-					break;
-				case DEBIT:		
-					cashRadio.setSelection(false);
-					debitRadio.setSelection(true);
-					creditRadio.setSelection(false);
-					otherRadio.setSelection(false);
-					break;
-				case CREDIT:	
-					cashRadio.setSelection(false);
-					debitRadio.setSelection(false);
-					creditRadio.setSelection(true);
-					otherRadio.setSelection(false);
-					break;
-				case OTHER:		
-					cashRadio.setSelection(false);
-					debitRadio.setSelection(false);
-					creditRadio.setSelection(false);
-					otherRadio.setSelection(true);
-					break;
-				}
-				
-				descriptionField.setText(expense.getDescription());
-				
-				labelsList.removeAll();
-				
-				IDSet labelIDs = expense.getLabels();
-				for(int i = 0; i < labelIDs.getSize(); i++)
-				{
-					final int labelID = labelIDs.getValue(i);
-					domainobjects.Label label = (domainobjects.Label)FPSystem.getCurrent().getLabelSystem().getDataByID(labelID);
-					
-					labelsList.add(label.getLabelName());
-				}
-
+				openExpenseInEditingPane(id);
 			}
 		});
 		expenseTable.setBounds(10, 10, 629, 577);
@@ -347,7 +273,99 @@ public class ViewExpense {
 			addExpense(id);
 		}
 	}
+	
+	private void saveExpenseFromEditingPane(int inTableIndex, int inID)
+	{						
+		SimpleDate date = SimpleDate.Now();
+		date.setYear(datePicker.getYear());
+		date.setMonth(datePicker.getMonth());
+		date.setDay(datePicker.getDay());
 		
+		PaymentMethod method = PaymentMethod.CASH;
+		
+		if(cashRadio.getSelection())
+		{
+			method = PaymentMethod.CASH;
+		}
+		else if(debitRadio.getSelection())
+		{
+			method = PaymentMethod.DEBIT;
+		}
+		else if(creditRadio.getSelection())
+		{
+			method = PaymentMethod.CREDIT;
+		}
+		else
+		{
+			method = PaymentMethod.OTHER;
+		}
+		
+		int[] data = {};
+		IDSet set = IDSet.createFromArray(data);
+		
+		Expense expense = new Expense(date, Money.fromString(amountField.getText()), method, descriptionField.getText(), -1, set);
+		FPSystem.getCurrent().getExpenseSystem().update(inID, expense);
+		
+		updateExpenseForRow(inTableIndex, inID);
+	}
+	
+	private void openExpenseInEditingPane(int inID)
+	{
+		final Expense expense = (Expense)FPSystem.getCurrent().getExpenseSystem().getDataByID(inID);
+	
+		datePicker.setYear(expense.getDate().getYear());
+		datePicker.setMonth(expense.getDate().getMonth());
+		datePicker.setDay(expense.getDate().getDay());
+		
+		final int payToID = expense.getPayTo();
+		PayTo payto = (PayTo)FPSystem.getCurrent().getPayToSystem().getDataByID(payToID);		
+		payToField.setText(payto.getPayToName() + ", " + payto.getPayToBranch());
+		
+		final Money money = expense.getAmount();
+		amountField.setText(money.toString());
+		
+		switch(expense.getPaymentMethod())
+		{
+		case CASH:	
+			cashRadio.setSelection(true);
+			debitRadio.setSelection(false);
+			creditRadio.setSelection(false);
+			otherRadio.setSelection(false);
+			break;
+		case DEBIT:		
+			cashRadio.setSelection(false);
+			debitRadio.setSelection(true);
+			creditRadio.setSelection(false);
+			otherRadio.setSelection(false);
+			break;
+		case CREDIT:	
+			cashRadio.setSelection(false);
+			debitRadio.setSelection(false);
+			creditRadio.setSelection(true);
+			otherRadio.setSelection(false);
+			break;
+		case OTHER:		
+			cashRadio.setSelection(false);
+			debitRadio.setSelection(false);
+			creditRadio.setSelection(false);
+			otherRadio.setSelection(true);
+			break;
+		}
+		
+		descriptionField.setText(expense.getDescription());
+		
+		labelsList.removeAll();
+		
+		final IDSet labelIDs = expense.getLabels();
+		for(int i = 0; i < labelIDs.getSize(); i++)
+		{
+			final int labelID = labelIDs.getValue(i);
+			domainobjects.Label label = (domainobjects.Label)FPSystem.getCurrent().getLabelSystem().getDataByID(labelID);
+			
+			labelsList.add(label.getLabelName());
+		}
+	}
+	
 	private void addExpense(int inExpenseID)
 	{
 		new TableItem(expenseTable, SWT.NONE);	// will add to the end of the list
@@ -369,12 +387,14 @@ public class ViewExpense {
 		date.setDay(datePicker.getDay());
 		date.setYear(datePicker.getYear());
 				
-		String payTo = "" + expense.getPayTo();
-		Money money = expense.getAmount(); 
-		String description = expense.getDescription();
+		final int payToID = expense.getPayTo();
+		PayTo payto = (PayTo)FPSystem.getCurrent().getPayToSystem().getDataByID(payToID);		
+				
+		final Money money = expense.getAmount(); 
+		
+		final String description = expense.getDescription();
 		
 		StringBuilder dateBuilder = new StringBuilder();
-		
 		dateBuilder.append(date.getMonth());
 		dateBuilder.append("/");
 		dateBuilder.append(date.getDay());
@@ -382,7 +402,7 @@ public class ViewExpense {
 		dateBuilder.append(date.getYear());	
 				
 		String dateString = dateBuilder.toString();
-		String payToString = payTo;
+		String payToString = payto.getPayToName() + ", " + payto.getPayToBranch();
 		String descriptionString = description;
 		
 		TableItem item = expenseTable.getItem(inRowIndex);
@@ -393,5 +413,4 @@ public class ViewExpense {
 		item.setText(3, money.toString());
 		item.setText(4, descriptionString);
 	}
-	
 }
