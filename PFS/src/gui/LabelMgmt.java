@@ -1,5 +1,7 @@
 package gui;
 
+import java.util.ArrayList;
+
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.*;
 import org.eclipse.swt.events.*;
@@ -7,6 +9,7 @@ import org.eclipse.swt.events.*;
 import system.PFSystem;
 import util.StringMatch;
 import domainobjects.*;
+import domainobjects.Label;
 
 public class LabelMgmt {
 
@@ -20,7 +23,9 @@ public class LabelMgmt {
 	private List listLabel;
 	private List listPickLabel;
 	
-	private String labels[];
+	private ArrayList<String> labels = new ArrayList<String>(1);
+	private ArrayList<String> pickLabels = new ArrayList<String>(1);
+	
 		
 	public  void open() {
 		Display display = Display.getDefault();
@@ -76,133 +81,57 @@ public class LabelMgmt {
 		btnDone.setBounds(480,392, 75, 25);
 		
 		//list population
-		IDSet labelIDs = PFSystem.getCurrent().getLabelSystem().getAllIDs();
-		labels = new String[labelIDs.getSize()];
-		
-		for(int i=0; i <labelIDs.getSize(); i++)
-		{
-			final int id = labelIDs.getValue(i);
-			domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
-			
-			labels[i] = label.getLabelName();
-			listLabel.add(labels[i]);
-		}	
+		loadList();
 				
 		
 		//listeners
 		textSearchLabel.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
-				String input = textSearchLabel.getText() + e.character;
-				if(e.character >32 && e.character <127)
-				{
-					for(int i=0; i<listLabel.getItemCount(); i++)
+				String input = textSearchLabel.getText();
+				if(!(input.length() ==0 && (e.character == 8 || e.character == 127)))
+				{	
+					if((e.character >32 && e.character <127) || e.character == 8 || e.character == 127)
 					{
-						if(!StringMatch.match(listLabel.getItem(i),input))
+						if(e.character >32 && e.character <127)
+							input += e.character;
+						refreshList();
+						
+						for(int i=0; i<listLabel.getItemCount(); i++)
 						{
-							listLabel.remove(listLabel.getItem(i));
-							i=-1;
+							if(!StringMatch.match(listLabel.getItem(i),input))
+							{
+								listLabel.remove(listLabel.getItem(i));
+								i=-1;
+							}
 						}
+	
 					}
-					
-					
-					 boolean found = false;
-					 for(int i=0; i<labels.length; i++)
-					 {
-					 	if(StringMatch.match(labels[i], input)) 
-					 	{
-					 		for(int j=0; j<listLabel.getItemCount(); j++)
-					 		{
-					 			if(labels[i].equalsIgnoreCase(listLabel.getItem(j)))
-					 			{
-					 				found = true;
-					 				break;
-					 			}
-					 		}
-					 		if(!found)
-					 			listLabel.add(labels[i]);
-					 	}
-					 }
-					 
-					
-				}
-				else if(e.character == 8 || e.character == 127)
-				{
-					boolean found = false;
-					 for(int i=0; i<labels.length; i++)
-					 {
-					 	if(StringMatch.match(labels[i], input)) 
-					 	{
-					 		for(int j=0; j<listLabel.getItemCount(); j++)
-					 		{
-					 			if(labels[i].equalsIgnoreCase(listLabel.getItem(j)))
-					 			{
-					 				found = true;
-					 				break;
-					 			}
-					 		}
-					 		if(!found)
-					 			listLabel.add(labels[i]);
-					 	}
-					 }
 				}
 			}
 		});
 		
 		textSearchPickLabel.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
-				String input = textSearchPickLabel.getText() + e.character;
-				if(e.character >32 && e.character <127)
+				String input = textSearchPickLabel.getText();
+				if(!(input.length() ==0 && (e.character == 8 || e.character == 127)))
 				{
-					int length = listPickLabel.getItemCount();
-					for(int i=0; i<length; i++)
+					if((e.character >32 && e.character <127) || e.character == 8 || e.character == 127)
 					{
-						if(!StringMatch.match(listPickLabel.getItem(i),input))
+						if(e.character >32 && e.character <127)
+							input += e.character;
+						refreshPickList();
+						
+						for(int i=0; i<listPickLabel.getItemCount(); i++)
 						{
-							listPickLabel.remove(listPickLabel.getItem(i));
-							i=-1;
-							length = listPickLabel.getItemCount();
+							if(!StringMatch.match(listPickLabel.getItem(i),input))
+							{
+								listPickLabel.remove(listPickLabel.getItem(i));
+								i=-1;
+							}
 						}
+						
+						
 					}
-					
-					
-					boolean found = false;
-					 for(int i=0; i<labels.length; i++)
-					 {
-					 	if(StringMatch.match(labels[i], input)) 
-					 	{
-					 		for(int j=0; j<listPickLabel.getItemCount(); j++)
-					 		{
-					 			if(labels[i].equalsIgnoreCase(listPickLabel.getItem(j)))
-					 			{
-					 				found = true;
-					 				break;
-					 			}
-					 		}
-					 		if(!found)
-					 			listPickLabel.add(labels[i]);
-					 	}
-					 }
-				}
-				else if(e.character == 8 || e.character == 127)
-				{
-					
-					boolean found = false;
-					 for(int i=0; i<labels.length; i++)
-					 {
-					 	if(StringMatch.match(labels[i], input)) 
-					 	{
-					 		for(int j=0; j<listPickLabel.getItemCount(); j++)
-					 		{
-					 			if(labels[i].equalsIgnoreCase(listPickLabel.getItem(j)))
-					 			{
-					 				found = true;
-					 				break;
-					 			}
-					 		}
-					 		if(!found)
-					 			listPickLabel.add(labels[i]);
-					 	}
-					 }
 				}
 			}
 		});
@@ -227,7 +156,9 @@ public class LabelMgmt {
 				if(transferTo !=null)
 				{
 					listLabel.remove(transferTo);
-					//need to add to list of labels here
+					labels.remove(transferTo);
+
+					pickLabels.add(transferTo);
 					listPickLabel.add(transferTo);
 					transferTo =null;
 				}
@@ -240,7 +171,9 @@ public class LabelMgmt {
 				if(transferFrom !=null)
 				{
 					listPickLabel.remove(transferFrom);
-					//remove from list of labels here
+					pickLabels.remove(transferFrom);
+					
+					labels.add(transferFrom);
 					listLabel.add(transferFrom);
 					transferFrom =null;
 				}
@@ -250,8 +183,16 @@ public class LabelMgmt {
 		btnNew.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				LabelCreate newLabel = new LabelCreate();
-				newLabel.open();
+				LabelCreate createLabel = new LabelCreate();
+				String newLabel = createLabel.open();
+				if(newLabel !=null)
+				{
+					Label inLabel = new Label(newLabel);
+					int newID = PFSystem.getCurrent().getLabelSystem().create();
+					PFSystem.getCurrent().getLabelSystem().update(newID,inLabel);
+					labels.add(newLabel);
+					listLabel.add(newLabel);
+				}
 			}
 		});
 		
@@ -264,9 +205,42 @@ public class LabelMgmt {
 		btnDone.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				String returnLabel[] =listPickLabel.getItems();
+				//add labels selected to the expense HERE
 				shell.close();
 			}
 		});
+	}
+	
+	private void loadList()
+	{
+		IDSet labelIDs = PFSystem.getCurrent().getLabelSystem().getAllIDs();
+		
+		for(int i=0; i <labelIDs.getSize(); i++)
+		{
+			final int id = labelIDs.getValue(i);
+			Label label = (Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
+			
+			labels.add(label.getLabelName());
+		}	
+		
+		refreshList();
+		refreshPickList();		
+	}
+	
+	private void refreshList()
+	{
+		listLabel.removeAll();
+		for(int i=0; i <labels.size(); i++)
+			listLabel.add(labels.get(i));
+	}
+	
+	private void refreshPickList()
+	{
+		listPickLabel.removeAll();
+		for(int i=0; i <pickLabels.size(); i++)
+			listPickLabel.add(pickLabels.get(i));
+		
 	}
 
 }
