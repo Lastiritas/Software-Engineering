@@ -1,7 +1,5 @@
 package dataAccessLayerTests;
 
-import java.util.Date;
-
 import dataAccessLayer.StubDatabase;
 import domainobjects.Expense;
 import domainobjects.IDSet;

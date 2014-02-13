@@ -1,7 +1,6 @@
 package dataAccessLayer;
 
 import java.util.Vector;
-
 import domainobjects.Expense;
 import domainobjects.IDSet;
 import domainobjects.Label;

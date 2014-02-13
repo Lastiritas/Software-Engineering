@@ -1,43 +1,23 @@
 package gui;
+
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JButton;
-
 import java.util.Arrays;
-import java.util.Date;
 import java.awt.BorderLayout;
-import java.awt.Component;
-
-import javax.swing.Box;
-
-import java.awt.FlowLayout;
-
-import javax.swing.border.BevelBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.text.TabExpander;
-
-import net.miginfocom.swing.MigLayout;
-
-import javax.swing.SwingConstants;
 import javax.swing.ListSelectionModel;
-
 import domainobjects.Expense;
 import domainobjects.IDSet;
 import domainobjects.SimpleDate;
-import system.ExpenseManagement;
 import system.FPSystem;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import javax.swing.JList;
-import javax.swing.JTree;
 
 public class ExpensePanel extends JPanel
 {

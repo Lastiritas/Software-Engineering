@@ -1,7 +1,5 @@
 package domainobjecttests;
 
-import java.util.Date;
-
 import domainobjects.Expense;
 import domainobjects.IDSet;
 import domainobjects.PaymentMethod;

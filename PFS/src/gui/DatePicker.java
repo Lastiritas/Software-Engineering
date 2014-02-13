@@ -1,23 +1,11 @@
 package gui;
 
 import javax.swing.JPanel;
-import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JSpinner;
 import javax.swing.BoxLayout;
-import javax.swing.SpinnerModel;
-import javax.swing.event.ChangeListener;
-
-import java.awt.BorderLayout;
-import java.util.Date;
-
 import javax.swing.event.ChangeEvent;
-
-import java.awt.FlowLayout;
-
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
-
 import domainobjects.SimpleDate;
 
 public class DatePicker extends JPanel

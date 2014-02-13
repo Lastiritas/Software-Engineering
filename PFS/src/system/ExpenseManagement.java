@@ -1,7 +1,5 @@
 package system;
 
-import java.util.Date;
-
 import dataAccessLayer.IDatabase;
 import domainobjects.Expense;
 import domainobjects.IDSet;

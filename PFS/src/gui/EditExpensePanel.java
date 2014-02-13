@@ -1,7 +1,5 @@
 package gui;
 
-import java.util.Date;
-
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 import javax.swing.JPanel;
