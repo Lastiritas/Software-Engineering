@@ -32,6 +32,14 @@ public class IDSetTest extends TestCase
 		}
 	}
 	
+	public void testDoesNotContain()
+	{
+		int[] data = { 1, 2, 3, 4 };
+		IDSet set = IDSet.createFromArray(data);
+	
+		assertFalse("Set should not have 5", set.contains(5));			
+	}
+	
 	public void testUnion()
 	{
 		int[] data0 = { 1, 2, 3, 4 };

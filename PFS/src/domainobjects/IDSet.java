@@ -34,10 +34,13 @@ public class IDSet
 		// binary search
 
 		int start = 0;
-		int end = values.length;
+		int end = values.length - 1;
 
-		while(end > start)
+		while(end >= start)
 		{
+			assert(start >= 0 && start < values.length);
+			assert(end >= 0 && end < values.length);
+			
 			final int middle = (start + end) / 2;
 
 			final int middleValue = values[middle];
@@ -48,11 +51,11 @@ public class IDSet
 			}
 			else if(middleValue < inValue)
 			{
-				start = middle;
+				start = middle + 1;
 			}
 			else	// middle > inValue
 			{
-				end = middle;
+				end = middle - 1;
 			}
 		}
 
