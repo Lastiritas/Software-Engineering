@@ -10,7 +10,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
 import domainobjects.PayTo;
-import system.FPSystem;
+import system.PFSystem;
 
 public class CreationWindow {
 
@@ -55,8 +55,8 @@ public class CreationWindow {
 		okayButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				final int newLabelID = FPSystem.getCurrent().getPayToSystem().create();
-				FPSystem.getCurrent().getPayToSystem().update(newLabelID, new PayTo(nameField.getText(), locationField.getText()));
+				final int newLabelID = PFSystem.getCurrent().getPayToSystem().create();
+				PFSystem.getCurrent().getPayToSystem().update(newLabelID, new PayTo(nameField.getText(), locationField.getText()));
 				
 				shell.close();
 			}

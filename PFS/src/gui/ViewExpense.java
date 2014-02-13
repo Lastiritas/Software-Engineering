@@ -22,7 +22,7 @@ import domainobjects.Money;
 import domainobjects.PayTo;
 import domainobjects.PaymentMethod;
 import domainobjects.SimpleDate;
-import system.FPSystem;
+import system.PFSystem;
 
 public class ViewExpense {
 
@@ -187,7 +187,7 @@ public class ViewExpense {
 				final TableItem[] items = expenseTable.getSelection();
 				
 				final int id = Integer.parseInt(items[0].getText(0));
-				final boolean deleted = FPSystem.getCurrent().getExpenseSystem().delete(id);
+				final boolean deleted = PFSystem.getCurrent().getExpenseSystem().delete(id);
 				
 				if(deleted)
 				{
@@ -202,7 +202,7 @@ public class ViewExpense {
 		addButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				final int id = FPSystem.getCurrent().getExpenseSystem().create();
+				final int id = PFSystem.getCurrent().getExpenseSystem().create();
 				addExpense(id);
 				expenseTable.select(expenseTable.getItemCount() - 1);
 			}
@@ -252,10 +252,10 @@ public class ViewExpense {
 				final TableItem[] items = expenseTable.getSelection();
 				
 				final int selectedID = Integer.parseInt(items[0].getText(0));
-				final Expense selectedExpense = (Expense)FPSystem.getCurrent().getExpenseSystem().getDataByID(selectedID);
+				final Expense selectedExpense = (Expense)PFSystem.getCurrent().getExpenseSystem().getDataByID(selectedID);
 								
-				final int createdID = FPSystem.getCurrent().getExpenseSystem().create();
-				FPSystem.getCurrent().getExpenseSystem().update(createdID, selectedExpense);
+				final int createdID = PFSystem.getCurrent().getExpenseSystem().create();
+				PFSystem.getCurrent().getExpenseSystem().update(createdID, selectedExpense);
 				
 				addExpense(createdID);
 								
@@ -266,7 +266,7 @@ public class ViewExpense {
 		duplicateButton.setText("Duplicate");
 		
 		// add all exisiting expenses
-		IDSet expenseIDs = FPSystem.getCurrent().getExpenseSystem().getAllIDs();
+		IDSet expenseIDs = PFSystem.getCurrent().getExpenseSystem().getAllIDs();
 		for(int i = 0; i < expenseIDs.getSize(); i++)
 		{
 			final int id = expenseIDs.getValue(i);
@@ -300,25 +300,29 @@ public class ViewExpense {
 			method = PaymentMethod.OTHER;
 		}
 		
-		int[] data = {};
-		IDSet set = IDSet.createFromArray(data);
+		final int[] data = {};
+		final IDSet set = IDSet.createFromArray(data);
 		
-		Expense expense = new Expense(date, Money.fromString(amountField.getText()), method, descriptionField.getText(), -1, set);
-		FPSystem.getCurrent().getExpenseSystem().update(inID, expense);
+		final Expense expense = new Expense(date, Money.fromString(amountField.getText()), method, descriptionField.getText(), -1, set);
 		
-		updateExpenseForRow(inTableIndex, inID);
+		boolean updated = PFSystem.getCurrent().getExpenseSystem().update(inID, expense);
+		
+		if(updated)
+		{
+			updateExpenseForRow(inTableIndex, inID);
+		}
 	}
 	
 	private void openExpenseInEditingPane(int inID)
 	{
-		final Expense expense = (Expense)FPSystem.getCurrent().getExpenseSystem().getDataByID(inID);
+		final Expense expense = (Expense)PFSystem.getCurrent().getExpenseSystem().getDataByID(inID);
 	
 		datePicker.setYear(expense.getDate().getYear());
 		datePicker.setMonth(expense.getDate().getMonth());
 		datePicker.setDay(expense.getDate().getDay());
 		
 		final int payToID = expense.getPayTo();
-		PayTo payto = (PayTo)FPSystem.getCurrent().getPayToSystem().getDataByID(payToID);		
+		PayTo payto = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(payToID);		
 		payToField.setText(payto.getPayToName() + ", " + payto.getPayToBranch());
 		
 		final Money money = expense.getAmount();
@@ -360,7 +364,7 @@ public class ViewExpense {
 		for(int i = 0; i < labelIDs.getSize(); i++)
 		{
 			final int labelID = labelIDs.getValue(i);
-			domainobjects.Label label = (domainobjects.Label)FPSystem.getCurrent().getLabelSystem().getDataByID(labelID);
+			domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(labelID);
 			
 			labelsList.add(label.getLabelName());
 		}
@@ -375,7 +379,7 @@ public class ViewExpense {
 	
 	private void updateExpenseForRow(int inRowIndex, int inExpenseID)
 	{
-		final Expense expense = (Expense)FPSystem.getCurrent().getExpenseSystem().getDataByID(inExpenseID);
+		final Expense expense = (Expense)PFSystem.getCurrent().getExpenseSystem().getDataByID(inExpenseID);
 		
 		if(expense == null)
 		{
@@ -388,7 +392,7 @@ public class ViewExpense {
 		date.setYear(datePicker.getYear());
 				
 		final int payToID = expense.getPayTo();
-		PayTo payto = (PayTo)FPSystem.getCurrent().getPayToSystem().getDataByID(payToID);		
+		PayTo payto = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(payToID);		
 				
 		final Money money = expense.getAmount(); 
 		

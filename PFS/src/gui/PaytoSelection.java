@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 
-import system.FPSystem;
+import system.PFSystem;
 import domainobjects.IDSet;
 import domainobjects.PayTo;
 
@@ -96,7 +96,7 @@ public class PaytoSelection
 	
 	private void populateList(Tree tree)
 	{
-		IDSet payToIDs = FPSystem.getCurrent().getPayToSystem().getAllIDs();
+		IDSet payToIDs = PFSystem.getCurrent().getPayToSystem().getAllIDs();
 		
 		int totalTrees = 0;
 		TreeItem[] trees = new TreeItem[payToIDs.getSize()];
@@ -104,7 +104,7 @@ public class PaytoSelection
 		for(int i = 0; i < payToIDs.getSize(); i++)
 		{
 			final int id = payToIDs.getValue(i);
-			final PayTo payto = (PayTo)FPSystem.getCurrent().getPayToSystem().getDataByID(id);
+			final PayTo payto = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(id);
 			
 			boolean placed = false;
 			

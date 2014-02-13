@@ -3,7 +3,7 @@ package system;
 import dataAccessLayer.IDatabase;
 import dataAccessLayer.StubDatabase;
 
-public class FPSystem 
+public class PFSystem 
 {
 	public PayToManagement getPayToSystem()
 	{
@@ -26,10 +26,10 @@ public class FPSystem
 	private LabelManagement labelSystem = new LabelManagement(database);
 	private ExpenseManagement expenseSystem = new ExpenseManagement(database);
 	
-	public static FPSystem getCurrent()
+	public static PFSystem getCurrent()
 	{
 		return current;
 	}
 	
-	private static FPSystem current = new FPSystem();
+	private static PFSystem current = new PFSystem();
 }
