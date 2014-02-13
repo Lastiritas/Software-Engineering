@@ -4,7 +4,7 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.*;
 import org.eclipse.swt.events.*;
 
-import system.FPSystem;
+import system.PFSystem;
 import util.StringMatch;
 import domainobjects.*;
 
@@ -76,13 +76,13 @@ public class LabelMgmt {
 		btnDone.setBounds(480,392, 75, 25);
 		
 		//list population
-		IDSet labelIDs = FPSystem.getCurrent().getLabelSystem().getAllIDs();
+		IDSet labelIDs = PFSystem.getCurrent().getLabelSystem().getAllIDs();
 		labels = new String[labelIDs.getSize()];
 		
 		for(int i=0; i <labelIDs.getSize(); i++)
 		{
 			final int id = labelIDs.getValue(i);
-			domainobjects.Label label = (domainobjects.Label)FPSystem.getCurrent().getLabelSystem().getDataByID(id);
+			domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
 			
 			labels[i] = label.getLabelName();
 			listLabel.add(labels[i]);
