@@ -5,6 +5,7 @@ import java.util.Date;
 import domainobjects.Expense;
 import domainobjects.IDSet;
 import domainobjects.PaymentMethod;
+import domainobjects.SimpleDate;
 import junit.framework.TestCase;
 
 public class ExpenseTest extends TestCase
@@ -12,7 +13,7 @@ public class ExpenseTest extends TestCase
 	public void testCreation()
 	{
 		int[] setData = { 0 };
-		Expense expense = new Expense(new Date(), 100, PaymentMethod.CASH, "Something to eat", 0, IDSet.createFromArray(setData));
+		Expense expense = new Expense(SimpleDate.Now(), 100, PaymentMethod.CASH, "Something to eat", 0, IDSet.createFromArray(setData));
 
 		assertNotNull("Constructor for Expense failed", expense);
 	}
@@ -20,7 +21,7 @@ public class ExpenseTest extends TestCase
 	public void testCentsAndDollars()
 	{
 		int[] setData = { 0 };
-		Expense expense = new Expense(new Date(), 105, PaymentMethod.CASH, "Something to eat", 0, IDSet.createFromArray(setData));
+		Expense expense = new Expense(SimpleDate.Now(), 105, PaymentMethod.CASH, "Something to eat", 0, IDSet.createFromArray(setData));
 	
 		assertEquals("Dollars are wrong", expense.getDollars(), 1);
 		assertEquals("Cents are wrong", expense.getCents(), 5);
@@ -28,7 +29,7 @@ public class ExpenseTest extends TestCase
 	
 	public void testGetters()
 	{
-		Date date = new Date();
+		SimpleDate date = SimpleDate.Now();
 		int cents = 105;
 		PaymentMethod method = PaymentMethod.CASH;
 		String description = "Something to eat";

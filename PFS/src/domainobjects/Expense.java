@@ -1,10 +1,8 @@
 package domainobjects;
 
-import java.util.Date;
-
 public class Expense
 {
-	public Expense(Date inDate, int inTotalCents, PaymentMethod inMethod, String inDescription, int inPayTo, IDSet inLabels)
+	public Expense(SimpleDate inDate, int inTotalCents, PaymentMethod inMethod, String inDescription, int inPayTo, IDSet inLabels)
 	{
 		date = inDate;
 		totalCents = inTotalCents;
@@ -14,7 +12,7 @@ public class Expense
 		labels = inLabels;
 	}
 
-	public Date getDate()
+	public SimpleDate getDate()
 	{
 		return date;
 	}
@@ -72,7 +70,7 @@ public class Expense
 		return output.toString();
 	}
 
-	private final Date date;
+	private final SimpleDate date;
 	private final int totalCents;
 	private final PaymentMethod method;
 	private final String description;

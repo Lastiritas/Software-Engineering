@@ -1,11 +1,10 @@
 package system;
 
 import java.util.Vector;
-import java.util.Date;
-
 import domainobjects.Expense;
 import domainobjects.IDSet;
 import domainobjects.PaymentMethod;
+import domainobjects.SimpleDate;
 
 public class ExpenseSystem
 {
@@ -92,7 +91,7 @@ public class ExpenseSystem
 		final IDSet emptySet = IDSet.createFromArray(emptySetData);
 
 		ids.add(new Integer(newId));
-		expenses.add(new Expense(new Date(), 0, PaymentMethod.CASH, "", -1, emptySet));
+		expenses.add(new Expense(SimpleDate.Now(), 0, PaymentMethod.CASH, "", -1, emptySet));
 
 		assert ids.size() == expenses.size() : "Id and expense lists do not match";
 

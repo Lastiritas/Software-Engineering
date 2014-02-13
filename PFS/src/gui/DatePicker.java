@@ -10,24 +10,31 @@ import javax.swing.event.ChangeListener;
 
 import java.awt.BorderLayout;
 import java.util.Date;
+
 import javax.swing.event.ChangeEvent;
+
 import java.awt.FlowLayout;
+
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+
+import domainobjects.SimpleDate;
 
 public class DatePicker extends JPanel
 {	
 	private JPanel yearSubPanel;
 	private JLabel yearLabel;
-	private JSpinner yearSpinner;
+	private JComboBox yearSpinner;
 	
 	private JPanel monthSubPanel;
 	private JLabel monthLabel;
-	private JSpinner monthSpinner;
+	private JComboBox monthSpinner;
 	
 	private JPanel daySubPanel;
 	private JLabel dayLabel;
-	private JSpinner daySpinner;
+	private JComboBox daySpinner;
 	
-	public DatePicker(Date inDate) 
+	public DatePicker(SimpleDate inDate) 
 	{
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		
@@ -37,12 +44,8 @@ public class DatePicker extends JPanel
 		yearLabel = new JLabel("Year");
 		yearSubPanel.add(yearLabel);
 		
-		yearSpinner = new JSpinner();
-		yearSpinner.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent inEvent) {
-				onStateChanged(inEvent);
-			}
-		});
+		yearSpinner = new JComboBox();
+		yearSpinner.setModel(new DefaultComboBoxModel(new String[] {"2013", "2014", "2015"}));
 		yearSubPanel.add(yearSpinner);
 		
 		monthSubPanel = new JPanel();
@@ -51,7 +54,9 @@ public class DatePicker extends JPanel
 		monthLabel = new JLabel("Month");
 		monthSubPanel.add(monthLabel);
 		
-		monthSpinner = new JSpinner();
+		monthSpinner = new JComboBox();
+		monthSpinner.setModel(new DefaultComboBoxModel(SimpleDate.Month.values()));
+		monthSpinner.setSelectedIndex(0);
 		monthSubPanel.add(monthSpinner);
 		
 		daySubPanel = new JPanel();
@@ -60,7 +65,9 @@ public class DatePicker extends JPanel
 		dayLabel = new JLabel("Day");
 		daySubPanel.add(dayLabel);
 		
-		daySpinner = new JSpinner();
+		daySpinner = new JComboBox();
+		daySpinner.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
+		daySpinner.setSelectedIndex(0);
 		daySubPanel.add(daySpinner);
 		
 		setDate(inDate);	// set the date to now
@@ -69,22 +76,25 @@ public class DatePicker extends JPanel
 	private void onStateChanged(ChangeEvent inEvent)
 	{
 		// validate the date
+		setDate(getDate());
 	}
 	
-	private void setDate(Date inDate)
+	public void setDate(SimpleDate inDate)
 	{
-		yearSpinner.setValue(inDate.getYear());
-		monthSpinner.setValue(inDate.getMonth());
-		daySpinner.setValue(inDate.getDay());
+		yearSpinner.setSelectedIndex(inDate.getYear() - 2013);
+		monthSpinner.setSelectedIndex(inDate.getMonth());
+		daySpinner.setSelectedIndex(inDate.getDay());
 	}
 	
-	public Date getDate()
+	public SimpleDate getDate()
 	{
-		Date date = new Date();
-		date.setYear(((Integer)yearSpinner.getValue()).intValue());
-		date.setMonth(((Integer)monthSpinner.getValue()).intValue());
-		date.setDate(((Integer)daySpinner.getValue()).intValue());
+		SimpleDate date = SimpleDate.Now();
+		date.setYear(yearSpinner.getSelectedIndex() + 2013);
+		date.setMonth(monthSpinner.getSelectedIndex());
+		date.setDay(daySpinner.getSelectedIndex());
 	
 		return date;
 	}
+	
+
 }

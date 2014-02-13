@@ -1,10 +1,9 @@
 package systemtests;
 
-import java.util.Date;
-
 import domainobjects.Expense;
 import domainobjects.IDSet;
 import domainobjects.PaymentMethod;
+import domainobjects.SimpleDate;
 import system.ExpenseSystem;
 import junit.framework.TestCase;
 
@@ -57,7 +56,7 @@ public class ExpenseSystemTest extends TestCase
 		int newID = current.newExpense();
 		
 		int setData[] = {1, 2, 3};
-		Expense expense = new Expense(new Date(), 100, PaymentMethod.CASH, "Something to eat", 0, IDSet.createFromArray(setData));
+		Expense expense = new Expense(SimpleDate.Now(), 100, PaymentMethod.CASH, "Something to eat", 0, IDSet.createFromArray(setData));
 		
 		current.updateExpense(newID, expense);
 		

@@ -10,7 +10,7 @@ public class Money implements Comparable
 		cents = inCents;
 		dollars = inDollars;
 		
-		stringForm = "$" + inDollars + "." + inCents;
+		stringForm = String.format("$%d.%02d", inDollars, inCents);
 	}
 	
 	@Override
@@ -46,6 +46,11 @@ public class Money implements Comparable
 		}
 	}
 
+	public int getTotalCents()
+	{
+		return dollars * 100 + cents;
+	}
+	
 	@Override
 	public String toString()
 	{
@@ -55,4 +60,43 @@ public class Money implements Comparable
 	private int cents;
 	private int dollars;
 	private String stringForm;
+
+	public static Money fromString(String inString)
+	{
+		String workingString = inString.trim();
+		
+		if(workingString.startsWith("$"))
+		{
+			workingString = workingString.substring(1);
+		}
+		
+		final int index = workingString.indexOf('.');
+		
+		if(index >= 0)
+		{
+			if(workingString.length() - index == 3)
+			{
+				workingString = workingString.replace(".", "");
+			}
+			else
+			{
+				return null;	// bad decimal
+			}
+		}
+		else
+		{
+			workingString += "00";
+		}
+		
+		try
+		{
+			final int totalCents = Integer.parseInt(workingString);
+			
+			return new Money(totalCents / 100, totalCents % 100);
+		}
+		catch(Exception ex)
+		{
+			return null;
+		}
+	}
 }

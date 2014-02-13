@@ -3,6 +3,7 @@ package gui;
 import java.util.Date;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -11,7 +12,9 @@ import javax.swing.JRadioButton;
 import javax.swing.JButton;
 
 import domainobjects.Expense;
+import domainobjects.IDSet;
 import domainobjects.PaymentMethod;
+import domainobjects.SimpleDate;
 
 import java.awt.BorderLayout;
 
@@ -45,7 +48,7 @@ public class EditExpensePanel extends JPanel
 		datePanel = new JPanel();
 		add(datePanel, BorderLayout.NORTH);
 		datePanel.setLayout(new BorderLayout(0, 0));
-		datePicker = new DatePicker(new Date());
+		datePicker = new DatePicker(SimpleDate.Now());
 		datePanel.add(datePicker, BorderLayout.WEST);
 		
 		payToPanel = new JPanel();
@@ -125,7 +128,9 @@ public class EditExpensePanel extends JPanel
 
 	
 	public void setExpense(Expense expense)
-	{		
+	{	
+		datePicker.setDate(expense.getDate());
+		
 		payToField.setText("" + expense.getPayTo());
 		
 		Money money = new Money(expense.getDollars(), expense.getCents());
@@ -157,7 +162,33 @@ public class EditExpensePanel extends JPanel
 	
 	public Expense getExpense()
 	{
-		return null;
+		SimpleDate date = datePicker.getDate();
+		
+		PaymentMethod method;
+		ButtonModel selectedButton = paymentMethodGroup.getSelection();
+		if(selectedButton == cashRadioButton.getModel())
+		{
+			method = PaymentMethod.CASH;
+		}
+		else if(selectedButton == debitRadioButton.getModel())
+		{
+			method = PaymentMethod.DEBIT;
+		}
+		else if(selectedButton == creditRadioButton.getModel())
+		{
+			method = PaymentMethod.CREDIT;
+		}
+		else
+		{
+			method = PaymentMethod.OTHER;
+		}
+		
+		int[] setData = {};
+		IDSet labelSet = IDSet.createFromArray(setData);
+		
+		Money money = Money.fromString(amountField.getText());
+		
+		return new Expense(date, money.getTotalCents(), method, descriptionField.getText(), -1, labelSet);
 	}
 	
 	public void clear()

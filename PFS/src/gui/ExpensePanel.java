@@ -27,12 +27,14 @@ import javax.swing.ListSelectionModel;
 
 import domainobjects.Expense;
 import domainobjects.IDSet;
+import domainobjects.SimpleDate;
 import system.ExpenseSystem;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.JList;
 import javax.swing.JTree;
 
@@ -88,10 +90,9 @@ public class ExpensePanel extends JPanel
 		
 		table.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent inEvent)
-			{
-				final int rowIndex = table.rowAtPoint(inEvent.getPoint());
-				
+			public void mouseReleased(MouseEvent inEvent)
+			{	
+				final int rowIndex = table.getSelectedRow();
 				final int id = ((Integer)table.getValueAt(rowIndex, 0)).intValue();
 				
 				final Expense expense = ExpenseSystem.getCurrent().getExpense(id);
@@ -104,9 +105,14 @@ public class ExpensePanel extends JPanel
 		
 		table.getTableHeader().addMouseListener(new MouseAdapter() {
 		    @Override
-		    public void mouseClicked(MouseEvent e) 
+		    public void mouseReleased(MouseEvent e) 
 		    {
 		    	final int columnIndex = table.columnAtPoint(e.getPoint());
+		    	
+		    	if(columnIndex == -1)
+				{
+					return;
+				}
 		    	
 		    	final int currentOrder = getOrderingForColumn(columnIndex);
 		    	
@@ -163,12 +169,33 @@ public class ExpensePanel extends JPanel
 		panel_1.add(panel_3, BorderLayout.EAST);
 		
 		saveButton = new JButton("Save");
+		saveButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				final int rowIndex = table.getSelectedRow();
+				final Expense newExpenseValue = editorPanel.getExpense();
+				
+				final int expenseID = ((Integer)table.getValueAt(rowIndex, 0)).intValue();
+				
+				ExpenseSystem.getCurrent().updateExpense(expenseID, newExpenseValue);
+				setExpenseForRow(rowIndex, expenseID);
+			}
+		});
 		panel_3.add(saveButton);
 		
 		panel_4 = new JPanel();
 		panel_1.add(panel_4, BorderLayout.WEST);
 		
 		duplicateButton = new JButton("Duplicate");
+		duplicateButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Expense expense = editorPanel.getExpense();
+				
+				final int id = ExpenseSystem.getCurrent().newExpense();
+				ExpenseSystem.getCurrent().updateExpense(id, expense);
+				
+				addExpenseToTable(id);
+			}
+		});
 		panel_4.add(duplicateButton);
 	}
 	
@@ -281,6 +308,13 @@ public class ExpensePanel extends JPanel
 	
 	private void addExpenseToTable(int inExpenseID)
 	{
+		tableModel.addRow(new Object[0]);
+		
+		setExpenseForRow(tableModel.getRowCount() - 1, inExpenseID);
+	}
+	
+	private void setExpenseForRow(int inRowIndex, int inExpenseID)
+	{
 		final Expense expense = ExpenseSystem.getCurrent().getExpense(inExpenseID);
 		
 		if(expense == null)
@@ -288,7 +322,7 @@ public class ExpensePanel extends JPanel
 			return;
 		}
 		
-		Date date = expense.getDate();
+		SimpleDate date = expense.getDate();
 		String payTo = "" + expense.getPayTo();
 		Money money = new Money(expense.getDollars(), expense.getCents()); 
 		String description = expense.GetDescription();
@@ -328,6 +362,11 @@ public class ExpensePanel extends JPanel
 		String descriptionString = description;
 		String labelsString = labelListBuilder.toString();
 		
-		tableModel.addRow(new Object[] { new Integer(inExpenseID), dateString, payToString, money, descriptionString, labelsString });		
+		tableModel.setValueAt(new Integer(inExpenseID), inRowIndex, 0);
+		tableModel.setValueAt(dateString, inRowIndex, 1);
+		tableModel.setValueAt(payToString, inRowIndex, 2);
+		tableModel.setValueAt(money, inRowIndex, 3);
+		tableModel.setValueAt(descriptionString, inRowIndex, 4);
+		tableModel.setValueAt(labelsString, inRowIndex, 5);
 	}
 }
