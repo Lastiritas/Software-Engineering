@@ -37,7 +37,7 @@ public class Expense
 		return method;
 	}
 
-	public String GetDescription()
+	public String getDescription()
 	{
 		return description;	// string data is immutable, no need to copy
 	}

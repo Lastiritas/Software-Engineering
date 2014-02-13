@@ -134,7 +134,7 @@ public class EditExpensePanel extends JPanel
 		Money money = new Money(expense.getDollars(), expense.getCents());
 		amountField.setText(money.toString());
 		
-		descriptionField.setText(expense.GetDescription());
+		descriptionField.setText(expense.getDescription());
 		
 		PaymentMethod paymentMethod = expense.getPaymentMethod();
 				

@@ -41,7 +41,7 @@ public class ExpenseTest extends TestCase
 		assertEquals("Date is not what was put in", expense.getDate(), date);
 		assertEquals("Amount in cents is not what was put in", expense.getTotalAmountInCents(), cents);
 		assertEquals("Payment method is not what was put in", expense.getPaymentMethod(), method);
-		assertEquals("Description is not what was put in", expense.GetDescription(), description);
+		assertEquals("Description is not what was put in", expense.getDescription(), description);
 		assertEquals("Pay To is not what was put in", expense.getPayTo(), payToID);
 		assertEquals("ID set is not what was put in", expense.getLabels(), set);
 	}

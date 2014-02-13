@@ -306,7 +306,7 @@ public class ExpensePanel extends JPanel
 		SimpleDate date = expense.getDate();
 		String payTo = "" + expense.getPayTo();
 		Money money = new Money(expense.getDollars(), expense.getCents()); 
-		String description = expense.GetDescription();
+		String description = expense.getDescription();
 
 		IDSet labelIDs = expense.getLabels();
 		String[] labels = new String[labelIDs.getSize()];

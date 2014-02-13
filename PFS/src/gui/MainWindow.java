@@ -12,6 +12,10 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 
+import system.FPSystem;
+import domainobjects.IDSet;
+import domainobjects.PayTo;
+
 
 public class MainWindow {
 
@@ -74,16 +78,46 @@ public class MainWindow {
 		
 		Tree tree = new Tree(shell, SWT.BORDER);
 		tree.setBounds(12, 10, 412, 211);
-		for (int i = 0; i < 5; i++) {
-			            TreeItem treeItem = new TreeItem(tree, 0);
-			            treeItem.setText("TreeItem" + i);
-			            for (int j = 0; j < 5; j++) {
-			                TreeItem subTreeItem = new TreeItem(treeItem, SWT.NONE);
-			                subTreeItem.setText("SubTreeItem" + j);
-			                
-			            }
-		}
-
+		
+		populateList(tree);
+	}
 	
-}
+	private void populateList(Tree tree)
+	{
+		IDSet payToIDs = FPSystem.getCurrent().getPayToSystem().getAllIDs();
+		
+		int totalTrees = 0;
+		TreeItem[] trees = new TreeItem[payToIDs.getSize()];
+				
+		for(int i = 0; i < payToIDs.getSize(); i++)
+		{
+			final int id = payToIDs.getValue(i);
+			final PayTo payto = (PayTo)FPSystem.getCurrent().getPayToSystem().getDataByID(id);
+			
+			boolean placed = false;
+			
+			for(int j = 0; j < totalTrees; j++)
+			{
+				if(trees[j].getText().equals(payto.getPayToName()))
+				{
+					TreeItem subTreeItem = new TreeItem(trees[j], SWT.NONE);
+					subTreeItem.setText(payto.getPayToBranch());
+					placed = true;
+					break;
+				}
+			}
+			
+			if(!placed)
+			{
+				TreeItem treeItem = new TreeItem(tree, 0);
+				treeItem.setText(payto.getPayToName());
+				
+				trees[totalTrees] = treeItem;
+				totalTrees++;
+				
+				TreeItem subTreeItem = new TreeItem(treeItem, SWT.NONE);
+				subTreeItem.setText(payto.getPayToBranch());
+			}
+		}
+	}
 }
