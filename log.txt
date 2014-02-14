@@ -1,20 +1,3 @@
-Here is the description of what I need on this file:
-
-Each group will also keep a log, which describes their progress. Log entries 
-will be made by individual group members, and contain information about the 
-entire project and individual contributions. It will also describe outstanding 
-bugs and their fixes. You should keep the log in a text file log.txt alongside 
-your code.
-
-Task assignments, estimates, and actual time spent should be detailed in your 
-log. Also in the log, include information about team meetings and the rationale 
-behind any major design decisions. 
-Use the log to detail who worked on each task, and approximately how long 
-was spent on each. Also include the developer tasks from your plan (regardless 
-of whether you completed them all).
-
-Please provide as much detail as possible since we left it to the last minute
-
 ITERATION 1
 ===========
 
@@ -76,7 +59,12 @@ Tasks Completed by Team Members:
       - String matching algorithm (1 hour)
       - String filtering in PayTo/Label windows (1/2 day)
       
-  - [other team members]
+  - Rafael Lastiri
+      - Domain Object Label (1 day)
+      - Domain Object PayTo (1 day)
+      - PayTo Management System (2 days)
+      - Label Management System (2 days)
+      - Stub Database and Mock Objects (2 days)
 
 ===========
 Tasks Assigned to Team Members:
