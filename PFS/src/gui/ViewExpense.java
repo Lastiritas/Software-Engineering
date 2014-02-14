@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
+import apple.laf.JRSUIConstants.ShowArrows;
 import domainobjects.Expense;
 import domainobjects.IDSet;
 import domainobjects.Money;
@@ -83,8 +84,14 @@ public class ViewExpense implements IWindow
 			@Override
 			public void widgetSelected(SelectionEvent arg0) 
 			{
-				IWindow window = new PaytoSelection();
+				PaytoSelection window = new PaytoSelection();
 				window.open();
+				
+				final int payToID = window.getPayToID();
+				
+				final PayTo payTo = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(payToID);
+				
+				payToField.setText(payTo.getPayToName() + ", " + payTo.getPayToBranch());
 			}
 		});
 		payToButton.setBounds(10, 46, 94, 28);
@@ -205,6 +212,7 @@ public class ViewExpense implements IWindow
 				final int id = PFSystem.getCurrent().getExpenseSystem().create();
 				addExpense(id);
 				expenseTable.select(expenseTable.getItemCount() - 1);
+				openExpenseInEditingPane(id);
 			}
 		});
 		addButton.setBounds(545, 593, 94, 28);
@@ -303,10 +311,29 @@ public class ViewExpense implements IWindow
 			method = PaymentMethod.OTHER;
 		}
 		
+		
+		int payToId = -1;
+		final IDSet payToIDs = PFSystem.getCurrent().getPayToSystem().getAllIDs();
+		
+		for(int i = 0; i < payToIDs.getSize(); i++)
+		{
+			final int id = payToIDs.getValue(i);
+			
+			final PayTo payTo = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(id);
+			
+			String payToString = payTo.getPayToName() + ", " + payTo.getPayToBranch();
+			
+			if(payToString.equals(payToField.getText()))
+			{
+				payToId = id;
+				break;
+			}
+		}
+				
 		final int[] data = {};
 		final IDSet set = IDSet.createFromArray(data);
 		
-		final Expense expense = new Expense(date, Money.fromString(amountField.getText()), method, descriptionField.getText(), -1, set);
+		final Expense expense = new Expense(date, Money.fromString(amountField.getText()), method, descriptionField.getText(), payToId, set);
 		
 		boolean updated = PFSystem.getCurrent().getExpenseSystem().update(inID, expense);
 		

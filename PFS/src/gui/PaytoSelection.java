@@ -19,9 +19,11 @@ import domainobjects.PayTo;
 
 public class PaytoSelection implements IWindow
 {
-
-	protected Shell shell;
-
+	private Shell shell;
+	private Tree tree;
+	
+	private String output = null;
+	
 	/**
 	 * Open the window.
 	 */
@@ -42,8 +44,30 @@ public class PaytoSelection implements IWindow
 		}
 	}
 
+	public int getPayToID()
+	{		
+		final IDSet payToIDs = PFSystem.getCurrent().getPayToSystem().getAllIDs();
+		
+		for(int i = 0; i < payToIDs.getSize(); i++)
+		{
+			final int id = payToIDs.getValue(i);
+			
+			final PayTo payTo = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(id);
+			
+			String payToString = payTo.getPayToName() + ", " + payTo.getPayToBranch();
+			
+			if(payToString.equals(output))
+			{
+				return id;
+			}
+		}
+		
+		return -1;
+	}
+	
 	/**
 	 * Create contents of the window.
+	 * @wbp.parser.entryPoint
 	 */
 	protected void createContents() 
 	{
@@ -53,7 +77,22 @@ public class PaytoSelection implements IWindow
 		shell.setSize(450, 300);
 		shell.setText("PayTo Manager");
 		
-		final Tree tree = new Tree(shell, SWT.BORDER);
+		tree = new Tree(shell, SWT.BORDER);
+		tree.addSelectionListener(new SelectionAdapter() 
+		{
+			@Override
+			public void widgetSelected(SelectionEvent arg0) 
+			{
+				TreeItem selection = tree.getSelection()[0];	
+				
+				if(selection.getParentItem() == null)
+				{
+					return;
+				}
+				
+				output = selection.getParentItem().getText() + ", " + selection.getText();
+			}
+		});
 		tree.setBounds(12, 10, 412, 211);
 
 		populateList(tree);
@@ -76,7 +115,6 @@ public class PaytoSelection implements IWindow
 			@Override
 			public void widgetSelected(SelectionEvent arg0) 
 			{
-				//WILL NEED INTEGRATION TO MAIN WINDOW
 				shell.close();
 			}
 		});
