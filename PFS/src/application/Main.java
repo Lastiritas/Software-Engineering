@@ -1,3 +1,4 @@
+package application;
 import gui.IWindow;
 import gui.ViewExpense;
 

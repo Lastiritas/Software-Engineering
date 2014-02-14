@@ -9,6 +9,11 @@ import junit.framework.TestCase;
 
 public class ExpenseTest extends TestCase
 {
+	public ExpenseTest(String arg0)
+	{
+		super(arg0);
+	}
+	
 	public void testCreation()
 	{
 		int[] setData = { 0 };

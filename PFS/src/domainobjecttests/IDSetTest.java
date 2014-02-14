@@ -5,6 +5,11 @@ import junit.framework.TestCase;
 
 public class IDSetTest extends TestCase
 {
+	public IDSetTest(String arg0)
+	{
+		super(arg0);
+	}
+	
 	public void testCreation()
 	{
 		int[] data = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };

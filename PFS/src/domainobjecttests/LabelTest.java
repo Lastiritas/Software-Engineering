@@ -5,6 +5,11 @@ import junit.framework.TestCase;
 
 public class LabelTest extends TestCase 
 {	
+	public LabelTest(String arg0)
+	{
+		super(arg0);
+	}
+	
 	public void test_Create_a_label()
 	{
 		Label expected;

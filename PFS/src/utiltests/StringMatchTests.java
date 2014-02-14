@@ -5,8 +5,13 @@ import util.StringMatch;
 import junit.framework.TestCase;
 
 
-public class StringMatchTests extends TestCase {
-
+public class StringMatchTests extends TestCase 
+{
+	public StringMatchTests(String arg0)
+	{
+		super(arg0);
+	}
+	
 	public void testMatchChar() 
 	{
 		boolean result = StringMatch.match("thisafsd", "a");
