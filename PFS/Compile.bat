@@ -31,6 +31,7 @@ javac -d bin\ -cp %classpath% src\domainobjecttests\*.java
 javac -d bin\ -cp %classpath% src\dataAccessLayerTests\*.java
 javac -d bin\ -cp %classpath% src\systemTests\*.java
 javac -d bin\ -cp %classpath% src\utiltests\*.java
+javac -d bin\ -cp %classpath% src\tests\*.java
 
 pause
 

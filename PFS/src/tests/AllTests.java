@@ -22,7 +22,7 @@ public class AllTests
 		suite = new TestSuite("All Tests for the Personal Finance System");
 		
 		testDomainObjects();
-		testSystem();
+		//testSystem();
 		testDataAccessLayer();
 		testUtilities();
 		
