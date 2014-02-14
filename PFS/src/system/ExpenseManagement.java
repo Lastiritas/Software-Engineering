@@ -1,11 +1,11 @@
 package system;
 
-import java.util.Date;
-
 import dataAccessLayer.IDatabase;
 import domainobjects.Expense;
 import domainobjects.IDSet;
+import domainobjects.Money;
 import domainobjects.PaymentMethod;
+import domainobjects.SimpleDate;
 
 public class ExpenseManagement implements IIDReader, IDataReader, IDataModifer
 {
@@ -54,7 +54,7 @@ public class ExpenseManagement implements IIDReader, IDataReader, IDataModifer
 	{
 		final int[] emptySetData = new int[0];
 		final IDSet emptySet = IDSet.createFromArray(emptySetData);
-		Expense newExpense = new Expense(new Date(), 0, PaymentMethod.CASH, "", -1, emptySet);
+		Expense newExpense = new Expense(SimpleDate.Now(), new Money(), PaymentMethod.CASH, "", -1, emptySet);
 		
 		return database.addExpense(newExpense);
 	}

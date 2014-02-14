@@ -1,3 +1,4 @@
+package GUI.src.PayTo; 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Button;
@@ -7,7 +8,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.List;
 
 
-public class CreationWindow {
+public class PayToCreationWindow {
 
 	protected Shell shell;
 	private Text paytoInput;
@@ -19,7 +20,7 @@ public class CreationWindow {
 	 */
 	public static void main(String[] args) {
 		try {
-			CreationWindow window = new CreationWindow();
+			PayToCreationWindow window = new PayToCreationWindow();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
