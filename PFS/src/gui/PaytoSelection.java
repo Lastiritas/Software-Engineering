@@ -53,6 +53,11 @@ public class PaytoSelection implements IWindow
 		shell.setSize(450, 300);
 		shell.setText("PayTo Manager");
 		
+		final Tree tree = new Tree(shell, SWT.BORDER);
+		tree.setBounds(12, 10, 412, 211);
+
+		populateList(tree);
+		
 		Button cancelButton = new Button(shell, SWT.NONE);
 		cancelButton.addSelectionListener(new SelectionAdapter() 
 		{
@@ -71,6 +76,7 @@ public class PaytoSelection implements IWindow
 			@Override
 			public void widgetSelected(SelectionEvent arg0) 
 			{
+				//WILL NEED INTEGRATION TO MAIN WINDOW
 				shell.close();
 			}
 		});
@@ -85,15 +91,14 @@ public class PaytoSelection implements IWindow
 			{
 				IWindow window = new PayToCreation();
 				window.open();
+				tree.removeAll();
+				populateList(tree);
+				
 			}
 		});
 		addButton.setBounds(180, 227, 75, 25);
 		addButton.setText("+");
 		
-		Tree tree = new Tree(shell, SWT.BORDER);
-		tree.setBounds(12, 10, 412, 211);
-		
-		populateList(tree);
 	}
 	
 	private void populateList(Tree tree)
