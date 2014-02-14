@@ -1,4 +1,4 @@
-Here is the description of what I need on this file
+Here is the description of what I need on this file:
 
 Each group will also keep a log, which describes their progress. Log entries 
 will be made by individual group members, and contain information about the 
@@ -15,8 +15,49 @@ of whether you completed them all).
 
 Please provide as much detail as possible since we left it to the last minute
 
-Aaron Vaage - Domain Object Expense (1 day)
-Aaron Vaage - Expensed Deletion, Editing, Entry, and Retrieval (2 day)
-Aaron Vaage - Expense View and Editing GUI (3 days)
-Aaron Vaage - Hooking-up GUIs (1 days)
-Aaron Vaage - Filling in missing GUI Functionality (3 days)
+ITERATION 1
+===========
+
+Big User Stories for This Iteration (priority):
+
+  - Enter Expenses (High)
+  - View Expenses (High)
+  - Edit Expense (Medium)
+  - Delete Expense (High)
+  
+Developer Tasks for This Iteration:
+
+  - Domain Objects:
+      - Expense
+      - Filter
+      - Labels
+      - Pay To
+  - System:
+      - Label Management
+      - Pay-To Management
+  - GUI:
+      - View List
+      - Data Entry
+      - Label Management and Viewing
+      - Label Creation Window
+      - Detailed View
+      - Removal of Expense
+      
+Meetings:
+
+  - [need more detail for meetings]
+
+Tasks Completed by Team Members:
+
+  - Aaron Vaage
+      - Domain Object Expense (1 day)
+      - Expensed Deletion, Editing, Entry, and Retrieval (2 day)
+      - Expense View and Editing GUI (3 days)
+      - Hooking-up GUIs (1 days)
+      - Filling in missing GUI Functionality (3 days)
+      
+  - Jeremy Vogt
+      - Window for Expense List GUI (1 day)
+      - Window for Expense Entry GUI (1 day)
+      
+  - [other team members]
