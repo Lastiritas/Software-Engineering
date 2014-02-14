@@ -57,13 +57,18 @@ public class ViewExpense {
 	/**
 	 * Open the window.
 	 */
-	public void open() {
+	public void open() 
+	{
 		Display display = Display.getDefault();
+	
 		createContents();
 		shell.open();
 		shell.layout();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) {
+		
+		while (!shell.isDisposed()) 
+		{
+			if (!display.readAndDispatch()) 
+			{
 				display.sleep();
 			}
 		}
@@ -73,7 +78,8 @@ public class ViewExpense {
 	 * Create contents of the window.
 	 * @wbp.parser.entryPoint
 	 */
-	protected void createContents() {
+	protected void createContents() 
+	{
 		shell = new Shell();
 		shell.setSize(918, 673);
 		shell.setText("PayTo Creation");
@@ -86,9 +92,11 @@ public class ViewExpense {
 		payToField.setBounds(110, 50, 123, 19);
 		
 		Button payToButton = new Button(editPanel, SWT.NONE);
-		payToButton.addSelectionListener(new SelectionAdapter() {
+		payToButton.addSelectionListener(new SelectionAdapter() 
+		{
 			@Override
-			public void widgetSelected(SelectionEvent arg0) {
+			public void widgetSelected(SelectionEvent arg0) 
+			{
 				PaytoSelection window = new PaytoSelection();
 				window.open();
 			}
@@ -139,9 +147,11 @@ public class ViewExpense {
 		labelsList.setBounds(20, 373, 213, 123);
 		
 		Button editLabelsButton = new Button(editPanel, SWT.NONE);
-		editLabelsButton.addSelectionListener(new SelectionAdapter() {
+		editLabelsButton.addSelectionListener(new SelectionAdapter() 
+		{
 			@Override
-			public void widgetSelected(SelectionEvent arg0) {
+			public void widgetSelected(SelectionEvent arg0) 
+			{
 				LabelSelection window = new LabelSelection();
 				window.open();
 			}
@@ -175,9 +185,11 @@ public class ViewExpense {
 		composite_1.setBounds(10, 10, 649, 631);
 		
 		Button deleteButton = new Button(composite_1, SWT.NONE);
-		deleteButton.addSelectionListener(new SelectionAdapter() {
+		deleteButton.addSelectionListener(new SelectionAdapter() 
+		{
 			@Override
-			public void widgetSelected(SelectionEvent arg0) {
+			public void widgetSelected(SelectionEvent arg0) 
+			{
 				if(expenseTable.getSelectionCount() == 0)
 				{
 					return;
@@ -199,9 +211,11 @@ public class ViewExpense {
 		deleteButton.setText("-");
 		
 		Button addButton = new Button(composite_1, SWT.NONE);
-		addButton.addSelectionListener(new SelectionAdapter() {
+		addButton.addSelectionListener(new SelectionAdapter() 
+		{
 			@Override
-			public void widgetSelected(SelectionEvent arg0) {
+			public void widgetSelected(SelectionEvent arg0) 
+			{
 				final int id = PFSystem.getCurrent().getExpenseSystem().create();
 				addExpense(id);
 				expenseTable.select(expenseTable.getItemCount() - 1);
@@ -211,7 +225,8 @@ public class ViewExpense {
 		addButton.setText("+");
 		
 		expenseTable = new Table(composite_1, SWT.BORDER | SWT.FULL_SELECTION);
-		expenseTable.addSelectionListener(new SelectionAdapter() {
+		expenseTable.addSelectionListener(new SelectionAdapter() 
+		{
 			@Override
 			public void widgetSelected(SelectionEvent arg0) 
 			{
@@ -241,9 +256,11 @@ public class ViewExpense {
 		}
 				
 		Button duplicateButton = new Button(composite_1, SWT.NONE);
-		duplicateButton.addSelectionListener(new SelectionAdapter() {
+		duplicateButton.addSelectionListener(new SelectionAdapter() 
+		{
 			@Override
-			public void widgetSelected(SelectionEvent arg0) {
+			public void widgetSelected(SelectionEvent arg0) 
+			{
 				if(expenseTable.getSelectionCount() == 0)
 				{
 					return;

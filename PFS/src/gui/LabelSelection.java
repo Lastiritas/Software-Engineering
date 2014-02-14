@@ -8,8 +8,8 @@ import system.PFSystem;
 import util.StringMatch;
 import domainobjects.*;
 
-public class LabelSelection {
-
+public class LabelSelection 
+{
 	protected Shell shell;
 	private Text textSearchLabel;
 	private Text textSearchPickLabel;
@@ -25,13 +25,18 @@ public class LabelSelection {
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	public  void open() {
+	public  void open() 
+	{
 		Display display = Display.getDefault();
+		
 		createContents();
 		shell.open();
 		shell.layout();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) {
+		
+		while (!shell.isDisposed()) 
+		{
+			if (!display.readAndDispatch()) 
+			{
 				display.sleep();
 			}
 		}
@@ -40,7 +45,8 @@ public class LabelSelection {
 	/**
 	 * Create contents of the window.
 	 */
-	protected void createContents() {
+	protected void createContents() 
+	{
 		shell = new Shell();
 		shell.setSize(590, 465);
 		shell.setText("Label Management");
@@ -92,8 +98,10 @@ public class LabelSelection {
 				
 		
 		//listeners
-		textSearchLabel.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent e) {
+		textSearchLabel.addKeyListener(new KeyAdapter() 
+		{
+			public void keyPressed(KeyEvent e) 
+			{
 				String input = textSearchLabel.getText() + e.character;
 				if(e.character >32 && e.character <127)
 				{
@@ -120,8 +128,11 @@ public class LabelSelection {
 					 				break;
 					 			}
 					 		}
+					 		
 					 		if(!found)
+					 		{
 					 			listLabel.add(labels[i]);
+					 		}
 					 	}
 					 }
 					 
@@ -142,16 +153,21 @@ public class LabelSelection {
 					 				break;
 					 			}
 					 		}
+					 		
 					 		if(!found)
+					 		{
 					 			listLabel.add(labels[i]);
+					 		}
 					 	}
 					 }
 				}
 			}
 		});
 		
-		textSearchPickLabel.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent e) {
+		textSearchPickLabel.addKeyListener(new KeyAdapter() 
+		{
+			public void keyPressed(KeyEvent e) 
+			{
 				String input = textSearchPickLabel.getText() + e.character;
 				if(e.character >32 && e.character <127)
 				{
@@ -168,9 +184,9 @@ public class LabelSelection {
 					
 					
 					boolean found = false;
-					 for(int i=0; i<labels.length; i++)
-					 {
-					 	if(StringMatch.match(labels[i], input)) 
+					for(int i=0; i<labels.length; i++)
+					{
+						if(StringMatch.match(labels[i], input)) 
 					 	{
 					 		for(int j=0; j<listPickLabel.getItemCount(); j++)
 					 		{
@@ -180,8 +196,11 @@ public class LabelSelection {
 					 				break;
 					 			}
 					 		}
+					 		
 					 		if(!found)
+					 		{
 					 			listPickLabel.add(labels[i]);
+					 		}
 					 	}
 					 }
 				}
@@ -201,31 +220,44 @@ public class LabelSelection {
 					 				break;
 					 			}
 					 		}
+					 		
 					 		if(!found)
+					 		{
 					 			listPickLabel.add(labels[i]);
+					 		}
 					 	}
 					 }
 				}
 			}
 		});
 		
-		listLabel.addMouseListener(new MouseAdapter() {
-			public void mouseDown(MouseEvent e) {
+		listLabel.addMouseListener(new MouseAdapter() 
+		{
+			public void mouseDown(MouseEvent e) 
+			{
 				if(listLabel.getSelection().length!=0)
+				{
 					transferTo  = listLabel.getSelection()[0];
+				}
 			}
 		});
 		
-		listPickLabel.addMouseListener(new MouseAdapter() {
-			public void mouseDown(MouseEvent e) {
+		listPickLabel.addMouseListener(new MouseAdapter() 
+		{
+			public void mouseDown(MouseEvent e) 
+			{
 				if(listPickLabel.getSelection().length!=0)
+				{
 					transferFrom  = listPickLabel.getSelection()[0];
+				}
 			}
 		});
 		
-		btnAdd.addSelectionListener(new SelectionAdapter() {
+		btnAdd.addSelectionListener(new SelectionAdapter() 
+		{
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(SelectionEvent e) 
+			{
 				if(transferTo !=null)
 				{
 					listLabel.remove(transferTo);
@@ -236,9 +268,11 @@ public class LabelSelection {
 			}
 		});
 		
-		btnRemove.addSelectionListener(new SelectionAdapter() {
+		btnRemove.addSelectionListener(new SelectionAdapter() 
+		{
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(SelectionEvent e) 
+			{
 				if(transferFrom !=null)
 				{
 					listPickLabel.remove(transferFrom);
@@ -249,26 +283,31 @@ public class LabelSelection {
 			}
 		});
 		
-		btnNew.addSelectionListener(new SelectionAdapter() {
+		btnNew.addSelectionListener(new SelectionAdapter() 
+		{
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(SelectionEvent e) 
+			{
 				LabelCreation newLabel = new LabelCreation();
 				newLabel.open();
 			}
 		});
 		
-		btnCancel.addSelectionListener( new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
+		btnCancel.addSelectionListener( new SelectionAdapter() 
+		{
+			public void widgetSelected(SelectionEvent e) 
+			{
 				shell.close();
 			}
 		});
 		
-		btnDone.addSelectionListener(new SelectionAdapter() {
+		btnDone.addSelectionListener(new SelectionAdapter() 
+		{
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(SelectionEvent e) 
+			{
 				shell.close();
 			}
 		});
 	}
-
 }

@@ -9,7 +9,8 @@ import util.StringMatch;
 import domainobjects.*;
 import dataAccessLayer.*;
 
-public class LabelCreation {
+public class LabelCreation 
+{
 	protected Shell shell;
 	private Text textNewLabel;
 
@@ -27,14 +28,18 @@ public class LabelCreation {
 		createContents();
 		shell.open();
 		shell.layout();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) {
+		
+		while (!shell.isDisposed()) 
+		{
+			if (!display.readAndDispatch()) 
+			{
 				display.sleep();
 			}
 		}
 	}
 	
-	protected void createContents(){
+	protected void createContents()
+	{
 		shell = new Shell(SWT.APPLICATION_MODAL);
 		shell.setSize(320, 300);
 		shell.setText("Label Creation");
@@ -51,9 +56,11 @@ public class LabelCreation {
 		btnDone.setText("Done");
 		
 		final List listExsistingLabel = new List(shell, SWT.BORDER);
-		listExsistingLabel.addSelectionListener(new SelectionAdapter() {
+		listExsistingLabel.addSelectionListener(new SelectionAdapter() 
+		{
 			@Override
-			public void widgetSelected(SelectionEvent arg0) {
+			public void widgetSelected(SelectionEvent arg0) 
+			{
 				if(listExsistingLabel.getSelectionCount() == 0)
 				{
 					return;
@@ -79,8 +86,10 @@ public class LabelCreation {
 		
 		
 		//listeners
-		textNewLabel.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent e) {
+		textNewLabel.addKeyListener(new KeyAdapter() 
+		{
+			public void keyPressed(KeyEvent e) 
+			{
 				String input = textNewLabel.getText() + e.character;
 				
 				if(e.character >32 && e.character <127)
@@ -95,10 +104,10 @@ public class LabelCreation {
 					}
 					
 					
-					 boolean found = false;
-					 for(int i=0; i<labels.length; i++)
-					 {
-					 	if(StringMatch.match(labels[i], input)) 
+					boolean found = false;
+					for(int i=0; i<labels.length; i++)
+					{
+						if(StringMatch.match(labels[i], input)) 
 					 	{
 					 		for(int j=0; j<listExsistingLabel.getItemCount(); j++)
 					 		{
@@ -108,19 +117,20 @@ public class LabelCreation {
 					 				break;
 					 			}
 					 		}
+					 	
 					 		if(!found)
+					 		{
 					 			listExsistingLabel.add(labels[i]);
+					 		}
 					 	}
 					 }
-					 
-					
 				}
 				else if(e.character == 8 || e.character == 127)
 				{
 					boolean found = false;
-					 for(int i=0; i<labels.length; i++)
-					 {
-					 	if(StringMatch.match(labels[i], input)) 
+					for(int i=0; i<labels.length; i++)
+					{
+						if(StringMatch.match(labels[i], input)) 
 					 	{
 					 		for(int j=0; j<listExsistingLabel.getItemCount(); j++)
 					 		{
@@ -130,27 +140,33 @@ public class LabelCreation {
 					 				break;
 					 			}
 					 		}
+					 		
 					 		if(!found)
+					 		{
 					 			listExsistingLabel.add(labels[i]);
+					 		}
 					 	}
 					 }
 				}
 			}
 		});
 
-		btnCancel.addSelectionListener(new SelectionAdapter() {
+		btnCancel.addSelectionListener(new SelectionAdapter() 
+		{
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(SelectionEvent e) 
+			{
 				shell.close();
 			}
 		});
 		
-		btnDone.addSelectionListener(new SelectionAdapter() {
+		btnDone.addSelectionListener(new SelectionAdapter() 
+		{
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(SelectionEvent e) 
+			{
 				shell.close();
 			}
 		});
-		
 	}
 }

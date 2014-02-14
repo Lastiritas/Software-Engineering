@@ -21,13 +21,18 @@ public class PayToCreation {
 	/**
 	 * Open the window.
 	 */
-	public void open() {
+	public void open() 
+	{
 		Display display = Display.getDefault();
+	
 		createContents();
 		shell.open();
 		shell.layout();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) {
+		
+		while (!shell.isDisposed()) 
+		{
+			if (!display.readAndDispatch()) 
+			{
 				display.sleep();
 			}
 		}
@@ -36,15 +41,18 @@ public class PayToCreation {
 	/**
 	 * Create contents of the window.
 	 */
-	protected void createContents() {
+	protected void createContents() 
+	{
 		shell = new Shell();
 		shell.setSize(450, 300);
 		shell.setText("PayTo Creation");
 		
 		Button cancelButton = new Button(shell, SWT.NONE);
-		cancelButton.addSelectionListener(new SelectionAdapter() {
+		cancelButton.addSelectionListener(new SelectionAdapter() 
+		{
 			@Override
-			public void widgetSelected(SelectionEvent arg0) {
+			public void widgetSelected(SelectionEvent arg0) 
+			{
 				shell.close();
 			}
 		});
@@ -52,9 +60,11 @@ public class PayToCreation {
 		cancelButton.setText("Cancel");
 		
 		Button okayButton = new Button(shell, SWT.NONE);
-		okayButton.addSelectionListener(new SelectionAdapter() {
+		okayButton.addSelectionListener(new SelectionAdapter() 
+		{
 			@Override
-			public void widgetSelected(SelectionEvent arg0) {
+			public void widgetSelected(SelectionEvent arg0) 
+			{
 				final int newLabelID = PFSystem.getCurrent().getPayToSystem().create();
 				PFSystem.getCurrent().getPayToSystem().update(newLabelID, new PayTo(nameField.getText(), locationField.getText()));
 				
