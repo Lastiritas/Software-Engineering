@@ -8,7 +8,7 @@ import system.PFSystem;
 import util.StringMatch;
 import domainobjects.*;
 
-public class LabelMgmt {
+public class LabelSelection {
 
 	protected Shell shell;
 	private Text textSearchLabel;
@@ -22,6 +22,9 @@ public class LabelMgmt {
 	
 	private String labels[];
 		
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public  void open() {
 		Display display = Display.getDefault();
 		createContents();
@@ -32,7 +35,6 @@ public class LabelMgmt {
 				display.sleep();
 			}
 		}
-		display.dispose();
 	}
 
 	/**
@@ -250,7 +252,7 @@ public class LabelMgmt {
 		btnNew.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				LabelCreate newLabel = new LabelCreate();
+				LabelCreation newLabel = new LabelCreation();
 				newLabel.open();
 			}
 		});

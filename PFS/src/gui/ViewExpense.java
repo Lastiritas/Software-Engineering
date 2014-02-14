@@ -142,7 +142,7 @@ public class ViewExpense {
 		editLabelsButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				LabelMgmt window = new LabelMgmt();
+				LabelSelection window = new LabelSelection();
 				window.open();
 			}
 		});

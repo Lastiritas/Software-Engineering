@@ -81,7 +81,7 @@ public class PaytoSelection
 			@Override
 			public void widgetSelected(SelectionEvent arg0) 
 			{
-				CreationWindow window = new CreationWindow();
+				PayToCreation window = new PayToCreation();
 				window.open();
 			}
 		});

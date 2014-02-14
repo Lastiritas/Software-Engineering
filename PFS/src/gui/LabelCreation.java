@@ -9,7 +9,7 @@ import util.StringMatch;
 import domainobjects.*;
 import dataAccessLayer.*;
 
-public class LabelCreate {
+public class LabelCreation {
 	protected Shell shell;
 	private Text textNewLabel;
 

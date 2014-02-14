@@ -12,7 +12,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import domainobjects.PayTo;
 import system.PFSystem;
 
-public class CreationWindow {
+public class PayToCreation {
 
 	protected Shell shell;
 	private Text nameField;
