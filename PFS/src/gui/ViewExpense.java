@@ -1,4 +1,6 @@
 package gui;
+import java.util.ArrayList;
+
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Button;
@@ -15,7 +17,6 @@ import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
-import apple.laf.JRSUIConstants.ShowArrows;
 import domainobjects.Expense;
 import domainobjects.IDSet;
 import domainobjects.Money;
@@ -40,6 +41,7 @@ public class ViewExpense implements IWindow
 	private Button otherRadio;
 	private Button saveButton;
 	private List labelsList;
+	private Button editLabelsButton;
 	
 	/**
 	 * Open the window.
@@ -139,14 +141,52 @@ public class ViewExpense implements IWindow
 		labelsList = new List(editPanel, SWT.BORDER);
 		labelsList.setBounds(20, 373, 213, 123);
 		
-		Button editLabelsButton = new Button(editPanel, SWT.NONE);
+		editLabelsButton = new Button(editPanel, SWT.NONE);
 		editLabelsButton.addSelectionListener(new SelectionAdapter() 
 		{
 			@Override
 			public void widgetSelected(SelectionEvent arg0) 
-			{
-				IWindow window = new LabelSelection();
+			{	
+				IDSet allLabelIDs = PFSystem.getCurrent().getLabelSystem().getAllIDs();
+				
+				String[] exisitingLabel = labelsList.getItems();
+				
+				int[] rawData = new int[exisitingLabel.length];
+				int rawDataCount = 0;
+				
+				for(int i = 0; i < allLabelIDs.getSize(); i++)
+				{
+					final int id = allLabelIDs.getValue(i);
+					final domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
+					
+					for(int j = 0; j < exisitingLabel.length; j++)
+					{
+						if(exisitingLabel[i].equals(label.getLabelName()))
+						{
+							// id was found
+							rawData[rawDataCount] = id;
+							rawDataCount++;
+						}
+					}
+				}
+				
+				int[] realData = new int[rawDataCount];
+				System.arraycopy(rawData, 0, realData, 0, rawDataCount);
+				
+				IDSet realSet = IDSet.createFromArray(realData);
+				
+				LabelSelection window = new LabelSelection();
+				window.setStartingSet(realSet);
 				window.open();
+				
+				labelsList.removeAll();
+				
+				String[] labels = window.getLabels();
+								
+				for(int i = 0; i < labels.length; i++)
+				{
+					labelsList.add(labels[i]);
+				}
 			}
 		});
 		editLabelsButton.setBounds(141, 502, 94, 28);
@@ -330,8 +370,33 @@ public class ViewExpense implements IWindow
 			}
 		}
 				
-		final int[] data = {};
-		final IDSet set = IDSet.createFromArray(data);
+		IDSet allLabelIDs = PFSystem.getCurrent().getLabelSystem().getAllIDs();
+		
+		String[] exisitingLabel = labelsList.getItems();
+		
+		int[] rawData = new int[exisitingLabel.length];
+		int rawDataCount = 0;
+		
+		for(int i = 0; i < allLabelIDs.getSize(); i++)
+		{
+			final int id = allLabelIDs.getValue(i);
+			final domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
+			
+			for(int j = 0; j < exisitingLabel.length; j++)
+			{
+				if(exisitingLabel[i].equals(label.getLabelName()))
+				{
+					// id was found
+					rawData[rawDataCount] = id;
+					rawDataCount++;
+				}
+			}
+		}
+		
+		int[] realData = new int[rawDataCount];
+		System.arraycopy(rawData, 0, realData, 0, rawDataCount);
+		
+		final IDSet set = IDSet.createFromArray(realData);
 		
 		final Expense expense = new Expense(date, Money.fromString(amountField.getText()), method, descriptionField.getText(), payToId, set);
 		

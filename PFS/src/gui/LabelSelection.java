@@ -26,8 +26,14 @@ public class LabelSelection implements IWindow
 	private ArrayList<String> labels = new ArrayList<String>(1);
 	private ArrayList<String> pickLabels = new ArrayList<String>(1);
 	
-		
-	public  void open()
+	private IDSet startingSet;
+	
+	public void setStartingSet(IDSet set)
+	{
+		startingSet = set;
+	}
+	
+	public void open()
 	{
 		Display display = Display.getDefault();
 		
@@ -44,6 +50,18 @@ public class LabelSelection implements IWindow
 		}
 	}
 
+	public String[] getLabels()
+	{
+		String[] labels = new String[pickLabels.size()];
+		
+		for(int i = 0; i < labels.length; i++)
+		{
+			labels[i] = pickLabels.get(i);
+		}
+		
+		return labels;
+	}
+	
 	/**
 	 * Create contents of the window.
 	 */
@@ -84,10 +102,8 @@ public class LabelSelection implements IWindow
 		Button btnDone = new Button(shell, SWT.PUSH);
 		btnDone.setText("Done");
 		btnDone.setBounds(480,392, 75, 25);
-		
-		//list population
-		loadList();
-				
+						
+		loadList(startingSet);
 		
 		//listeners
 		textSearchLabel.addKeyListener(new KeyAdapter() 
@@ -206,10 +222,6 @@ public class LabelSelection implements IWindow
 			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
-				/* AARON CODE
-				IWindow newLabel = new LabelCreation();
-				newLabel.open();
-				 */
 				LabelCreation createLabel = new LabelCreation();
 				String newLabel = createLabel.open();
 				if(newLabel !=null)
@@ -236,24 +248,33 @@ public class LabelSelection implements IWindow
 			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
-				String returnLabel[] = listPickLabel.getItems();
-				//add labels selected to the expense HERE
 				shell.close();
 			}
 		});
 	}
 	
-	private void loadList()
+	public void loadList(IDSet includedID)
 	{
 		IDSet labelIDs = PFSystem.getCurrent().getLabelSystem().getAllIDs();
-		
+				
 		for(int i=0; i <labelIDs.getSize(); i++)
+		{			
+			if(!includedID.contains(labelIDs.getValue(i)))
+			{
+				final int id = labelIDs.getValue(i);
+				Label label = (Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
+			
+				labels.add(label.getLabelName());
+			}	
+		}
+
+		for(int i = 0; i < includedID.getSize(); i++)
 		{
 			final int id = labelIDs.getValue(i);
 			Label label = (Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
 			
-			labels.add(label.getLabelName());
-		}	
+			pickLabels.add(label.getLabelName());
+		}
 		
 		refreshList();
 		refreshPickList();		
