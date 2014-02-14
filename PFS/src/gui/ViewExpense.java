@@ -25,8 +25,7 @@ import system.PFSystem;
 
 public class ViewExpense implements IWindow 
 {
-
-	protected Shell shell;
+	private Shell shell;
 	private Table expenseTable;
 	private Text payToField;
 	private Text amountField;
@@ -41,23 +40,6 @@ public class ViewExpense implements IWindow
 	private Button saveButton;
 	private List labelsList;
 	
-	/**
-	 * Launch the application.
-	 * @param args
-	 */
-	public static void main(String[] args) 
-	{
-		try 
-		{
-			IWindow window = new ViewExpense();
-			window.open();
-		} 
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
-	}
-
 	/**
 	 * Open the window.
 	 */
