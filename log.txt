@@ -25,23 +25,23 @@ Big User Stories for This Iteration (priority):
   - Edit Expense (Medium)
   - Delete Expense (High)
   
-Developer Tasks for This Iteration:
+Developer Tasks for This Iteration (expected days):
 
   - Domain Objects:
       - Expense
-      - Filter
-      - Labels
-      - Pay To
+      - Filter (1)
+      - Labels (1)
+      - Pay To (1)
   - System:
-      - Label Management
-      - Pay-To Management
+      - Label Management (3)
+      - Pay-To Management (3)
   - GUI:
-      - View List
-      - Data Entry
-      - Label Management and Viewing
-      - Label Creation Window
-      - Detailed View
-      - Removal of Expense
+      - View List (3)
+      - Data Entry (3)
+      - Label Management and Viewing (3)
+      - Label Creation Window (2)
+      - Detailed View (2)
+      - Removal of Expense (1)
       
 Meetings:
 
