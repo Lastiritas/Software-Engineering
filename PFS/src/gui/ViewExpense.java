@@ -331,33 +331,12 @@ public class ViewExpense implements IWindow
 		final Money money = expense.getAmount();
 		amountField.setText(money.toString());
 		
-		switch(expense.getPaymentMethod())
-		{
-		case CASH:	
-			cashRadio.setSelection(true);
-			debitRadio.setSelection(false);
-			creditRadio.setSelection(false);
-			otherRadio.setSelection(false);
-			break;
-		case DEBIT:		
-			cashRadio.setSelection(false);
-			debitRadio.setSelection(true);
-			creditRadio.setSelection(false);
-			otherRadio.setSelection(false);
-			break;
-		case CREDIT:	
-			cashRadio.setSelection(false);
-			debitRadio.setSelection(false);
-			creditRadio.setSelection(true);
-			otherRadio.setSelection(false);
-			break;
-		case OTHER:		
-			cashRadio.setSelection(false);
-			debitRadio.setSelection(false);
-			creditRadio.setSelection(false);
-			otherRadio.setSelection(true);
-			break;
-		}
+		final PaymentMethod method = expense.getPaymentMethod();
+		
+		cashRadio.setSelection(method == PaymentMethod.CASH);
+		debitRadio.setSelection(method == PaymentMethod.DEBIT);
+		creditRadio.setSelection(method == PaymentMethod.CREDIT);
+		otherRadio.setSelection(method == PaymentMethod.OTHER);
 		
 		descriptionField.setText(expense.getDescription());
 		
