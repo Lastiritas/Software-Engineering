@@ -112,7 +112,7 @@ public class LabelCreate {
 				else
 					;//notify user of exsisting choice
 				
-				shell.dispose();
+				shell.close();
 			}
 		});
 		

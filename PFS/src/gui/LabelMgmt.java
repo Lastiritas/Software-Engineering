@@ -37,14 +37,14 @@ public class LabelMgmt {
 				display.sleep();
 			}
 		}
-		display.dispose();
+		
 	}
 
 	/**
 	 * Create contents of the window.
 	 */
 	protected void createContents() {
-		shell = new Shell();
+		shell = new Shell(SWT.APPLICATION_MODAL);
 		shell.setSize(590, 465);
 		shell.setText("Label Management");
 		
