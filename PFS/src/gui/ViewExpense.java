@@ -42,6 +42,7 @@ public class ViewExpense implements IWindow
 	private Button saveButton;
 	private List labelsList;
 	private Button editLabelsButton;
+	protected int currID;
 	
 	/**
 	 * Open the window.
@@ -204,11 +205,11 @@ public class ViewExpense implements IWindow
 				}
 				
 				final int selectedIndex = expenseTable.getSelectionIndex();
-				final TableItem[] items = expenseTable.getSelection();
+				final TableItem item = expenseTable.getSelection()[0];
 				
-				final int id = Integer.parseInt(items[0].getText(0));
+				currID = Integer.parseInt(item.getText(0));
 				
-				saveExpenseFromEditingPane(selectedIndex, id);
+				saveExpenseFromEditingPane(selectedIndex, currID);
 			}
 		});
 		saveButton.setBounds(139, 593, 94, 28);
@@ -269,11 +270,11 @@ public class ViewExpense implements IWindow
 					return;
 				}
 				
-				final TableItem[] items = expenseTable.getSelection();
+				final TableItem item = expenseTable.getSelection()[0];
 				
-				final int id = Integer.parseInt(items[0].getText(0));
+				currID = Integer.parseInt(item.getText(0));
 				
-				openExpenseInEditingPane(id);
+				openExpenseInEditingPane(currID);
 			}
 		});
 		expenseTable.setBounds(10, 10, 629, 577);
@@ -350,7 +351,7 @@ public class ViewExpense implements IWindow
 		{
 			method = PaymentMethod.OTHER;
 		}
-		
+
 		
 		int payToId = -1;
 		final IDSet payToIDs = PFSystem.getCurrent().getPayToSystem().getAllIDs();
@@ -384,11 +385,12 @@ public class ViewExpense implements IWindow
 			
 			for(int j = 0; j < exisitingLabel.length; j++)
 			{
-				if(exisitingLabel[i].equals(label.getLabelName()))
+				if(exisitingLabel[j].equals(label.getLabelName()))
 				{
 					// id was found
 					rawData[rawDataCount] = id;
 					rawDataCount++;
+					
 				}
 			}
 		}
