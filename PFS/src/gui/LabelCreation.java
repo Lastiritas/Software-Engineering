@@ -10,19 +10,21 @@ import util.StringMatch;
 import domainobjects.*;
 import dataAccessLayer.*;
 
-public class LabelCreation  implements IWindow
+public class LabelCreation 
 {
 	protected Shell shell;
+	protected List listExsistingLabel;
 	private Text textNewLabel;
 
-	private String labels[];
+	private String allLabel[];
+	private String retLabel=null;
 	
 	/**
 	 * Open the window.
 	 * 
 	 */
 
-	public void open()
+	public String open()
 	{
 		Display display =Display.getDefault();
 		
@@ -30,18 +32,16 @@ public class LabelCreation  implements IWindow
 		shell.open();
 		shell.layout();
 		
-		while (!shell.isDisposed()) 
+		while (!shell.isDisposed())
 		{
 			if (!display.readAndDispatch()) 
 			{
 				display.sleep();
 			}
 		}
+		return retLabel;
 	}
 	
-	/**
-	 * @wbp.parser.entryPoint
-	 */
 	protected void createContents()
 	{
 		shell = new Shell(SWT.APPLICATION_MODAL);
@@ -59,11 +59,90 @@ public class LabelCreation  implements IWindow
 		btnDone.setBounds(235, 263, 75, 25);
 		btnDone.setText("Done");
 		
-		final List listExsistingLabel = new List(shell, SWT.BORDER);
+		listExsistingLabel = new List(shell, SWT.BORDER);
+		listExsistingLabel.setBounds(10, 37, 298, 186);
+		
+		//list population
+		loadList();
+		
+		
+		//listeners
+		textNewLabel.addKeyListener(new KeyAdapter() 
+		{
+			public void keyPressed(KeyEvent e)
+			{
+				String input = textNewLabel.getText();
+				if(!(input.length() ==0 && (e.character == 8 || e.character == 127)))
+				{
+					if((e.character >32 && e.character <127) ||e.character == 8 || e.character == 127)
+					{
+						if(e.character >32 && e.character <127)
+							input += e.character;
+						refreshList();
+						
+						for(int i=0; i<listExsistingLabel.getItemCount(); i++)
+						{
+							if(!StringMatch.match(listExsistingLabel.getItem(i),input))
+							{
+								listExsistingLabel.remove(listExsistingLabel.getItem(i));
+								i=-1;
+							}
+						}
+						
+					}
+				}
+			}
+		});
+
+		btnCancel.addSelectionListener(new SelectionAdapter() 
+		{
+			@Override
+			public void widgetSelected(SelectionEvent e)
+			{
+				shell.close();
+			}
+		});
+		
+		btnDone.addSelectionListener(new SelectionAdapter() 
+		{
+			@Override
+			public void widgetSelected(SelectionEvent e)
+			{
+				String temp = textNewLabel.getText();
+				boolean exsist = false;
+				
+				for(int i=0; i<allLabel.length; i++)
+				{
+					if(allLabel[i].equalsIgnoreCase(temp))
+					{
+						exsist=true;
+						break;
+					}
+				}
+				
+				if(!exsist)
+					retLabel=temp;
+				else
+					;//notify user of exsisting choice
+				
+				/* AARON CODE
+				final String labelString = textNewLabel.getText(); 
+				
+				IDataModifer dataModifer = PFSystem.getCurrent().getLabelSystem();
+				
+				final int labelID = dataModifer.create();
+				dataModifer.update(labelID, new domainobjects.Label(labelString));
+				
+				 */
+				
+				shell.close();
+			}
+		});
+		
 		listExsistingLabel.addSelectionListener(new SelectionAdapter() 
 		{
 			@Override
-			public void widgetSelected(SelectionEvent arg0) 
+			public void widgetSelected(SelectionEvent arg0)
 			{
 				if(listExsistingLabel.getSelectionCount() == 0)
 				{
@@ -73,111 +152,29 @@ public class LabelCreation  implements IWindow
 				textNewLabel.setText(listExsistingLabel.getSelection()[0]); 
 			}
 		});
-		listExsistingLabel.setBounds(10, 37, 298, 186);
 		
-		//list population
+	}
+	
+	private void loadList()
+	{
 		IDSet labelIDs = PFSystem.getCurrent().getLabelSystem().getAllIDs();
-		labels = new String[labelIDs.getSize()];
+		allLabel = new String[labelIDs.getSize()];
 		
 		for(int i=0; i <labelIDs.getSize(); i++)
 		{
 			final int id = labelIDs.getValue(i);
 			domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
 			
-			labels[i] = label.getLabelName();
-			//listLabels.add(labels[i]);
+			allLabel[i] = label.getLabelName();
 		}	
 		
-		
-		//listeners
-		textNewLabel.addKeyListener(new KeyAdapter() 
-		{
-			public void keyPressed(KeyEvent e) 
-			{
-				String input = textNewLabel.getText() + e.character;
-				
-				if(e.character >32 && e.character <127)
-				{
-					for(int i=0; i<listExsistingLabel.getItemCount(); i++)
-					{
-						if(!StringMatch.match(listExsistingLabel.getItem(i),input))
-						{
-							listExsistingLabel.remove(listExsistingLabel.getItem(i));
-							i=-1;
-						}
-					}
-					
-					
-					boolean found = false;
-					for(int i=0; i<labels.length; i++)
-					{
-						if(StringMatch.match(labels[i], input)) 
-					 	{
-					 		for(int j=0; j<listExsistingLabel.getItemCount(); j++)
-					 		{
-					 			if(labels[i].equalsIgnoreCase(listExsistingLabel.getItem(j)))
-					 			{
-					 				found = true;
-					 				break;
-					 			}
-					 		}
-					 	
-					 		if(!found)
-					 		{
-					 			listExsistingLabel.add(labels[i]);
-					 		}
-					 	}
-					 }
-				}
-				else if(e.character == 8 || e.character == 127)
-				{
-					boolean found = false;
-					for(int i=0; i<labels.length; i++)
-					{
-						if(StringMatch.match(labels[i], input)) 
-					 	{
-					 		for(int j=0; j<listExsistingLabel.getItemCount(); j++)
-					 		{
-					 			if(labels[i].equalsIgnoreCase(listExsistingLabel.getItem(j)))
-					 			{
-					 				found = true;
-					 				break;
-					 			}
-					 		}
-					 		
-					 		if(!found)
-					 		{
-					 			listExsistingLabel.add(labels[i]);
-					 		}
-					 	}
-					 }
-				}
-			}
-		});
-
-		btnCancel.addSelectionListener(new SelectionAdapter() 
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e) 
-			{
-				shell.close();
-			}
-		});
-		
-		btnDone.addSelectionListener(new SelectionAdapter() 
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e) 
-			{
-				final String labelString = textNewLabel.getText(); 
-				
-				IDataModifer dataModifer = PFSystem.getCurrent().getLabelSystem();
-				
-				final int labelID = dataModifer.create();
-				dataModifer.update(labelID, new domainobjects.Label(labelString));
-								
-				shell.close();
-			}
-		});
+		refreshList();
+	}
+	
+	private void refreshList()
+	{
+		listExsistingLabel.removeAll();
+		for(int i=0; i <allLabel.length; i++)
+			listExsistingLabel.add(allLabel[i]);
 	}
 }
