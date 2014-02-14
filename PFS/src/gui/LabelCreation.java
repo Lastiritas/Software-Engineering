@@ -4,6 +4,7 @@ import org.eclipse.swt.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.events.*;
 
+import system.IDataModifer;
 import system.PFSystem;
 import util.StringMatch;
 import domainobjects.*;
@@ -38,6 +39,9 @@ public class LabelCreation
 		}
 	}
 	
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	protected void createContents()
 	{
 		shell = new Shell(SWT.APPLICATION_MODAL);
@@ -165,6 +169,13 @@ public class LabelCreation
 			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
+				final String labelString = textNewLabel.getText(); 
+				
+				IDataModifer dataModifer = PFSystem.getCurrent().getLabelSystem();
+				
+				final int labelID = dataModifer.create();
+				dataModifer.update(labelID, new domainobjects.Label(labelString));
+								
 				shell.close();
 			}
 		});
