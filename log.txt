@@ -1,0 +1,9 @@
+Here is the description of what I need on this file
+
+Each group will also keep a log, which describes their progress. Log entries 
+will be made by individual group members, and contain information about the 
+entire project and individual contributions. It will also describe outstanding 
+bugs and their fixes. You should keep the log in a text file log.txt alongside 
+your code.
+
+Please provide as much detail as possible since we left it to the last minute
