@@ -14,3 +14,9 @@ was spent on each. Also include the developer tasks from your plan (regardless
 of whether you completed them all).
 
 Please provide as much detail as possible since we left it to the last minute
+
+Aaron Vaage - Domain Object Expense (1 day)
+Aaron Vaage - Expensed Deletion, Editing, Entry, and Retrieval (2 day)
+Aaron Vaage - Expense View and Editing GUI (3 days)
+Aaron Vaage - Hooking-up GUIs (1 days)
+Aaron Vaage - Filling in missing GUI Functionality (3 days)
