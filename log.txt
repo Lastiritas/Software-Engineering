@@ -6,4 +6,11 @@ entire project and individual contributions. It will also describe outstanding
 bugs and their fixes. You should keep the log in a text file log.txt alongside 
 your code.
 
+Task assignments, estimates, and actual time spent should be detailed in your 
+log. Also in the log, include information about team meetings and the rationale 
+behind any major design decisions. 
+Use the log to detail who worked on each task, and approximately how long 
+was spent on each. Also include the developer tasks from your plan (regardless 
+of whether you completed them all).
+
 Please provide as much detail as possible since we left it to the last minute
