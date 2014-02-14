@@ -5,6 +5,11 @@ import junit.framework.TestCase;
 
 public class PayToTest extends TestCase 
 {
+	public PayToTest(String arg0)
+	{
+		super(arg0);
+	}
+	
 	public void test_Create_a_payTo_with_Branch()
 	{
 		PayTo actual;
