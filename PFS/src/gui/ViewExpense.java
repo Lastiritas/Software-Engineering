@@ -317,6 +317,16 @@ public class ViewExpense implements IWindow
 		duplicateButton.setBounds(445, 593, 94, 28);
 		duplicateButton.setText("Duplicate");
 		
+		Button btnQuit = new Button(composite_1, SWT.NONE);
+		btnQuit.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				shell.close();
+			}
+		});
+		btnQuit.setBounds(254, 593, 94, 28);
+		btnQuit.setText("Quit");
+		
 		// add all exisiting expenses
 		IDSet expenseIDs = PFSystem.getCurrent().getExpenseSystem().getAllIDs();
 		for(int i = 0; i < expenseIDs.getSize(); i++)
