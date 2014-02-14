@@ -1,13 +1,12 @@
 package systemTests;
 
-import java.util.Date;
-
 import org.jmock.integration.junit3.MockObjectTestCase;
 import org.jmock.Expectations;
 
 import dataAccessLayer.IDatabase;
 import domainobjects.Expense;
 import domainobjects.IDSet;
+import domainobjects.Money;
 import domainobjects.PaymentMethod;
 import domainobjects.SimpleDate;
 import system.ExpenseManagement;
@@ -38,8 +37,9 @@ public class ExpenseManagementTests extends MockObjectTestCase
 	
 	public void test_Get_expense_by_id()
 	{
+		Money amount = new Money(10,10);
 		int setData[] = {1, 2, 3};
-		final Expense expectedExpense = new Expense(SimpleDate.Now(), 100, PaymentMethod.CASH, "Something to eat", 0, IDSet.createFromArray(setData));
+		final Expense expectedExpense = new Expense(SimpleDate.Now(), amount, PaymentMethod.CASH, "Something to eat", 0, IDSet.createFromArray(setData));
 		final int expenseId = 5;
 		Expense actualExpense;
         
@@ -70,8 +70,9 @@ public class ExpenseManagementTests extends MockObjectTestCase
 	
 	public void test_Update_payTo_successfully()
 	{
+		Money amount = new Money(10,10);
 		int setData[] = {1, 2, 3};
-		final Expense expense = new Expense(SimpleDate.Now(), 1000, PaymentMethod.CASH, "Something to eat", 0, IDSet.createFromArray(setData));
+		final Expense expense = new Expense(SimpleDate.Now(), amount, PaymentMethod.CASH, "Something to eat", 0, IDSet.createFromArray(setData));
 		final int expenseId = 3;
 		final boolean expectedResult = true;
 		boolean actualResult;
