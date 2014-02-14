@@ -49,7 +49,7 @@ public class PaytoSelection implements IWindow
 	{
 		
 		//***Place contents inside a panel***//
-		shell = new Shell();
+		shell = new Shell(SWT.APPLICATION_MODAL);
 		shell.setSize(450, 300);
 		shell.setText("PayTo Manager");
 		

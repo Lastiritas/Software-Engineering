@@ -44,7 +44,7 @@ public class PayToCreation implements IWindow
 	 */
 	protected void createContents() 
 	{
-		shell = new Shell();
+		shell = new Shell(SWT.APPLICATION_MODAL);
 		shell.setSize(450, 300);
 		shell.setText("PayTo Creation");
 		
