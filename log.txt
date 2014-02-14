@@ -58,6 +58,9 @@ Tasks Completed by Team Members:
       - Label Creation Window (2 days)
       - String matching algorithm (1 hour)
       - String filtering in PayTo/Label windows (1/2 day)
+      - Fixed crashing bug when trying to save changed Expense (30 min)
+      - Changed .classpath to reference internal JARS (5 min)
+      - Quit button put in ViewExpense
       
   - Rafael Lastiri
       - Domain Object Label (1 day)
