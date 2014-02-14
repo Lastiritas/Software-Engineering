@@ -66,9 +66,15 @@ Tasks Completed by Team Members:
       - Window for Expense List GUI (1 day)
       - Window for Expense Entry GUI (1 day)
       
-  -Madeline Lavergne
-      -PayTo Creation Window (3 days)
-      -Pay To Management Window (4 days)
+  - Madeline Lavergne
+      - PayTo Creation Window (3 days)
+      - Pay To Management Window (4 days)
+      
+  - Josh Krcadinac
+      - Label Managemnet and Viewing (2 days)
+      - Label Creation Window (2 days)
+      - String matching algorithm (1 hour)
+      - String filtering in PayTo/Label windows (1/2 day)
       
   - [other team members]
 
