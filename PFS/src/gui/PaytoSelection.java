@@ -17,7 +17,7 @@ import domainobjects.IDSet;
 import domainobjects.PayTo;
 
 
-public class PaytoSelection 
+public class PaytoSelection implements IWindow
 {
 
 	protected Shell shell;
@@ -83,7 +83,7 @@ public class PaytoSelection
 			@Override
 			public void widgetSelected(SelectionEvent arg0) 
 			{
-				PayToCreation window = new PayToCreation();
+				IWindow window = new PayToCreation();
 				window.open();
 			}
 		});

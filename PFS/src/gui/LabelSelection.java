@@ -8,7 +8,7 @@ import system.PFSystem;
 import util.StringMatch;
 import domainobjects.*;
 
-public class LabelSelection 
+public class LabelSelection implements IWindow
 {
 	protected Shell shell;
 	private Text textSearchLabel;
@@ -25,7 +25,7 @@ public class LabelSelection
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	public  void open() 
+	public void open() 
 	{
 		Display display = Display.getDefault();
 		
@@ -288,7 +288,7 @@ public class LabelSelection
 			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
-				LabelCreation newLabel = new LabelCreation();
+				IWindow newLabel = new LabelCreation();
 				newLabel.open();
 			}
 		});

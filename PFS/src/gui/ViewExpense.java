@@ -6,7 +6,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Composite;
@@ -24,7 +23,8 @@ import domainobjects.PaymentMethod;
 import domainobjects.SimpleDate;
 import system.PFSystem;
 
-public class ViewExpense {
+public class ViewExpense implements IWindow 
+{
 
 	protected Shell shell;
 	private Table expenseTable;
@@ -45,11 +45,15 @@ public class ViewExpense {
 	 * Launch the application.
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		try {
-			ViewExpense window = new ViewExpense();
+	public static void main(String[] args) 
+	{
+		try 
+		{
+			IWindow window = new ViewExpense();
 			window.open();
-		} catch (Exception e) {
+		} 
+		catch (Exception e) 
+		{
 			e.printStackTrace();
 		}
 	}
@@ -97,7 +101,7 @@ public class ViewExpense {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) 
 			{
-				PaytoSelection window = new PaytoSelection();
+				IWindow window = new PaytoSelection();
 				window.open();
 			}
 		});
@@ -152,7 +156,7 @@ public class ViewExpense {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) 
 			{
-				LabelSelection window = new LabelSelection();
+				IWindow window = new LabelSelection();
 				window.open();
 			}
 		});
