@@ -54,7 +54,7 @@ public class ExpenseManagement implements IIDReader, IDataReader, IDataModifer
 	{
 		final int[] emptySetData = new int[0];
 		final IDSet emptySet = IDSet.createFromArray(emptySetData);
-		Expense newExpense = new Expense(SimpleDate.Now(), new Money(), PaymentMethod.CASH, "", -1, emptySet);
+		Expense newExpense = new Expense(SimpleDate.Now(), new Money(), PaymentMethod.CASH, "", PayToManagement.NULL_ID, emptySet);
 		
 		return database.addExpense(newExpense);
 	}
