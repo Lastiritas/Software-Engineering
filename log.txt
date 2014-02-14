@@ -25,6 +25,7 @@ Big User Stories for This Iteration (priority):
   - Edit Expense (Medium)
   - Delete Expense (High)
   
+===========  
 Developer Tasks for This Iteration (expected days):
 
   - Domain Objects:
@@ -42,11 +43,16 @@ Developer Tasks for This Iteration (expected days):
       - Label Creation Window (2)
       - Detailed View (2)
       - Removal of Expense (1)
+      - PayTo Management (5)
+      - PayTo Creation (2)
       
+===========
 Meetings:
 
-  - [need more detail for meetings]
+  - Jan 27 - All Attended
+      TOPIC: Architecture and Task Assignment
 
+===========
 Tasks Completed by Team Members:
 
   - Aaron Vaage
@@ -60,4 +66,33 @@ Tasks Completed by Team Members:
       - Window for Expense List GUI (1 day)
       - Window for Expense Entry GUI (1 day)
       
+  -Madeline Lavergne
+      -PayTo Creation Window (3 days)
+      -Pay To Management Window (4 days)
+      
   - [other team members]
+
+===========
+Tasks Assigned to Team Members:
+
+Aaron Vaage -       Domain Object - Filter
+                    Domain Object - Expense
+                    System - Expense Deletion and Editing
+                    System - Data Retrieval
+                    System - Data Entry
+
+Rafa Lastiri -      Domain Object - Labels
+                    Domain Object - PayTo
+                    System - PayTo Management
+                    System - Label Management
+
+Jeremy Vogt -       GUI - Removal of Expense
+                    GUI - Data Entry
+                    GUI - View List
+
+Josh Krcadinac -    GUI Detailed View
+                    GUI Label Creation Window
+                    GUI Label Management and Viewing
+
+Madeline Lavergne - GUI - PayTo Creation Window
+                    GUI - PayTo Management
