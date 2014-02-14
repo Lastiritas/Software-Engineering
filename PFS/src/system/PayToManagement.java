@@ -25,8 +25,13 @@ public class PayToManagement implements IIDReader, IDataReader, IDataModifer
 	
 	public Object getDataByID(int inId)
 	{
-		assert inId >= 0 : "Invalid id";
+		assert inId >= 0 || inId == NULL_ID: "Invalid id";
 
+		if(inId == NULL_ID)
+		{
+			return NULL_PAYTO;
+		}
+		
 		return database.getPayToByID(inId);
 	}
 	
@@ -54,4 +59,7 @@ public class PayToManagement implements IIDReader, IDataReader, IDataModifer
 	}
 
 	private IDatabase database;
+
+	public final static int NULL_ID = -1;
+	private final static PayTo NULL_PAYTO = new PayTo("None"); 
 }
