@@ -205,7 +205,7 @@ public class LabelMgmt {
 		btnDone.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				String returnLabel[] =listPickLabel.getItems();
+				String returnLabel[] = listPickLabel.getItems();
 				//add labels selected to the expense HERE
 				shell.close();
 			}
