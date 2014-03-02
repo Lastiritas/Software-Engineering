@@ -12,7 +12,7 @@ public class IDSet
 		// called from CreateFromArray which creates the array
 		values = inValues;
 	}
-
+	
 	public IDSet union(IDSet inSet)
 	{
 		assert inSet != null;
@@ -98,15 +98,24 @@ public class IDSet
 
 	public String toString()
 	{
+		if(values.length == 0)
+		{
+			return "< >";
+		}
+		
 		StringBuilder output = new StringBuilder();
 
+		output.append("<");
+		
 		for(int i = 0; i < values.length; i++)
 		{
 			output.append(values[i]);
 			output.append(", ");
 		}
 
-		return output.substring(0, output.length() - 2);	// remove the last comma and space
+		output.replace(output.length() - 2, output.length() - 1, ">");
+		
+		return output.toString();
 	}
 
 	public void copyToArray(int[] outArray)
@@ -129,6 +138,12 @@ public class IDSet
 		return new IDSet(set);
 	}
 
+	public static IDSet createFromValue(int value)
+	{
+		int[] values = { value };
+		return createFromArray(values);
+	}
+	
 	private static int[] union(int[] inSet0, int[] inSet1)
 	{
 		assert inSet0 != null;
@@ -207,4 +222,12 @@ public class IDSet
 
 		return output;
 	}
+	
+	public static IDSet empty()
+	{
+		return emptySet;
+	}
+	
+	private static int[] emptyData = new int[0];
+	private static IDSet emptySet = new IDSet(emptyData);
 }
