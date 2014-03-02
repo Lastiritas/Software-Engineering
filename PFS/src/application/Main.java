@@ -1,5 +1,6 @@
 package application;
 import gui.IWindow;
+import gui.MinedView;
 import gui.ViewExpense;
 
 public class Main 
@@ -8,7 +9,7 @@ public class Main
 	{
 		try 
 		{
-			IWindow window = new ViewExpense();
+			IWindow window = new MinedView();
 			window.open();
 		} 
 		catch (Exception e) 
