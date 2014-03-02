@@ -1,12 +1,13 @@
 package system.datamining;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import domainobjects.IDSet;
 
 public final class DataMiner 
 {
-	public static ArrayList<IDSet> mine(IDSet[] inData, int inMinSup)
+	public static ArrayList<IDSet> mine(Collection<IDSet> inData, int inMinSup)
 	{
 		assert inData != null : "Cannot mine on null set collection";
 		assert inMinSup >= 0 : "Cannot min with negative min sup";
@@ -16,7 +17,7 @@ public final class DataMiner
 		return mine(inData, inMinSup, domainItems);
 	}
 	
-	private static ArrayList<IDSet> mine(IDSet[] inData, int inMinSup, ArrayList<IDSet> inCandidateList)
+	private static ArrayList<IDSet> mine(Collection<IDSet> inData, int inMinSup, Collection<IDSet> inCandidateList)
 	{
 		assert inData != null : "Cannot mine on null set ArrayList.";
 		assert inMinSup >= 0 : "Cannot min with negative min sup";
@@ -105,7 +106,7 @@ public final class DataMiner
 		return a.getValue(size - 1) != b.getValue(size - 1);	// the last item must be different, you can not merge two sets that are the same
 	}
 	
-	private static boolean isPruned(ArrayList<IDSet> frequentPatterns, IDSet newPattern)
+	private static boolean isPruned(Collection<IDSet> frequentPatterns, IDSet newPattern)
 	{
 		final ArrayList<IDSet> subSets = getSubSets(newPattern);
 		
@@ -120,7 +121,7 @@ public final class DataMiner
 		return false;
 	}
 	
-	private static boolean hasSetExactly(ArrayList<IDSet> inSetArrayList, IDSet inTargetSet)
+	private static boolean hasSetExactly(Collection<IDSet> inSetArrayList, IDSet inTargetSet)
 	{
 		for(IDSet set : inSetArrayList)
 		{
@@ -151,7 +152,10 @@ public final class DataMiner
 		
 		final int targetSize = set.getSize() - 1;
 		
-		ArrayList<IDSet> domainItems = getDomainItems(new IDSet[] { set });
+		ArrayList<IDSet> setAsList = new ArrayList<>();
+		setAsList.add(set);
+		
+		ArrayList<IDSet> domainItems = getDomainItems(setAsList);
 		
 		for(int generatingSize = 2; generatingSize <= targetSize; generatingSize++)
 		{
@@ -178,7 +182,7 @@ public final class DataMiner
 		return domainItems;
 	}
 	
-	private static ArrayList<IDSet> getDomainItems(IDSet[] inData)
+	private static ArrayList<IDSet> getDomainItems(Collection<IDSet> inData)
 	{
 		assert inData != null : "Cannot get domain items from null collection";
 
@@ -199,7 +203,7 @@ public final class DataMiner
 		return domainItems;
 	}
 	
-	private static int countOccurances(IDSet[] inData, IDSet pattern)
+	private static int countOccurances(Collection<IDSet> inData, IDSet pattern)
 	{
 		assert inData != null : "Cannot count occurances in a null collection";
 		assert pattern != null : "Cannot look for null pattern";
