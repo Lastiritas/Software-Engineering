@@ -1,6 +1,7 @@
 package systemTests;
 
 import java.util.Collection;
+import java.util.LinkedList;
 
 import system.datamining.DataMiner;
 import domainobjects.IDSet;
@@ -12,12 +13,11 @@ public class MiningTests
 
 		//IDSet[] sets = generateInputData(new double[] {1.0, 0.8, 0.6, 0.3}, 4);
 		
-		IDSet[] sets = {
-				IDSet.createFromArray(new int[] { 0, 1 }),
-				IDSet.createFromArray(new int[] { 0, 2, 3 }),
-				IDSet.createFromArray(new int[] { 0, 2 }),
-				IDSet.createFromArray(new int[] { 0, 1 }),
-		};
+		LinkedList<IDSet> sets = new LinkedList<IDSet>();
+		sets.add(IDSet.createFromArray(new int[] { 0, 1 }));
+		sets.add(IDSet.createFromArray(new int[] { 0, 2, 3 }));
+		sets.add(IDSet.createFromArray(new int[] { 0, 2 }));
+		sets.add(IDSet.createFromArray(new int[] { 0, 1 }));
 
 		System.out.println("Sets: ");
 		for(IDSet set : sets)
