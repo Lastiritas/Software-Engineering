@@ -76,43 +76,48 @@ public final class DataMiner
 	 *	Summary
 	 *		Check if two sets can be merged together for the next round of mining.
 	 * 	Parameters
-	 * 		IDSet a : The first of the two sets to be merged
-	 * 		IDSet b : The second of the two sets to be merged
+	 * 		IDSet inSetA : The first of the two sets to be merged
+	 * 		IDSet inSetB : The second of the two sets to be merged
 	 * 
 	 * 	Return 
 	 *		false : if the sets are not the same size or if the sets differ more than just the last value.
 	 * 		true : if the sets can be merged
 	 */
-	private static boolean canMerge(IDSet a, IDSet b)
+	private static boolean canMerge(IDSet inSetA, IDSet inSetB)
 	{
-		assert a != null : "Cannot merge null set";
-		assert b != null : "Cannot merge null set";
+		assert inSetA != null : "Cannot merge null set";
+		assert inSetB != null : "Cannot merge null set";
 
-		if(a.getSize() != b.getSize())
+		if(inSetA.getSize() != inSetB.getSize())
 		{
 			return false;
 		}
 		
-		final int size = a.getSize();	// a and b are the same size
+		final int size = inSetA.getSize();	// a and b are the same size
 
 		for(int i = 0; i < size - 1; i++)	// only go up to but not including the last item
 		{
-			if(a.getValue(i) != b.getValue(i))
+			if(inSetA.getValue(i) != inSetB.getValue(i))
 			{
 				return false;
 			}
 		}
 
-		return a.getValue(size - 1) != b.getValue(size - 1);	// the last item must be different, you can not merge two sets that are the same
+		return inSetA.getValue(size - 1) != inSetB.getValue(size - 1);	// the last item must be different, you can not merge two sets that are the same
 	}
 	
-	private static boolean isPruned(Collection<IDSet> frequentPatterns, IDSet newPattern)
+	private static boolean isPruned(Collection<IDSet> inFrequentPatterns, IDSet inNewPattern)
 	{
-		final ArrayList<IDSet> subSets = getSubSets(newPattern);
+		assert inFrequentPatterns != null : "collection of frequent patterns can not be null";
+		assert inFrequentPatterns.size() > 0 : "collection of frequent patters must contain id sets";
+		assert inNewPattern != null : "new patter must not be null";
+		assert inNewPattern.getSize() > 0 : "new patter can not be empty";
+		
+		final ArrayList<IDSet> subSets = getSubSets(inNewPattern);
 		
 		for(IDSet subSet : subSets)
 		{
-			if(!hasSetExactly(frequentPatterns, subSet))	// it must have all the sub sets to not get pruned
+			if(!hasSetExactly(inFrequentPatterns, subSet))	// it must have all the sub sets to not get pruned
 			{
 				return true;
 			}
@@ -121,11 +126,14 @@ public final class DataMiner
 		return false;
 	}
 	
-	private static boolean hasSetExactly(Collection<IDSet> inSetArrayList, IDSet inTargetSet)
+	private static boolean hasSetExactly(Collection<IDSet> inSets, IDSet inTarget)
 	{
-		for(IDSet set : inSetArrayList)
+		assert inSets != null;
+		assert inTarget != null;
+		
+		for(IDSet set : inSets)
 		{
-			if(set.equals(inTargetSet))
+			if(set.equals(inTarget))
 			{
 				return true;
 			}
@@ -145,15 +153,15 @@ public final class DataMiner
 	 * 	Return
 	 *		A list of all IDSets of size n - 1 that together make the original set.
 	 */
-	private static ArrayList<IDSet> getSubSets(IDSet set)
+	private static ArrayList<IDSet> getSubSets(IDSet inSet)
 	{
-		assert set != null : "Cannot find subsets of a null set";
-		assert set.getSize() > 1 : "Cannot find subsets of a set with fewer than two items";
+		assert inSet != null : "Cannot find subsets of a null set";
+		assert inSet.getSize() > 1 : "Cannot find subsets of a set with fewer than two items";
 		
-		final int targetSize = set.getSize() - 1;
+		final int targetSize = inSet.getSize() - 1;
 		
 		ArrayList<IDSet> setAsList = new ArrayList<>();
-		setAsList.add(set);
+		setAsList.add(inSet);
 		
 		ArrayList<IDSet> domainItems = getDomainItems(setAsList);
 		
@@ -203,16 +211,16 @@ public final class DataMiner
 		return domainItems;
 	}
 	
-	private static int countOccurances(Collection<IDSet> inData, IDSet pattern)
+	private static int countOccurances(Collection<IDSet> inData, IDSet inPattern)
 	{
 		assert inData != null : "Cannot count occurances in a null collection";
-		assert pattern != null : "Cannot look for null pattern";
+		assert inPattern != null : "Cannot look for null pattern";
 
 		int occurences = 0;
 
 		for(IDSet set : inData)
 		{
-			if(set.intersect(pattern).equals(pattern))	// set contains pattern
+			if(set.intersect(inPattern).equals(inPattern))	// set contains pattern
 			{
 				occurences++;
 			}
