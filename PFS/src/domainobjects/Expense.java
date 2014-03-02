@@ -1,45 +1,33 @@
 package domainobjects;
 
-import java.util.Date;
-
 public class Expense
 {
-	public Expense(Date inDate, int inTotalCents, PaymentMethod inMethod, String inDescription, int inPayTo, IDSet inLabels)
+	public Expense(SimpleDate inDate, Money inAmount, PaymentMethod inMethod, String inDescription, int inPayTo, IDSet inLabels)
 	{
 		date = inDate;
-		totalCents = inTotalCents;
+		amount = inAmount;
 		method = inMethod;
 		description = inDescription;
 		payTo = inPayTo;
 		labels = inLabels;
 	}
 
-	public Date getDate()
+	public SimpleDate getDate()
 	{
 		return date;
 	}
 
-	public int getDollars()
+	public Money getAmount()
 	{
-		return totalCents / CENTS_IN_DOLLAR;
+		return amount;
 	}
-
-	public int getCents()
-	{
-		return totalCents % CENTS_IN_DOLLAR;
-	}
-
-	public int getTotalAmountInCents()
-	{
-		return totalCents;
-	}
-
+	
 	public PaymentMethod getPaymentMethod()
 	{
 		return method;
 	}
 
-	public String GetDescription()
+	public String getDescription()
 	{
 		return description;	// string data is immutable, no need to copy
 	}
@@ -61,7 +49,7 @@ public class Expense
 		output.append(date);
 		output.append(" | ");
 
-		output.append(totalCents);
+		output.append(amount);
 		output.append(" | ");
 
 		output.append(method);
@@ -72,8 +60,8 @@ public class Expense
 		return output.toString();
 	}
 
-	private final Date date;
-	private final int totalCents;
+	private final SimpleDate date;
+	private final Money amount;
 	private final PaymentMethod method;
 	private final String description;
 	private final int payTo;

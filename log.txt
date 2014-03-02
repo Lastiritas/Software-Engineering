@@ -1,0 +1,95 @@
+ITERATION 1
+===========
+
+Big User Stories for This Iteration (priority):
+
+  - Enter Expenses (High)
+  - View Expenses (High)
+  - Edit Expense (Medium)
+  - Delete Expense (High)
+  
+===========  
+Developer Tasks for This Iteration (expected days):
+
+  - Domain Objects:
+      - Expense
+      - Filter (1)
+      - Labels (1)
+      - Pay To (1)
+  - System:
+      - Label Management (3)
+      - Pay-To Management (3)
+  - GUI:
+      - View List (3)
+      - Data Entry (3)
+      - Label Management and Viewing (3)
+      - Label Creation Window (2)
+      - Detailed View (2)
+      - Removal of Expense (1)
+      - PayTo Management (5)
+      - PayTo Creation (2)
+      
+===========
+Meetings:
+
+  - Jan 27 - All Attended
+      TOPIC: Architecture and Task Assignment
+
+===========
+Tasks Completed by Team Members:
+
+  - Aaron Vaage
+      - Domain Object Expense (1 day)
+      - Expensed Deletion, Editing, Entry, and Retrieval (2 day)
+      - Expense View and Editing GUI (3 days)
+      - Hooking-up GUIs (1 days)
+      - Filling in missing GUI Functionality (3 days)
+      
+  - Jeremy Vogt
+      - Window for Expense List GUI (1 day)
+      - Window for Expense Entry GUI (1 day)
+      
+  - Madeline Lavergne
+      - PayTo Creation Window (3 days)
+      - Pay To Management Window (4 days)
+      
+  - Josh Krcadinac
+      - Label Managemnet and Viewing (2 days)
+      - Label Creation Window (2 days)
+      - String matching algorithm (1 hour)
+      - String filtering in PayTo/Label windows (1/2 day)
+      - Fixed crashing bug when trying to save changed Expense (30 min)
+      - Changed .classpath to reference internal JARS (5 min)
+      - Quit button put in ViewExpense
+      
+  - Rafael Lastiri
+      - Domain Object Label (1 day)
+      - Domain Object PayTo (1 day)
+      - PayTo Management System (2 days)
+      - Label Management System (2 days)
+      - Stub Database and Mock Objects (2 days)
+
+===========
+Tasks Assigned to Team Members:
+
+Aaron Vaage -       Domain Object - Filter
+                    Domain Object - Expense
+                    System - Expense Deletion and Editing
+                    System - Data Retrieval
+                    System - Data Entry
+
+Rafa Lastiri -      Domain Object - Labels
+                    Domain Object - PayTo
+                    System - PayTo Management
+                    System - Label Management
+
+Jeremy Vogt -       GUI - Removal of Expense
+                    GUI - Data Entry
+                    GUI - View List
+
+Josh Krcadinac -    GUI Detailed View
+                    GUI Label Creation Window
+                    GUI Label Management and Viewing
+
+Madeline Lavergne - GUI - PayTo Creation Window
+                    GUI - PayTo Management
