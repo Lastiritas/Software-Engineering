@@ -88,7 +88,7 @@ public class StubDatabaseTests extends TestCase
 		newId = database.addLabel(expectedLabel);
 		Label actualLabel = database.getLabelByID(newId);
 		
-		assertEquals(actualLabel, actualLabel);
+		assertEquals(actualLabel, expectedLabel);
 	}
 	
 	public void test_Update_label()
