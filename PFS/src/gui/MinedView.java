@@ -11,8 +11,9 @@ import org.eclipse.swt.widgets.Label;
 import domainobjects.IDSet;
 import system.PFSystem;
 import org.eclipse.swt.widgets.Scale;
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Composite;
+import swing2swt.layout.BorderLayout;
+import org.eclipse.swt.layout.FillLayout;
 
 public class MinedView implements IWindow 
 {
@@ -22,6 +23,8 @@ public class MinedView implements IWindow
 	private Label scaleAmountLabel;
 	
 	protected int currID;
+	private Composite composite;
+	private Composite composite_1;
 	
 	/**
 	 * Open the window.
@@ -52,8 +55,19 @@ public class MinedView implements IWindow
 		shell = new Shell();
 		shell.setSize(565, 365);
 		shell.setText("Mined Data View");
+		shell.setLayout(new BorderLayout(0, 0));
 		
-		scale = new Scale(shell, SWT.NONE);
+		tree = new List(shell, SWT.BORDER | SWT.V_SCROLL);
+		
+		composite = new Composite(shell, SWT.NONE);
+		composite.setLayoutData(BorderLayout.SOUTH);
+		composite.setLayout(new FillLayout(SWT.HORIZONTAL));
+		
+		composite_1 = new Composite(composite, SWT.NONE);
+		composite_1.setLayout(new BorderLayout(0, 0));
+		
+		scale = new Scale(composite_1, SWT.NONE);
+		scale.setLayoutData(BorderLayout.CENTER);
 		scale.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				scaleAmountLabel.setText(scale.getSelection() + "%");
@@ -62,16 +76,11 @@ public class MinedView implements IWindow
 		});
 		scale.setMinimum(1);
 		scale.setSelection(50);
-		scale.setBounds(10, 305, 497, 28);
 		
-		scaleAmountLabel = new Label(shell, SWT.NONE);
+		scaleAmountLabel = new Label(composite_1, SWT.NONE);
+		scaleAmountLabel.setLayoutData(BorderLayout.EAST);
 		scaleAmountLabel.setAlignment(SWT.RIGHT);
-		scaleAmountLabel.setBounds(513, 305, 42, 28);
 		scaleAmountLabel.setText(scale.getSelection() + "%");
-		
-		tree = new List(shell, SWT.BORDER | SWT.V_SCROLL);
-		tree.setLocation(10, 10);
-		tree.setSize(545, 287);
 		
 		refreshList();
 	}
