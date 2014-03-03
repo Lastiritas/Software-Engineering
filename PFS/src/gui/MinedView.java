@@ -11,6 +11,8 @@ import org.eclipse.swt.widgets.Label;
 import domainobjects.IDSet;
 import system.PFSystem;
 import org.eclipse.swt.widgets.Scale;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.widgets.Composite;
 
 public class MinedView implements IWindow 
 {
@@ -51,9 +53,6 @@ public class MinedView implements IWindow
 		shell.setSize(565, 365);
 		shell.setText("Mined Data View");
 		
-		tree = new List(shell, SWT.BORDER);
-		tree.setBounds(10, 10, 545, 289);
-		
 		scale = new Scale(shell, SWT.NONE);
 		scale.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
@@ -61,6 +60,7 @@ public class MinedView implements IWindow
 				refreshList();
 			}
 		});
+		scale.setMinimum(1);
 		scale.setSelection(50);
 		scale.setBounds(10, 305, 497, 28);
 		
@@ -68,7 +68,11 @@ public class MinedView implements IWindow
 		scaleAmountLabel.setAlignment(SWT.RIGHT);
 		scaleAmountLabel.setBounds(513, 305, 42, 28);
 		scaleAmountLabel.setText(scale.getSelection() + "%");
-	
+		
+		tree = new List(shell, SWT.BORDER | SWT.V_SCROLL);
+		tree.setLocation(10, 10);
+		tree.setSize(545, 287);
+		
 		refreshList();
 	}
 	
@@ -88,7 +92,20 @@ public class MinedView implements IWindow
 		
 		for(IDSet set : frequentSets)
 		{
-			tree.add(set.toString());
+			StringBuilder builder = new StringBuilder();
+			
+			for(int i = 0; i < set.getSize(); i++)
+			{
+				final int id = set.getValue(i);
+				final domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
+				
+				assert(label != null);
+				
+				builder.append(label.getLabelName());
+				builder.append(", ");
+			}
+			
+			tree.add(builder.toString());
 		}
 	}
 }
