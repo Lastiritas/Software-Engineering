@@ -1,6 +1,6 @@
 package domainobjects;
 
-public class Money implements Comparable
+public class Money implements Comparable<Money>
 {
 	public Money()
 	{
@@ -18,12 +18,9 @@ public class Money implements Comparable
 	}
 	
 	@Override
-	public int compareTo(Object inObject)
+	public int compareTo(Money money)
 	{
-		assert inObject != null;
-		assert inObject instanceof Money;
-		
-		Money money = (Money)inObject;
+		assert money != null;
 		
 		if(dollars < money.dollars)
 		{

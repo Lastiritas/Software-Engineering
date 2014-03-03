@@ -19,6 +19,12 @@ public class ExpenseFilter
 		moneyRange = inRange;
 	}
 	
+	public void assignmentPaymentMethod(PaymentMethod inMethod)
+	{
+		usePaymentMethod = true;
+		paymentMethod = inMethod;
+	}
+	
 	public void assignPayTo(IDSet inPayToSet)
 	{
 		usePayTo = true;
@@ -34,7 +40,37 @@ public class ExpenseFilter
 	
 	public String createSQLStatement()
 	{
-		return "SELECT * FROM expenses";
+		StringBuilder statement = new StringBuilder();
+		
+		//statement.append("SELECT * FROM expenses")
+		statement.append("SELECT id FROM expenses WHERE ");
+		
+		if(useDateRange)
+		{
+			// add the condition which says the date must be in range
+		}
+		
+		if(useMoneyRange)
+		{
+			// add the condition which says the amount must be in range
+		}
+		
+		if(usePaymentMethod)
+		{
+			// add the condition which says the payment method must match
+		}
+		
+		if(usePayTo)
+		{
+			// add the condition which says the expense must have the payTos
+		}
+		
+		if(useLabels)
+		{
+			// add the condition which says the label must have the labels
+		}
+		
+		return statement.toString();
 	}
 	
 	private DateRange dateRange = null;
@@ -43,12 +79,15 @@ public class ExpenseFilter
 	private MoneyRange moneyRange = null;
 	private boolean useMoneyRange = false;
 	
+	private PaymentMethod paymentMethod = PaymentMethod.CASH;
+	private boolean usePaymentMethod = false;
+	
 	private IDSet payTos = IDSet.empty();
-	private boolean usePayTo = false;
 	// we don't need a set operation for paytos because an expense can only have one payto
 	// so we know it must be a union of all the expenses
+	private boolean usePayTo = false;
 	
 	private IDSet labels = IDSet.empty();
-	private boolean useLabels = false;
 	private SetOperation labelSetOperation = SetOperation.UNION;
+	private boolean useLabels = false;
 }
