@@ -2,7 +2,7 @@ package domainobjects;
 
 import java.util.Calendar;
 
-public class SimpleDate 
+public class SimpleDate implements Comparable<SimpleDate>
 {
 	private SimpleDate()
 	{
@@ -43,6 +43,12 @@ public class SimpleDate
 	public String toString()
 	{
 		return String.format("%02d/%02d/%04d", getMonth(), getDay(), getYear());
+	}
+	
+	@Override
+	public int compareTo(SimpleDate o) 
+	{
+		return date.compareTo(o.date);
 	}
 	
 	private Calendar date;
