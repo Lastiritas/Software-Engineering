@@ -3,12 +3,12 @@ package tests;
 import systemTests.ExpenseManagementTests;
 import systemTests.LabelManagementTests;
 import systemTests.PayToManagementTests;
-import utiltests.StringMatchTests;
-import dataAccessLayerTests.StubDatabaseTests;
-import domainobjecttests.ExpenseTest;
-import domainobjecttests.IDSetTest;
-import domainobjecttests.LabelTest;
-import domainobjecttests.PayToTest;
+import tests.dataAccessLayerTests.StubDatabaseTests;
+import tests.domainobjecttests.ExpenseTest;
+import tests.domainobjecttests.IDSetTest;
+import tests.domainobjecttests.LabelTest;
+import tests.domainobjecttests.PayToTest;
+import tests.utiltests.StringMatchTests;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -22,7 +22,7 @@ public class AllTests
 		suite = new TestSuite("All Tests for the Personal Finance System");
 		
 		testDomainObjects();
-		//testSystem();
+		testSystem();
 		testDataAccessLayer();
 		testUtilities();
 		
