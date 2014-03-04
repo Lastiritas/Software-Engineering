@@ -24,7 +24,7 @@ import org.eclipse.swt.events.SelectionEvent;
 public class MinedView implements IDialog 
 {
 	private Shell shell;
-	private List tree;
+	private List list;
 	private Scale scale;
 	private Label scaleAmountLabel;
 	
@@ -41,7 +41,7 @@ public class MinedView implements IDialog
 	public Object open() 
 	{
 		Display display = Display.getDefault();
-	
+		
 		createContents();
 		shell.open();
 		shell.layout();
@@ -68,8 +68,8 @@ public class MinedView implements IDialog
 		shell.setText("Mined Data View");
 		shell.setLayout(null);
 		
-		tree = new List(shell, SWT.BORDER | SWT.V_SCROLL);
-		tree.setBounds(10, 10, 545, 260);
+		list = new List(shell, SWT.BORDER | SWT.V_SCROLL);
+		list.setBounds(10, 10, 545, 260);
 		
 		composite_1 = new Composite(shell, SWT.NONE);
 		composite_1.setBounds(10, 289, 545, 44);
@@ -126,7 +126,7 @@ public class MinedView implements IDialog
 	{
 		Collection<IDSet> frequentSets = PFSystem.getCurrent().getAllFrequentLabelCombinations(inFrequency);
 		
-		tree.removeAll();
+		list.removeAll();
 		
 		for(IDSet set : frequentSets)
 		{
@@ -143,7 +143,7 @@ public class MinedView implements IDialog
 				builder.append(", ");
 			}
 			
-			tree.add(builder.toString());
+			list.add(builder.toString());
 		}
 	}
 	
