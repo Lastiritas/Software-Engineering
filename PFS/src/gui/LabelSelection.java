@@ -26,7 +26,7 @@ public class LabelSelection implements IDialog
 	private ArrayList<String> labels = new ArrayList<String>(1);
 	private ArrayList<String> pickLabels = new ArrayList<String>(1);
 	
-	private IDSet startingSet;
+	private IDSet startingSet = IDSet.empty();
 	
 	public void setStartingSet(IDSet set)
 	{
