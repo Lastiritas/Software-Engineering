@@ -45,6 +45,7 @@ public class ViewExpense implements IWindow
 	private Button editLabelsButton;
 	protected int currID;
 	private Button btnFilter;
+	private Button btnViewMining;
 	
 	/**
 	 * Open the window.
@@ -341,6 +342,23 @@ public class ViewExpense implements IWindow
 		});
 		btnFilter.setText("Filter");
 		btnFilter.setBounds(110, 593, 94, 28);
+		
+		btnViewMining = new Button(composite_1, SWT.NONE);
+		btnViewMining.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				IDialog miningDialog = new MinedView();
+				ExpenseFilter filter = (ExpenseFilter)miningDialog.open();
+				
+				if(filter != null)
+				{
+					// apply the filter to the view
+				}
+				// else - do nothing
+			}
+		});
+		btnViewMining.setBounds(210, 593, 94, 28);
+		btnViewMining.setText("Labels");
 		
 		// add all exisiting expenses
 		IDSet expenseIDs = PFSystem.getCurrent().getExpenseSystem().getAllIDs();
