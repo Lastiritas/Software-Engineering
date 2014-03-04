@@ -2,6 +2,7 @@ package system;
 
 import dataAccessLayer.IDatabase;
 import domainobjects.Expense;
+import domainobjects.ExpenseFilter;
 import domainobjects.IDSet;
 import domainobjects.Money;
 import domainobjects.PaymentMethod;
@@ -15,9 +16,23 @@ public class ExpenseManagement implements IIDReader, IDataReader, IDataModifer
 
 		database = inDatabase;
 	}
-	
+
 	public IDSet getAllIDs()
+	{	
+		final int[] setData = database.getAllExpenseIDs();
+		assert setData != null : "Database returned null array";
+	
+		final IDSet output = IDSet.createFromArray(setData);
+		
+		return output;
+	}
+	
+	public IDSet getAllIDs(ExpenseFilter filter)
 	{
+		final String sqlStatement = filter.createSQLStatement();
+		
+		// need to use the sql statement in the database query
+		
 		final int[] setData = database.getAllExpenseIDs();
 		assert setData != null : "Database returned null array";
 	

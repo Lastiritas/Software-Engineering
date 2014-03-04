@@ -1,5 +1,4 @@
 package gui;
-import java.util.ArrayList;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -24,6 +23,7 @@ import domainobjects.Money;
 import domainobjects.PayTo;
 import domainobjects.PaymentMethod;
 import domainobjects.SimpleDate;
+import system.ExpenseManagement;
 import system.PFSystem;
 
 public class ViewExpense implements IWindow 
@@ -335,7 +335,7 @@ public class ViewExpense implements IWindow
 				
 				if(filter != null)
 				{
-					// apply the filter to the view
+					refreshWholeList(filter);
 				}
 				// else - do nothing
 			}
@@ -352,7 +352,7 @@ public class ViewExpense implements IWindow
 				
 				if(filter != null)
 				{
-					// apply the filter to the view
+					refreshWholeList(filter);
 				}
 				// else - do nothing
 			}
@@ -360,13 +360,7 @@ public class ViewExpense implements IWindow
 		btnViewMining.setBounds(210, 593, 94, 28);
 		btnViewMining.setText("Labels");
 		
-		// add all exisiting expenses
-		IDSet expenseIDs = PFSystem.getCurrent().getExpenseSystem().getAllIDs();
-		for(int i = 0; i < expenseIDs.getSize(); i++)
-		{
-			final int id = expenseIDs.getValue(i);
-			addExpense(id);
-		}
+		refreshWholeList(new ExpenseFilter());
 	}
 	
 	private void saveExpenseFromEditingPane(int inTableIndex, int inID)
@@ -535,5 +529,22 @@ public class ViewExpense implements IWindow
 		item.setText(2, payToString);
 		item.setText(3, money.toString());
 		item.setText(4, descriptionString);
+	}
+
+	private void refreshWholeList(ExpenseFilter filter)
+	{
+		expenseTable.removeAll();
+		
+		final ExpenseManagement expenseSystem = PFSystem.getCurrent().getExpenseSystem();
+		
+		final IDSet expenseIDs = expenseSystem.getAllIDs(filter);
+
+		final int totalExpenses = expenseIDs.getSize();
+		
+		for(int i = 0; i < totalExpenses; i++)
+		{
+			final int id = expenseIDs.getValue(i);
+			addExpense(id);
+		}
 	}
 }
