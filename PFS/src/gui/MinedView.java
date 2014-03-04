@@ -12,7 +12,6 @@ import domainobjects.IDSet;
 import system.PFSystem;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.layout.FillLayout;
 
 public class MinedView implements IWindow 
 {
