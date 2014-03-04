@@ -18,6 +18,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
 import domainobjects.Expense;
+import domainobjects.ExpenseFilter;
 import domainobjects.IDSet;
 import domainobjects.Money;
 import domainobjects.PayTo;
@@ -43,6 +44,7 @@ public class ViewExpense implements IWindow
 	private List labelsList;
 	private Button editLabelsButton;
 	protected int currID;
+	private Button btnFilter;
 	
 	/**
 	 * Open the window.
@@ -237,7 +239,7 @@ public class ViewExpense implements IWindow
 				}
 			}
 		});
-		deleteButton.setBounds(10, 593, 94, 28);
+		deleteButton.setBounds(345, 593, 94, 28);
 		deleteButton.setText("-");
 		
 		Button addButton = new Button(composite_1, SWT.NONE);
@@ -320,8 +322,25 @@ public class ViewExpense implements IWindow
 				shell.close();
 			}
 		});
-		btnQuit.setBounds(254, 593, 94, 28);
+		btnQuit.setBounds(10, 593, 94, 28);
 		btnQuit.setText("Quit");
+		
+		btnFilter = new Button(composite_1, SWT.NONE);
+		btnFilter.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				IDialog filterDialog = new FilterCreation();
+				ExpenseFilter filter = (ExpenseFilter)filterDialog.open();
+				
+				if(filter != null)
+				{
+					// apply the filter to the view
+				}
+				// else - do nothing
+			}
+		});
+		btnFilter.setText("Filter");
+		btnFilter.setBounds(110, 593, 94, 28);
 		
 		// add all exisiting expenses
 		IDSet expenseIDs = PFSystem.getCurrent().getExpenseSystem().getAllIDs();
