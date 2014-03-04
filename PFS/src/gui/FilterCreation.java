@@ -157,11 +157,11 @@ public class FilterCreation implements IDialog
 		grpLabelSet.setText("Expense Must Have");
 		grpLabelSet.setBounds(10, 206, 190, 91);
 		
-		Button expenseAllRadio = new Button(grpLabelSet, SWT.RADIO);
+		expenseAllRadio = new Button(grpLabelSet, SWT.RADIO);
 		expenseAllRadio.setBounds(10, 10, 91, 18);
 		expenseAllRadio.setText("All");
 		
-		Button expenseSomeRadio = new Button(grpLabelSet, SWT.RADIO);
+		expenseSomeRadio = new Button(grpLabelSet, SWT.RADIO);
 		expenseSomeRadio.setSelection(true);
 		expenseSomeRadio.setText("Some");
 		expenseSomeRadio.setBounds(10, 36, 91, 18);
