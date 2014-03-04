@@ -27,10 +27,10 @@ REM javac -d bin\ -cp %classpath% src\dataAccessLayer\*.java
 
 javac -d bin\ -cp %classpath% src\domainobjects\*.java src\dataAccessLayer\*.java src\application\*.java src\system\*.java src\util\*.java src\gui\*.java
 
-javac -d bin\ -cp %classpath% src\domainobjecttests\*.java
-javac -d bin\ -cp %classpath% src\dataAccessLayerTests\*.java
+javac -d bin\ -cp %classpath% src\tests\domainobjecttests\*.java
+javac -d bin\ -cp %classpath% src\tests\dataAccessLayerTests\*.java
 javac -d bin\ -cp %classpath% src\systemTests\*.java
-javac -d bin\ -cp %classpath% src\utiltests\*.java
+javac -d bin\ -cp %classpath% src\tests\utiltests\*.java
 javac -d bin\ -cp %classpath% src\tests\*.java
 
 pause
