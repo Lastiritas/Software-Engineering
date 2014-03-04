@@ -31,7 +31,7 @@ public class SimpleDate
 	
 	public void setMonth(int inMonth)
 	{
-		date.set(Calendar.MONDAY, inMonth);
+		date.set(Calendar.MONTH, inMonth);
 	}
 	
 	public void setDay(int inDay)
