@@ -33,9 +33,11 @@ public class FilterCreation implements IDialog
 	
 	private Button labelFilterCheck;
 	private Tree labelList;
+	private Button selectLabelsButton;
 	
 	private Button payToFilterCheck;
 	private Tree payToList;
+	private Button selectPayToButton;
 	
 	private Button expenseAllRadio;
 	private Button expenseSomeRadio;
@@ -76,27 +78,49 @@ public class FilterCreation implements IDialog
 		composite.setBounds(10, 10, 486, 37);
 		
 		dateFilterCheck = new Button(composite, SWT.CHECK);
+		dateFilterCheck.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				final boolean isSelected = dateFilterCheck.getSelection(); 
+				
+				lowerDateSelect.setEnabled(isSelected);
+				upperDateSelect.setEnabled(isSelected);
+			}
+		});
 		dateFilterCheck.setBounds(10, 10, 147, 18);
 		dateFilterCheck.setText("Filter by date");
 		
 		lowerDateSelect = new DateTime(composite, SWT.BORDER);
+		lowerDateSelect.setEnabled(false);
 		lowerDateSelect.setBounds(214, 10, 128, 27);
 		
 		upperDateSelect = new DateTime(composite, SWT.BORDER);
+		upperDateSelect.setEnabled(false);
 		upperDateSelect.setBounds(348, 10, 128, 27);
 		
 		Composite composite_1 = new Composite(shell, SWT.NONE);
 		composite_1.setBounds(10, 53, 486, 37);
 		
 		amountFilterCheck = new Button(composite_1, SWT.CHECK);
+		amountFilterCheck.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				final boolean isSelected = amountFilterCheck.getSelection();
+				
+				lowerAmountText.setEnabled(isSelected);
+				upperAmountText.setEnabled(isSelected);
+			}
+		});
 		amountFilterCheck.setText("Filter by amount");
 		amountFilterCheck.setBounds(10, 10, 145, 18);
 		
 		upperAmountText = new Text(composite_1, SWT.BORDER);
+		upperAmountText.setEnabled(false);
 		upperAmountText.setText("$0.00");
 		upperAmountText.setBounds(343, 10, 133, 19);
 		
 		lowerAmountText = new Text(composite_1, SWT.BORDER);
+		lowerAmountText.setEnabled(false);
 		lowerAmountText.setText("$0.00");
 		lowerAmountText.setBounds(204, 10, 133, 19);
 		
@@ -104,6 +128,17 @@ public class FilterCreation implements IDialog
 		composite_2.setBounds(10, 96, 486, 63);
 		
 		paymentFilterCheck = new Button(composite_2, SWT.CHECK);
+		paymentFilterCheck.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				final boolean isSelected = paymentFilterCheck.getSelection();
+				
+				cashRadio.setEnabled(isSelected);
+				debitRadio.setEnabled(isSelected);
+				creditRadio.setEnabled(isSelected);
+				otherRadio.setEnabled(isSelected);
+			}
+		});
 		paymentFilterCheck.setText("Filter by payment");
 		paymentFilterCheck.setBounds(10, 13, 148, 18);
 		
@@ -111,19 +146,23 @@ public class FilterCreation implements IDialog
 		group.setBounds(164, 13, 312, 44);
 		
 		cashRadio = new Button(group, SWT.RADIO);
+		cashRadio.setEnabled(false);
 		cashRadio.setSelection(true);
 		cashRadio.setText("Cash");
 		cashRadio.setBounds(10, 10, 62, 18);
 		
 		creditRadio = new Button(group, SWT.RADIO);
+		creditRadio.setEnabled(false);
 		creditRadio.setText("Credit");
 		creditRadio.setBounds(146, 10, 74, 18);
 		
 		debitRadio = new Button(group, SWT.RADIO);
+		debitRadio.setEnabled(false);
 		debitRadio.setText("Debit");
 		debitRadio.setBounds(78, 10, 62, 18);
 		
 		otherRadio = new Button(group, SWT.RADIO);
+		otherRadio.setEnabled(false);
 		otherRadio.setText("Other");
 		otherRadio.setBounds(226, 10, 74, 18);
 		
@@ -131,13 +170,26 @@ public class FilterCreation implements IDialog
 		composite_3.setBounds(10, 165, 210, 307);
 		
 		labelFilterCheck = new Button(composite_3, SWT.CHECK);
+		labelFilterCheck.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				final boolean isSelected = labelFilterCheck.getSelection();
+				
+				labelList.setEnabled(isSelected);
+				selectLabelsButton.setEnabled(isSelected);
+				expenseAllRadio.setEnabled(isSelected);
+				expenseSomeRadio.setEnabled(isSelected);
+			}
+		});
 		labelFilterCheck.setText("Filter by labels");
 		labelFilterCheck.setBounds(10, 10, 116, 18);
 		
 		labelList = new Tree(composite_3, SWT.BORDER);
+		labelList.setEnabled(false);
 		labelList.setBounds(10, 34, 190, 132);
 		
-		Button selectLabelsButton = new Button(composite_3, SWT.NONE);
+		selectLabelsButton = new Button(composite_3, SWT.NONE);
+		selectLabelsButton.setEnabled(false);
 		selectLabelsButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -158,10 +210,12 @@ public class FilterCreation implements IDialog
 		grpLabelSet.setBounds(10, 206, 190, 91);
 		
 		expenseAllRadio = new Button(grpLabelSet, SWT.RADIO);
+		expenseAllRadio.setEnabled(false);
 		expenseAllRadio.setBounds(10, 10, 91, 18);
 		expenseAllRadio.setText("All");
 		
 		expenseSomeRadio = new Button(grpLabelSet, SWT.RADIO);
+		expenseSomeRadio.setEnabled(false);
 		expenseSomeRadio.setSelection(true);
 		expenseSomeRadio.setText("Some");
 		expenseSomeRadio.setBounds(10, 36, 91, 18);
@@ -170,13 +224,24 @@ public class FilterCreation implements IDialog
 		composite_4.setBounds(286, 165, 210, 307);
 		
 		payToFilterCheck = new Button(composite_4, SWT.CHECK);
+		payToFilterCheck.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				final boolean isSelected = payToFilterCheck.getSelection();
+				
+				payToList.setEnabled(isSelected);
+				selectPayToButton.setEnabled(isSelected);
+			}
+		});
 		payToFilterCheck.setText("Filter by pay to");
 		payToFilterCheck.setBounds(10, 10, 116, 18);
 		
 		payToList = new Tree(composite_4, SWT.BORDER);
+		payToList.setEnabled(false);
 		payToList.setBounds(10, 34, 190, 229);
 		
-		Button selectPayToButton = new Button(composite_4, SWT.NONE);
+		selectPayToButton = new Button(composite_4, SWT.NONE);
+		selectPayToButton.setEnabled(false);
 		selectPayToButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
