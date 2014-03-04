@@ -88,9 +88,7 @@ public class ViewExpense implements IWindow
 			public void widgetSelected(SelectionEvent arg0) 
 			{
 				PaytoSelection window = new PaytoSelection();
-				window.open();
-				
-				final int payToID = window.getPayToID();
+				final int payToID = (int)window.open();
 				
 				final PayTo payTo = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(payToID);
 				
@@ -178,11 +176,9 @@ public class ViewExpense implements IWindow
 				
 				LabelSelection window = new LabelSelection();
 				window.setStartingSet(realSet);
-				window.open();
+				String[] labels = (String[])window.open();
 				
 				labelsList.removeAll();
-				
-				String[] labels = window.getLabels();
 								
 				for(int i = 0; i < labels.length; i++)
 				{

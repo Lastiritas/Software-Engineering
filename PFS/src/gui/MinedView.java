@@ -13,7 +13,7 @@ import system.PFSystem;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Composite;
 
-public class MinedView implements IWindow 
+public class MinedView implements IDialog 
 {
 	private Shell shell;
 	private List tree;
@@ -26,7 +26,7 @@ public class MinedView implements IWindow
 	/**
 	 * Open the window.
 	 */
-	public void open() 
+	public Object open() 
 	{
 		Display display = Display.getDefault();
 	
@@ -41,6 +41,8 @@ public class MinedView implements IWindow
 				display.sleep();
 			}
 		}
+		
+		return null;	// will return a filter
 	}
 
 	/**
