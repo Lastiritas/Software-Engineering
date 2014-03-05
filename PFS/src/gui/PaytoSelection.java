@@ -8,6 +8,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
@@ -16,13 +17,15 @@ import system.PFSystem;
 import domainobjects.IDSet;
 import domainobjects.PayTo;
 
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+
 
 public class PaytoSelection implements IDialog
 {
 	private Shell shell;
-	private Tree tree;
-	
-	private String output = null;
+	private Table table;
+	private int selectedID = -1;
 	
 	/**
 	 * Open the window.
@@ -43,30 +46,21 @@ public class PaytoSelection implements IDialog
 			}
 		}
 		
-		return getPayToID();
+		return selectedID;
 	}
 
+	/*
 	private int getPayToID()
 	{		
-		final IDSet payToIDs = PFSystem.getCurrent().getPayToSystem().getAllIDs();
-		
-		for(int i = 0; i < payToIDs.getSize(); i++)
+		if(table.getSelectionCount() == 1)
 		{
-			final int id = payToIDs.getValue(i);
-			
-			final PayTo payTo = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(id);
-			
-			String payToString = payTo.getPayToName() + ", " + payTo.getPayToBranch();
-			
-			if(payToString.equals(output))
-			{
-				return id;
-			}
+			final int id = Integer.parseInt(table.getSelection()[0].getText(0));
+			return id;
 		}
 		
 		return -1;
 	}
-	
+	*/
 	/**
 	 * Create contents of the window.
 	 * @wbp.parser.entryPoint
@@ -79,25 +73,37 @@ public class PaytoSelection implements IDialog
 		shell.setSize(450, 300);
 		shell.setText("PayTo Manager");
 		
-		tree = new Tree(shell, SWT.BORDER);
-		tree.addSelectionListener(new SelectionAdapter() 
-		{
+		table = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
+		table.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent arg0) 
-			{
-				TreeItem selection = tree.getSelection()[0];	
+			public void widgetSelected(SelectionEvent arg0) {
+				final int selected = table.getSelectionIndex();
 				
-				if(selection.getParentItem() == null)
+				if(selected != -1)
 				{
-					return;
+					selectedID = Integer.parseInt(table.getItem(selected).getText(0));
 				}
-				
-				output = selection.getParentItem().getText() + ", " + selection.getText();
+				else
+				{
+					selectedID = -1;
+				}
 			}
 		});
-		tree.setBounds(12, 10, 412, 211);
-
-		populateList(tree);
+		table.setBounds(10, 10, 430, 249);
+		table.setHeaderVisible(true);
+		table.setLinesVisible(true);
+		
+		TableColumn tblclmnId = new TableColumn(table, SWT.NONE);
+		tblclmnId.setWidth(100);
+		tblclmnId.setText("ID");
+		
+		TableColumn tblclmnName = new TableColumn(table, SWT.NONE);
+		tblclmnName.setWidth(100);
+		tblclmnName.setText("Name");
+		
+		TableColumn tblclmnLocation = new TableColumn(table, SWT.NONE);
+		tblclmnLocation.setWidth(100);
+		tblclmnLocation.setText("Location");
 		
 		Button cancelButton = new Button(shell, SWT.NONE);
 		cancelButton.addSelectionListener(new SelectionAdapter() 
@@ -108,7 +114,7 @@ public class PaytoSelection implements IDialog
 				shell.close();
 			}
 		});
-		cancelButton.setBounds(10, 227, 75, 25);
+		cancelButton.setBounds(10, 265, 75, 25);
 		cancelButton.setText("Cancel");
 		
 		Button okayButton = new Button(shell, SWT.NONE);
@@ -120,7 +126,7 @@ public class PaytoSelection implements IDialog
 				shell.close();
 			}
 		});
-		okayButton.setBounds(349, 227, 75, 25);
+		okayButton.setBounds(365, 265, 75, 25);
 		okayButton.setText("Okay");
 		
 		Button addButton = new Button(shell, SWT.NONE);
@@ -131,52 +137,30 @@ public class PaytoSelection implements IDialog
 			{
 				IWindow window = new PayToCreation();
 				window.open();
-				tree.removeAll();
-				populateList(tree);
-				
+				populateList(table);
 			}
 		});
-		addButton.setBounds(180, 227, 75, 25);
+		addButton.setBounds(180, 265, 75, 25);
 		addButton.setText("+");
-		
+	
+		populateList(table);
 	}
 	
-	private void populateList(Tree tree)
+	private void populateList(Table table)
 	{
-		IDSet payToIDs = PFSystem.getCurrent().getPayToSystem().getAllIDs();
-		
-		int totalTrees = 0;
-		TreeItem[] trees = new TreeItem[payToIDs.getSize()];
+		final IDSet payToIDs = PFSystem.getCurrent().getPayToSystem().getAllIDs();
 				
+		table.removeAll();
+		
 		for(int i = 0; i < payToIDs.getSize(); i++)
 		{
 			final int id = payToIDs.getValue(i);
 			final PayTo payto = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(id);
 			
-			boolean placed = false;
-			
-			for(int j = 0; j < totalTrees; j++)
-			{
-				if(trees[j].getText().equals(payto.getPayToName()))
-				{
-					TreeItem subTreeItem = new TreeItem(trees[j], SWT.NONE);
-					subTreeItem.setText(payto.getPayToBranch());
-					placed = true;
-					break;
-				}
-			}
-			
-			if(!placed)
-			{
-				TreeItem treeItem = new TreeItem(tree, 0);
-				treeItem.setText(payto.getPayToName());
-				
-				trees[totalTrees] = treeItem;
-				totalTrees++;
-				
-				TreeItem subTreeItem = new TreeItem(treeItem, SWT.NONE);
-				subTreeItem.setText(payto.getPayToBranch());
-			}
+			TableItem tableItem = new TableItem(table, SWT.NONE);
+			tableItem.setText(0, "" + id);
+			tableItem.setText(1, payto.getPayToName());
+			tableItem.setText(2, payto.getPayToBranch());
 		}
 	}
 }
