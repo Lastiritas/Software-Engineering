@@ -101,8 +101,22 @@ public class SimpleDate implements Comparable<SimpleDate>
 	
 	public int toInteger()
 	{
-		// #### ## ##
 		return (getYear() * 10000) + (getMonth() * 100) + getDay(); 
+	}
+	
+	public static SimpleDate parseDate(int inDate)
+	{
+		SimpleDate newValue = SimpleDate.Now();
+		
+		int year = inDate/10000;
+		int month = (inDate/100)%100;
+		int day = inDate%100;
+		
+		newValue.setYear(year);
+		newValue.setMonth(month);
+		newValue.setDay(day);
+		
+		return newValue;
 	}
 	
 	@Override

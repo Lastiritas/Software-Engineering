@@ -11,7 +11,6 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.internal.cocoa.objc_super;
 
 import domainobjects.IDSet;
 import domainobjects.PayTo;

@@ -9,6 +9,7 @@
 	<classpathentry kind="lib" path="lib/jmock-2.6.0.jar"/>
 	<classpathentry kind="lib" path="lib/jmock-junit3-2.6.0.jar"/>
 	<classpathentry kind="lib" path="lib/junit.jar"/>
-	<classpathentry kind="lib" path="/Users/aaronragnarvaage/Downloads/swt-3.6.1-cocoa-macosx-x86_64/swt.jar"/>
+	<classpathentry kind="lib" path="lib/hsqldb.jar"/>
+	<classpathentry kind="lib" path="lib/swt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
