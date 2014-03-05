@@ -196,9 +196,13 @@ public class FilterCreation implements IDialog
 				IDialog selection = new LabelSelection();
 				String[] labels = (String[])selection.open();
 				
+				labelList.clearAll(true);
+				
 				for(String label : labels)
 				{
 					// add each label to the list
+					TreeItem labelItem = new TreeItem(labelList, SWT.NONE);
+					labelItem.setText(label);
 				}
 			}
 		});
@@ -248,7 +252,11 @@ public class FilterCreation implements IDialog
 				IDialog selection = new PaytoSelection();
 				int payToID = (int)selection.open();
 				
+				payToList.clearAll(true);
+				
 				// set the payTo id
+				TreeItem paytoItem = new TreeItem(payToList, SWT.NONE);
+				paytoItem.setText("" + payToID);
 			}
 		});
 		selectPayToButton.setBounds(91, 269, 109, 28);
