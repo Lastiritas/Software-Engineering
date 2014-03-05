@@ -99,6 +99,12 @@ public class SimpleDate implements Comparable<SimpleDate>
 		return this.getDay() == inDate.getDay() && this.getMonth() == inDate.getMonth() && this.getYear() == inDate.getYear();
 	}
 	
+	public int toInteger()
+	{
+		// #### ## ##
+		return (getYear() * 10000) + (getMonth() * 100) + getDay(); 
+	}
+	
 	@Override
 	public String toString()
 	{

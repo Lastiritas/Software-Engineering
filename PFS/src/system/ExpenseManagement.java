@@ -29,7 +29,7 @@ public class ExpenseManagement implements IIDReader, IDataReader, IDataModifer
 	
 	public IDSet getAllIDs(ExpenseFilter filter)
 	{
-		final String sqlStatement = filter.createSQLStatement();
+		final String sqlStatement = filter.createSQLWhereClause();
 		
 		// need to use the sql statement in the database query
 		

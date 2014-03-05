@@ -38,39 +38,79 @@ public class ExpenseFilter
 		labelSetOperation = inSetOperation;
 	}
 	
-	public String createSQLStatement()
+	
+	public String createSQLWhereClause()	// returns the where-clause for a sql expense query
 	{
 		StringBuilder statement = new StringBuilder();
 		
-		//statement.append("SELECT * FROM expenses")
-		statement.append("SELECT id FROM expenses WHERE ");
+		// WHERE...
 		
 		if(useDateRange)
 		{
-			// add the condition which says the date must be in range
+			// add the condition which says the date must be in range: date >= daterange.min and date <= daterange.max
+			statement.append(String.format("date >= %d and date <= %d", dateRange.getLower().toInteger(), dateRange.getUpper().toInteger()));
 		}
 		
 		if(useMoneyRange)
 		{
-			// add the condition which says the amount must be in range
+			// add the condition which says the amount must be in range: amount >= amountrange.min and amount <= amountrange.max
+			statement.append(String.format("amount >= %d and amount <= %d", moneyRange.getLower().getTotalCents(), moneyRange.getUpper().getTotalCents()));
 		}
 		
 		if(usePaymentMethod)
 		{
-			// add the condition which says the payment method must match
+			// add the condition which says the payment method must match: method = paymentmethod
+			statement.append(String.format("method = %d", PaymentMethodHelper.toInteger(paymentMethod)));
 		}
 		
 		if(usePayTo)
 		{
-			// add the condition which says the expense must have the payTos
+			// add the condition which says the expense must have the payTos: payto in selectedpaytos
+			statement.append("payto in (");
+			
+			for(int i = 0; i < payTos.getSize(); i++)
+			{
+				statement.append(payTos.getValue(i));
+				statement.append(',');
+			}
+			
+			statement.replace(statement.length() - 1, statement.length(), ")");
 		}
 		
 		if(useLabels)
 		{
-			// add the condition which says the label must have the labels
+			// ids = (SELECT id FROM expenselabels WHERE label = labels[0]) INTERECT/UNION (SELECT id FROM expenselabels WHERE label = labels[1]) ... 
+			
+			// add the condition which says the label must have the labels: id in ids
+			
+			String setOperation = " UNION ";
+			if(labelSetOperation == SetOperation.INTERSECTION)
+			{
+				statement.append(" INTERSECT ");
+			}
+			
+			statement.append("id in (");
+			
+			for(int i = 0; i < labels.getSize(); i++)
+			{
+				if(i > 0)
+				{
+					statement.append(setOperation);
+				}
+				
+				statement.append(String.format("(SELECT id FROM expenselabels WHERE label = %d)", labels.getValue(i)));				
+			}
+			
+			statement.append(")");
 		}
 		
 		return statement.toString();
+	}
+	
+	@Override
+	public String toString()
+	{
+		return "Where " + createSQLWhereClause();
 	}
 	
 	private DateRange dateRange = null;
