@@ -1,6 +1,7 @@
 package gui;
 
 import java.util.Collection;
+
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.SWT;
@@ -8,31 +9,39 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Label;
+
+import domainobjects.ExpenseFilter;
 import domainobjects.IDSet;
+import domainobjects.SetOperation;
 import system.PFSystem;
+
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Composite;
-import swing2swt.layout.BorderLayout;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
-public class MinedView implements IWindow 
+public class MinedView implements IDialog 
 {
 	private Shell shell;
-	private List tree;
+	private List list;
 	private Scale scale;
 	private Label scaleAmountLabel;
 	
 	protected int currID;
-	private Composite composite;
 	private Composite composite_1;
+	private Button btnCancel;
+	private Button btnView;
+	
+	private ExpenseFilter outputFilter = null;
 	
 	/**
 	 * Open the window.
 	 */
-	public void open() 
+	public Object open() 
 	{
 		Display display = Display.getDefault();
-	
+		
 		createContents();
 		shell.open();
 		shell.layout();
@@ -44,6 +53,8 @@ public class MinedView implements IWindow
 				display.sleep();
 			}
 		}
+		
+		return null;	// will return a filter
 	}
 
 	/**
@@ -53,21 +64,19 @@ public class MinedView implements IWindow
 	protected void createContents() 
 	{
 		shell = new Shell();
-		shell.setSize(565, 365);
+		shell.setSize(565, 406);
 		shell.setText("Mined Data View");
-		shell.setLayout(new BorderLayout(0, 0));
+		shell.setLayout(null);
 		
-		tree = new List(shell, SWT.BORDER | SWT.V_SCROLL);
+		list = new List(shell, SWT.BORDER | SWT.V_SCROLL);
+		list.setBounds(10, 10, 545, 260);
 		
-		composite = new Composite(shell, SWT.NONE);
-		composite.setLayoutData(BorderLayout.SOUTH);
-		composite.setLayout(new FillLayout(SWT.HORIZONTAL));
-		
-		composite_1 = new Composite(composite, SWT.NONE);
-		composite_1.setLayout(new BorderLayout(0, 0));
+		composite_1 = new Composite(shell, SWT.NONE);
+		composite_1.setBounds(10, 289, 545, 44);
+		composite_1.setLayout(null);
 		
 		scale = new Scale(composite_1, SWT.NONE);
-		scale.setLayoutData(BorderLayout.CENTER);
+		scale.setBounds(10, 10, 472, 24);
 		scale.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				scaleAmountLabel.setText(scale.getSelection() + "%");
@@ -78,9 +87,29 @@ public class MinedView implements IWindow
 		scale.setSelection(50);
 		
 		scaleAmountLabel = new Label(composite_1, SWT.NONE);
-		scaleAmountLabel.setLayoutData(BorderLayout.EAST);
+		scaleAmountLabel.setBounds(488, 10, 47, 15);
 		scaleAmountLabel.setAlignment(SWT.RIGHT);
 		scaleAmountLabel.setText(scale.getSelection() + "%");
+		
+		btnCancel = new Button(shell, SWT.NONE);
+		btnCancel.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				closeWithReturn(null);
+			}
+		});
+		btnCancel.setBounds(10, 346, 94, 28);
+		btnCancel.setText("Cancel");
+		
+		btnView = new Button(shell, SWT.NONE);
+		btnView.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				closeWithReturn(generateFilterFromGUI());
+			}
+		});
+		btnView.setBounds(461, 346, 94, 28);
+		btnView.setText("View");
 		
 		refreshList();
 	}
@@ -97,7 +126,7 @@ public class MinedView implements IWindow
 	{
 		Collection<IDSet> frequentSets = PFSystem.getCurrent().getAllFrequentLabelCombinations(inFrequency);
 		
-		tree.removeAll();
+		list.removeAll();
 		
 		for(IDSet set : frequentSets)
 		{
@@ -114,7 +143,26 @@ public class MinedView implements IWindow
 				builder.append(", ");
 			}
 			
-			tree.add(builder.toString());
+			list.add(builder.toString());
 		}
+	}
+	
+	private ExpenseFilter generateFilterFromGUI()
+	{
+		ExpenseFilter output = new ExpenseFilter();
+		
+		IDSet set = IDSet.empty();	// need to generate the set values
+		
+		output.assignLabels(set, SetOperation.INTERSECTION);
+		
+		return output;
+	}
+	
+	private void closeWithReturn(ExpenseFilter filter)
+	{
+		assert filter == null || filter != outputFilter;	// do not set the filter to itself
+		
+		outputFilter = filter;
+		shell.close();
 	}
 }

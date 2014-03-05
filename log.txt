@@ -1,5 +1,60 @@
-ITERATION 1
+=================================================================================
+ITERATION 2
+=================================================================================
+
+Big User Stories for Iteration 2 (priority):
+
+  - View Spending Trends (Medium)
+  - Filter and Find Expenses (High)
+  
 ===========
+Deveolper Tasks for Iteration 2 (expected datys):
+
+  - Domain Objects:
+    - Filter (1)
+    
+  -System:
+    - Implement Database (5)
+    - Correlation Detection (5)
+    - Filtering (2)
+    
+  - GUI:
+    - Sorted View (2)
+    - Create Filters for Sorting (5)
+    - Move Edit Expense (2)
+    - Fix getPayToId (2)
+    
+  - Miscellaneous
+    - Package Cleanup (1)
+    
+===========
+Meetings
+
+
+===========
+Tasks Completed by Team Members:
+
+  - Aaron Vaage
+    -
+    
+  - Jeremy Vogt
+    - 
+    
+  - Josh Krcadinac
+    - Sorted View (2 days)
+    - Clean up packages (1 day)
+    - Update SimpleDate functionality (1 hour)
+    - 
+    
+  -Madeline Lavergne
+    - 
+    
+  - Rafael Lastiri
+    - 
+
+=================================================================================
+ITERATION 1
+=================================================================================
 
 Big User Stories for This Iteration (priority):
 

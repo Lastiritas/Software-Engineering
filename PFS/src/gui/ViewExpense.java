@@ -1,5 +1,4 @@
 package gui;
-import java.util.ArrayList;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -18,11 +17,13 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
 import domainobjects.Expense;
+import domainobjects.ExpenseFilter;
 import domainobjects.IDSet;
 import domainobjects.Money;
 import domainobjects.PayTo;
 import domainobjects.PaymentMethod;
 import domainobjects.SimpleDate;
+import system.ExpenseManagement;
 import system.PFSystem;
 
 public class ViewExpense implements IWindow 
@@ -43,6 +44,10 @@ public class ViewExpense implements IWindow
 	private List labelsList;
 	private Button editLabelsButton;
 	protected int currID;
+	private Button btnFilter;
+	private Button btnViewMining;
+	private int sortCounterDate =0;
+	private int sortCounterMoney=0;
 	
 	/**
 	 * Open the window.
@@ -88,12 +93,11 @@ public class ViewExpense implements IWindow
 			public void widgetSelected(SelectionEvent arg0) 
 			{
 				PaytoSelection window = new PaytoSelection();
-				window.open();
-				
-				final int payToID = window.getPayToID();
+				final int payToID = (int)window.open();
 				
 				final PayTo payTo = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(payToID);
 				
+				//TODO: sets payto in viewexpense even when cancel is selected in selection window
 				payToField.setText(payTo.getPayToName() + ", " + payTo.getPayToBranch());
 			}
 		});
@@ -148,11 +152,12 @@ public class ViewExpense implements IWindow
 			@Override
 			public void widgetSelected(SelectionEvent arg0) 
 			{	
+				String[] existingLabel = labelsList.getItems();
+				
+				//TODO: startign here can put into method/business logic
 				IDSet allLabelIDs = PFSystem.getCurrent().getLabelSystem().getAllIDs();
 				
-				String[] exisitingLabel = labelsList.getItems();
-				
-				int[] rawData = new int[exisitingLabel.length];
+				int[] rawData = new int[existingLabel.length];
 				int rawDataCount = 0;
 				
 				for(int i = 0; i < allLabelIDs.getSize(); i++)
@@ -160,9 +165,9 @@ public class ViewExpense implements IWindow
 					final int id = allLabelIDs.getValue(i);
 					final domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
 					
-					for(int j = 0; j < exisitingLabel.length; j++)
+					for(int j = 0; j < existingLabel.length; j++)
 					{
-						if(exisitingLabel[i].equals(label.getLabelName()))
+						if(existingLabel[i].equals(label.getLabelName()))
 						{
 							// id was found
 							rawData[rawDataCount] = id;
@@ -174,15 +179,14 @@ public class ViewExpense implements IWindow
 				int[] realData = new int[rawDataCount];
 				System.arraycopy(rawData, 0, realData, 0, rawDataCount);
 				
+				//TODO: finsh logic here. return either realSet or realData
 				IDSet realSet = IDSet.createFromArray(realData);
 				
 				LabelSelection window = new LabelSelection();
 				window.setStartingSet(realSet);
-				window.open();
+				String[] labels = (String[])window.open();
 				
 				labelsList.removeAll();
-				
-				String[] labels = window.getLabels();
 								
 				for(int i = 0; i < labels.length; i++)
 				{
@@ -241,7 +245,7 @@ public class ViewExpense implements IWindow
 				}
 			}
 		});
-		deleteButton.setBounds(10, 593, 94, 28);
+		deleteButton.setBounds(345, 593, 94, 28);
 		deleteButton.setText("-");
 		
 		Button addButton = new Button(composite_1, SWT.NONE);
@@ -286,9 +290,71 @@ public class ViewExpense implements IWindow
 		for(int i = 0; i < columnHeaders.length; i++)
 		{
 			TableColumn column = new TableColumn (expenseTable, SWT.NONE);
-			column.setWidth(100);
+			if(i==0)
+			{
+				column.setWidth(50);
+			}
+			else if(i==2)
+			{
+				column.setWidth(125);
+			}
+			else if(i==4)
+			{
+				column.setWidth(250);
+			}
+			else
+			{
+				column.setWidth(100);
+			}
 			column.setText (columnHeaders[i]);
 		}
+		
+		expenseTable.getColumn(1).addSelectionListener(new SelectionAdapter()
+		{
+			@Override
+			public void widgetSelected(SelectionEvent arg0)
+			{
+				if(expenseTable.getItemCount() <2)
+				{
+					return;
+				}
+				
+				if(sortCounterDate == 0)
+				{
+					ascendSortDate();
+					sortCounterDate =1;
+					sortCounterMoney=0;
+				}
+				else if(sortCounterDate ==1)
+				{
+					descendSortDate();
+					sortCounterDate=0;
+				}
+			}
+		});
+		expenseTable.getColumn(3).addSelectionListener(new SelectionAdapter()
+		{
+			@Override
+			public void widgetSelected(SelectionEvent arg0)
+			{
+				if(expenseTable.getItemCount() <2)
+				{
+					return;
+				}
+				
+				if(sortCounterMoney == 0)
+				{
+					ascendSortMoney();
+					sortCounterMoney =1;
+					sortCounterDate = 0;
+				}
+				else if(sortCounterMoney ==1)
+				{
+					descendSortMoney();
+					sortCounterMoney=0;
+				}
+			}
+		});
 				
 		Button duplicateButton = new Button(composite_1, SWT.NONE);
 		duplicateButton.addSelectionListener(new SelectionAdapter() 
@@ -324,15 +390,182 @@ public class ViewExpense implements IWindow
 				shell.close();
 			}
 		});
-		btnQuit.setBounds(254, 593, 94, 28);
+		btnQuit.setBounds(10, 593, 94, 28);
 		btnQuit.setText("Quit");
 		
-		// add all exisiting expenses
-		IDSet expenseIDs = PFSystem.getCurrent().getExpenseSystem().getAllIDs();
-		for(int i = 0; i < expenseIDs.getSize(); i++)
+		btnFilter = new Button(composite_1, SWT.NONE);
+		btnFilter.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				IDialog filterDialog = new FilterCreation();
+				ExpenseFilter filter = (ExpenseFilter)filterDialog.open();
+				
+				if(filter != null)
+				{
+					refreshWholeList(filter);
+				}
+				// else - do nothing
+			}
+		});
+		btnFilter.setText("Filter");
+		btnFilter.setBounds(110, 593, 94, 28);
+		
+		btnViewMining = new Button(composite_1, SWT.NONE);
+		btnViewMining.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				IDialog miningDialog = new MinedView();
+				ExpenseFilter filter = (ExpenseFilter)miningDialog.open();
+				
+				if(filter != null)
+				{
+					refreshWholeList(filter);
+				}
+				// else - do nothing
+			}
+		});
+		btnViewMining.setBounds(210, 593, 94, 28);
+		btnViewMining.setText("Labels");
+		
+		refreshWholeList(new ExpenseFilter());
+	}
+	
+	private void ascendSortDate() {
+		TableItem items[] = expenseTable.getItems();
+		final int length = items.length;
+		SimpleDate date[] = new SimpleDate[length];
+		int IDs[] = new int[length];
+		
+		for(int i=0; i< length; i++)
 		{
-			final int id = expenseIDs.getValue(i);
-			addExpense(id);
+			IDs[i] = Integer.parseInt(items[i].getText(0));
+			date[i] = SimpleDate.Now();
+			date[i].setDate(items[i].getText(1));
+		}
+		
+		
+		for(int i=1; i<length; i++)
+		{
+			SimpleDate temp = date[i];
+			int tempID = IDs[i];
+			
+			int j;
+			for(j=i-1; (j>=0) && (temp.compareTo(date[j])) < 0; j--)
+			{
+				date[j+1] = date[j];
+				IDs[j+1] = IDs[j];
+			}
+			
+			date[j+1]=temp;
+			IDs[j+1] = tempID;
+		}
+		
+		refreshETable(IDs);
+	}
+	
+	private void descendSortDate() {
+		TableItem items[] = expenseTable.getItems();
+		final int length = items.length;
+		SimpleDate date[] = new SimpleDate[length];
+		int IDs[] = new int[length];
+		
+		for(int i=0; i< length; i++)
+		{
+			IDs[i] = Integer.parseInt(items[i].getText(0));
+			date[i] = SimpleDate.Now();
+			date[i].setDate(items[i].getText(1));
+		}
+		
+		
+		for(int i=1; i<length; i++)
+		{
+			SimpleDate temp = date[i];
+			int tempID = IDs[i];
+			
+			int j;
+			for(j=i-1; (j>=0) && (temp.compareTo(date[j])) > 0; j--)
+			{
+				date[j+1] = date[j];
+				IDs[j+1] = IDs[j];
+			}
+			
+			date[j+1]=temp;
+			IDs[j+1] = tempID;
+		}
+		
+		refreshETable(IDs);
+	}
+	
+	private void ascendSortMoney() {
+		TableItem items[] = expenseTable.getItems();
+		final int length = items.length;
+		Money money[] = new Money[length];
+		int IDs[] = new int[length];
+		
+		for(int i=0; i< length; i++)
+		{
+			IDs[i] = Integer.parseInt(items[i].getText(0));
+			money[i] = Money.fromString(items[i].getText(3));
+		}
+		
+		
+		for(int i=1; i<length; i++)
+		{
+			Money temp = money[i];
+			int tempID = IDs[i];
+			
+			int j;
+			for(j=i-1; (j>=0) && (temp.compareTo(money[j]) < 0); j--)
+			{
+				money[j+1] = money[j];
+				IDs[j+1] = IDs[j];
+			}
+			
+			money[j+1]=temp;
+			IDs[j+1] = tempID;
+		}
+		
+		refreshETable(IDs);
+	}
+	
+	private void descendSortMoney() {
+		TableItem items[] = expenseTable.getItems();
+		final int length = items.length;
+		Money money[] = new Money[length];
+		int IDs[] = new int[length];
+		
+		for(int i=0; i< length; i++)
+		{
+			IDs[i] = Integer.parseInt(items[i].getText(0));
+			money[i] = Money.fromString(items[i].getText(3));
+		}
+		
+		
+		for(int i=1; i<length; i++)
+		{
+			Money temp = money[i];
+			int tempID = IDs[i];
+			
+			int j;
+			for(j=i-1; (j>=0) && (temp.compareTo(money[j]) > 0); j--)
+			{
+				money[j+1] = money[j];
+				IDs[j+1] = IDs[j];
+			}
+			
+			money[j+1]=temp;
+			IDs[j+1] = tempID;
+		}
+		
+		refreshETable(IDs);
+	}
+		
+	private void refreshETable(int arr[])
+	{
+		expenseTable.removeAll();
+		for(int i=0; i<arr.length; i++)
+		{
+			addExpense(arr[i]);
 		}
 	}
 	
@@ -380,12 +613,13 @@ public class ViewExpense implements IWindow
 				break;
 			}
 		}
-				
+		
+		String[] existingLabel = labelsList.getItems();
+		
+		//TODO: refactor code - simialar to earlier
 		IDSet allLabelIDs = PFSystem.getCurrent().getLabelSystem().getAllIDs();
 		
-		String[] exisitingLabel = labelsList.getItems();
-		
-		int[] rawData = new int[exisitingLabel.length];
+		int[] rawData = new int[existingLabel.length];
 		int rawDataCount = 0;
 		
 		for(int i = 0; i < allLabelIDs.getSize(); i++)
@@ -393,9 +627,9 @@ public class ViewExpense implements IWindow
 			final int id = allLabelIDs.getValue(i);
 			final domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
 			
-			for(int j = 0; j < exisitingLabel.length; j++)
+			for(int j = 0; j < existingLabel.length; j++)
 			{
-				if(exisitingLabel[j].equals(label.getLabelName()))
+				if(existingLabel[j].equals(label.getLabelName()))
 				{
 					// id was found
 					rawData[rawDataCount] = id;
@@ -408,6 +642,7 @@ public class ViewExpense implements IWindow
 		int[] realData = new int[rawDataCount];
 		System.arraycopy(rawData, 0, realData, 0, rawDataCount);
 		
+		//TODO; finish refactor
 		final IDSet set = IDSet.createFromArray(realData);
 		
 		final Expense expense = new Expense(date, Money.fromString(amountField.getText()), method, descriptionField.getText(), payToId, set);
@@ -473,9 +708,7 @@ public class ViewExpense implements IWindow
 		}
 		
 		SimpleDate date = SimpleDate.Now();
-		date.setMonth(datePicker.getMonth());
-		date.setDay(datePicker.getDay());
-		date.setYear(datePicker.getYear());
+		date = expense.getDate();
 				
 		final int payToID = expense.getPayTo();
 		PayTo payto = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(payToID);		
@@ -485,9 +718,9 @@ public class ViewExpense implements IWindow
 		final String description = expense.getDescription();
 		
 		StringBuilder dateBuilder = new StringBuilder();
-		dateBuilder.append(date.getMonth());
-		dateBuilder.append("/");
 		dateBuilder.append(date.getDay());
+		dateBuilder.append("/");
+		dateBuilder.append(date.getMonth());
 		dateBuilder.append("/");
 		dateBuilder.append(date.getYear());	
 				
@@ -502,5 +735,22 @@ public class ViewExpense implements IWindow
 		item.setText(2, payToString);
 		item.setText(3, money.toString());
 		item.setText(4, descriptionString);
+	}
+
+	private void refreshWholeList(ExpenseFilter filter)
+	{
+		expenseTable.removeAll();
+		
+		final ExpenseManagement expenseSystem = PFSystem.getCurrent().getExpenseSystem();
+		
+		final IDSet expenseIDs = expenseSystem.getAllIDs(filter);
+
+		final int totalExpenses = expenseIDs.getSize();
+		
+		for(int i = 0; i < totalExpenses; i++)
+		{
+			final int id = expenseIDs.getValue(i);
+			addExpense(id);
+		}
 	}
 }

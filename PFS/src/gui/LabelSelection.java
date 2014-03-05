@@ -11,7 +11,7 @@ import util.StringMatch;
 import domainobjects.*;
 import domainobjects.Label;
 
-public class LabelSelection implements IWindow
+public class LabelSelection implements IDialog
 {
 	protected Shell shell;
 	private Text textSearchLabel;
@@ -26,14 +26,14 @@ public class LabelSelection implements IWindow
 	private ArrayList<String> labels = new ArrayList<String>(1);
 	private ArrayList<String> pickLabels = new ArrayList<String>(1);
 	
-	private IDSet startingSet;
+	private IDSet startingSet = IDSet.empty();
 	
 	public void setStartingSet(IDSet set)
 	{
 		startingSet = set;
 	}
 	
-	public void open()
+	public Object open()
 	{
 		Display display = Display.getDefault();
 		
@@ -48,9 +48,11 @@ public class LabelSelection implements IWindow
 				display.sleep();
 			}
 		}
+		
+		return getLabels();
 	}
 
-	public String[] getLabels()
+	private String[] getLabels()
 	{
 		String[] labels = new String[pickLabels.size()];
 		

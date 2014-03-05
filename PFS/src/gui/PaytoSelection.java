@@ -17,7 +17,7 @@ import domainobjects.IDSet;
 import domainobjects.PayTo;
 
 
-public class PaytoSelection implements IWindow
+public class PaytoSelection implements IDialog
 {
 	private Shell shell;
 	private Tree tree;
@@ -27,7 +27,7 @@ public class PaytoSelection implements IWindow
 	/**
 	 * Open the window.
 	 */
-	public void open() 
+	public Object open() 
 	{
 		Display display = Display.getDefault();
 		
@@ -42,9 +42,11 @@ public class PaytoSelection implements IWindow
 				display.sleep();
 			}
 		}
+		
+		return getPayToID();
 	}
 
-	public int getPayToID()
+	private int getPayToID()
 	{		
 		final IDSet payToIDs = PFSystem.getCurrent().getPayToSystem().getAllIDs();
 		

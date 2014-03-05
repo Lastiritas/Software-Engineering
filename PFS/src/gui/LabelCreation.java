@@ -10,7 +10,7 @@ import util.StringMatch;
 import domainobjects.*;
 import dataAccessLayer.*;
 
-public class LabelCreation 
+public class LabelCreation implements IDialog
 {
 	protected Shell shell;
 	protected List listExsistingLabel;
