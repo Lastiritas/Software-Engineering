@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import system.datamining.DataMiner;
+import dataAccessLayer.Database;
 import dataAccessLayer.IDatabase;
 import dataAccessLayer.StubDatabase;
 import domainobjects.Expense;
@@ -11,6 +12,17 @@ import domainobjects.IDSet;
 
 public class PFSystem 
 {
+	public PFSystem()
+	{
+		database.open("PFS");
+	}
+	
+	@Override
+	protected void finalize()
+	{
+		database.close();
+	}
+	
 	public PayToManagement getPayToSystem()
 	{
 		return payToSystem;
@@ -47,7 +59,7 @@ public class PFSystem
 		return DataMiner.mine(sets, minSup);
 	}
 	
-	private IDatabase database = new StubDatabase();
+	private IDatabase database = new Database("PFS");
 	
 	private PayToManagement payToSystem = new PayToManagement(database);
 	private LabelManagement labelSystem = new LabelManagement(database);

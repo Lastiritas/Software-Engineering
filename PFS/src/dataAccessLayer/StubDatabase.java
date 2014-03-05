@@ -32,6 +32,11 @@ public class StubDatabase implements IDatabase
 		expenses.add(new Expense(SimpleDate.Now(), new Money(1, 0), PaymentMethod.CASH, "", 1, set));
 	}
 	
+	public void open(String dbName)
+	{
+		System.out.println("The database has been opened\n");
+	}
+	
 	public void close()
 	{
 		System.out.println("The database has been closed\n");
@@ -50,6 +55,11 @@ public class StubDatabase implements IDatabase
 		return expense;
 	}
 	
+	public Expense getExpenseWhere(String whereClause)
+	{
+		return expenses.elementAt(1);
+	}
+	
 	public int[] getAllExpenseIDs()
 	{
 		int[] ids = new int[expenseIds.size()];
@@ -60,6 +70,11 @@ public class StubDatabase implements IDatabase
 		}
 		
 		return ids;
+	}
+	
+	public int[] getAllExpenseIDsWhere(String whereClause)
+	{
+		return getAllExpenseIDs();
 	}
 	
 	public int addExpense(Expense inNewValue)

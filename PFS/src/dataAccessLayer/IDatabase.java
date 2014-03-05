@@ -6,10 +6,13 @@ import domainobjects.PayTo;
 
 public interface IDatabase 
 {
+	void open(String dbName);
 	void close();
 	
 	Expense getExpenseByID(int inId);
+	Expense getExpenseWhere(String whereClause);
 	int[] getAllExpenseIDs();
+	int[] getAllExpenseIDsWhere(String whereClause);
 	int addExpense(Expense inNewValue);
 	boolean updateExpense(int inId, Expense inNewValue);
 	boolean deleteExpense(int inId);
