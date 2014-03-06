@@ -18,6 +18,11 @@ public class DatabaseTests extends TestCase
 		database.open("PFS");
 	}
 	
+	protected void tearDown() throws Exception
+	{
+		database.close();
+	}
+	
 	public void test_Add_and_get_an_expense()
 	{
 		int newId = 0;

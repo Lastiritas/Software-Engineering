@@ -195,7 +195,7 @@ public class Database implements IDatabase
 					+", " + inNewValue.getPaymentMethod().ordinal()
 					+", '" + inNewValue.getDescription()
 					+"', " + inNewValue.getPayTo();
-			cmdString = "Insert into Expenses " + " Values(" + values + ")";
+			cmdString = "Insert into Expenses " + "Values(" + values + ")";
 			insertedSuccessful = statement.executeUpdate(cmdString);
 			result = checkWarning(statement, insertedSuccessful);
 			assert result == null;
@@ -295,17 +295,25 @@ public class Database implements IDatabase
 		String result = null;
 		int currentLabel = 0;
 		int insertedSuccessful = 0;
+		final int size = labels.getSize();
 		
 		try
 		{
-			while(labels.getSize() > currentLabel)
+			if(size ==0)
 			{
-				values = expenseId + ", " + labels.getValue(currentLabel);
-				cmdString = "Insert into ExpenseLabels " + " Values(" + values + ")";
-				insertedSuccessful = statement.executeUpdate(cmdString);
-				result = checkWarning(statement, insertedSuccessful);
-				currentLabel++;
-				assert result == null;
+				insertedSuccessful=1;
+			}
+			else
+			{
+				while(labels.getSize() > currentLabel)
+				{
+					values = expenseId + ", " + labels.getValue(currentLabel);
+					cmdString = "Insert into ExpenseLabels " + " Values(" + values + ")";
+					insertedSuccessful = statement.executeUpdate(cmdString);
+					result = checkWarning(statement, insertedSuccessful);
+					currentLabel++;
+					assert result == null;
+				}
 			}
 		}
 		catch (Exception ex)
