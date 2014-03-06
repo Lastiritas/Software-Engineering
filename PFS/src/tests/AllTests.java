@@ -3,6 +3,7 @@ package tests;
 import systemTests.ExpenseManagementTests;
 import systemTests.LabelManagementTests;
 import systemTests.PayToManagementTests;
+import tests.dataAccessLayerTests.DatabaseTests;
 import tests.dataAccessLayerTests.StubDatabaseTests;
 import tests.domainobjecttests.ExpenseTest;
 import tests.domainobjecttests.IDSetTest;
@@ -22,7 +23,7 @@ public class AllTests
 		suite = new TestSuite("All Tests for the Personal Finance System");
 		
 		testDomainObjects();
-		//testSystem();
+		testSystem();
 		testDataAccessLayer();
 		testUtilities();
 		
@@ -46,6 +47,7 @@ public class AllTests
 	
 	private static void testDataAccessLayer()
 	{
+		suite.addTestSuite(DatabaseTests.class);
 		suite.addTestSuite(StubDatabaseTests.class);
 	}
 	
