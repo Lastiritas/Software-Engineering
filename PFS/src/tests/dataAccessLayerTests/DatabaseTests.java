@@ -23,13 +23,26 @@ public class DatabaseTests extends TestCase
 		database.close();
 	}
 	
+	public void test_Add_and_get_an_empty_expense()
+	{
+		int[] setData = new int[0];
+		IDSet set = IDSet.createFromArray(setData);
+		Expense expectedExpense = new Expense(SimpleDate.Now(), new Money(), PaymentMethod.CASH, "", 0, set);
+		
+		addAndGetExpense(expectedExpense);
+	}
+	
 	public void test_Add_and_get_an_expense()
 	{
-		int newId = 0;
 		int[] setData = new int[]{1};
 		IDSet set = IDSet.createFromArray(setData);
 		Expense expectedExpense = new Expense(SimpleDate.Now(), new Money(10, 0), PaymentMethod.CASH, "", 1, set);
 		
+		addAndGetExpense(expectedExpense);
+	}
+	
+	private void addAndGetExpense(Expense expectedExpense) {
+		int newId;
 		newId = database.addExpense(expectedExpense);
 		Expense actualExpense = database.getExpenseByID(newId);
 		System.out.println(newId);
