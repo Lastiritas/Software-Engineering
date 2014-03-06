@@ -95,10 +95,11 @@ public class ViewExpense implements IWindow
 				PaytoSelection window = new PaytoSelection();
 				final int payToID = (int)window.open();
 				
-				final PayTo payTo = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(payToID);
-				
-				//TODO: sets payto in viewexpense even when cancel is selected in selection window
-				payToField.setText(payTo.getPayToName() + ", " + payTo.getPayToBranch());
+				if(payToID !=-1)
+				{
+					final PayTo payTo = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(payToID);		
+					payToField.setText(payTo.getPayToName() + ", " + payTo.getPayToBranch());
+				}
 			}
 		});
 		payToButton.setBounds(10, 46, 94, 28);
@@ -153,34 +154,7 @@ public class ViewExpense implements IWindow
 			public void widgetSelected(SelectionEvent arg0) 
 			{	
 				String[] existingLabel = labelsList.getItems();
-				
-				//TODO: startign here can put into method/business logic
-				IDSet allLabelIDs = PFSystem.getCurrent().getLabelSystem().getAllIDs();
-				
-				int[] rawData = new int[existingLabel.length];
-				int rawDataCount = 0;
-				
-				for(int i = 0; i < allLabelIDs.getSize(); i++)
-				{
-					final int id = allLabelIDs.getValue(i);
-					final domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
-					
-					for(int j = 0; j < existingLabel.length; j++)
-					{
-						if(existingLabel[i].equals(label.getLabelName()))
-						{
-							// id was found
-							rawData[rawDataCount] = id;
-							rawDataCount++;
-						}
-					}
-				}
-				
-				int[] realData = new int[rawDataCount];
-				System.arraycopy(rawData, 0, realData, 0, rawDataCount);
-				
-				//TODO: finsh logic here. return either realSet or realData
-				IDSet realSet = IDSet.createFromArray(realData);
+				final IDSet realSet = labelToIDSet(existingLabel);
 				
 				LabelSelection window = new LabelSelection();
 				window.setStartingSet(realSet);
@@ -615,36 +589,7 @@ public class ViewExpense implements IWindow
 		}
 		
 		String[] existingLabel = labelsList.getItems();
-		
-		//TODO: refactor code - simialar to earlier
-		IDSet allLabelIDs = PFSystem.getCurrent().getLabelSystem().getAllIDs();
-		
-		int[] rawData = new int[existingLabel.length];
-		int rawDataCount = 0;
-		
-		for(int i = 0; i < allLabelIDs.getSize(); i++)
-		{
-			final int id = allLabelIDs.getValue(i);
-			final domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
-			
-			for(int j = 0; j < existingLabel.length; j++)
-			{
-				if(existingLabel[j].equals(label.getLabelName()))
-				{
-					// id was found
-					rawData[rawDataCount] = id;
-					rawDataCount++;
-					
-				}
-			}
-		}
-		
-		int[] realData = new int[rawDataCount];
-		System.arraycopy(rawData, 0, realData, 0, rawDataCount);
-		
-		//TODO; finish refactor
-		final IDSet set = IDSet.createFromArray(realData);
-		
+		final IDSet set = labelToIDSet(existingLabel);
 		final Expense expense = new Expense(date, Money.fromString(amountField.getText()), method, descriptionField.getText(), payToId, set);
 		
 		boolean updated = PFSystem.getCurrent().getExpenseSystem().update(inID, expense);
@@ -752,5 +697,33 @@ public class ViewExpense implements IWindow
 			final int id = expenseIDs.getValue(i);
 			addExpense(id);
 		}
+	}
+
+	public IDSet labelToIDSet(String[] labels) {
+		IDSet allLabelIDs = PFSystem.getCurrent().getLabelSystem().getAllIDs();
+		
+		int[] rawData = new int[labels.length];
+		int rawDataCount = 0;
+		
+		for(int i = 0; i < allLabelIDs.getSize(); i++)
+		{
+			final int id = allLabelIDs.getValue(i);
+			final domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
+			
+			for(int j = 0; j < labels.length; j++)
+			{
+				if(labels[j].equals(label.getLabelName()))
+				{
+					// id was found
+					rawData[rawDataCount] = id;
+					rawDataCount++;
+				}
+			}
+		}
+		
+		int[] realData = new int[rawDataCount];
+		System.arraycopy(rawData, 0, realData, 0, rawDataCount);
+		
+		return IDSet.createFromArray(realData);
 	}
 }

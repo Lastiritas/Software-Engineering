@@ -111,6 +111,7 @@ public class PaytoSelection implements IDialog
 			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
+				selectedID = -1;
 				shell.close();
 			}
 		});
