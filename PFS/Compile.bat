@@ -25,7 +25,7 @@ REM javac -d bin\ -cp %classpath% src\domainobjects\*.java
 
 REM javac -d bin\ -cp %classpath% src\dataAccessLayer\*.java
 
-javac -d bin\ -cp %classpath% src\domainobjects\*.java src\dataAccessLayer\*.java src\application\*.java src\system\*.java src\util\*.java src\gui\*.java
+javac -d bin\ -cp %classpath% src\domainobjects\*.java src\dataAccessLayer\*.java src\application\*.java src\system\*.java src\system\datamining\*.java src\util\*.java src\gui\*.java
 
 javac -d bin\ -cp %classpath% src\tests\domainobjecttests\*.java
 javac -d bin\ -cp %classpath% src\tests\dataAccessLayerTests\*.java
