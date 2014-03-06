@@ -48,6 +48,7 @@ public class ViewExpense implements IWindow
 	private Button btnViewMining;
 	private int sortCounterDate =0;
 	private int sortCounterMoney=0;
+	private int sortCounterID =0;
 	
 	/**
 	 * Open the window.
@@ -283,6 +284,30 @@ public class ViewExpense implements IWindow
 			column.setText (columnHeaders[i]);
 		}
 		
+		expenseTable.getColumn(0).addSelectionListener(new SelectionAdapter()
+		{
+			@Override
+			public void widgetSelected(SelectionEvent arg0)
+			{
+				if(expenseTable.getItemCount() <2)
+				{
+					return;
+				}
+				
+				if(sortCounterID == 0)
+				{
+					ascendSortID();
+					sortCounterID=1;
+					sortCounterDate =0;
+					sortCounterMoney=0;
+				}
+				else if(sortCounterID ==1)
+				{
+					descendSortID();
+					sortCounterID=0;
+				}
+			}
+		});
 		expenseTable.getColumn(1).addSelectionListener(new SelectionAdapter()
 		{
 			@Override
@@ -298,6 +323,7 @@ public class ViewExpense implements IWindow
 					ascendSortDate();
 					sortCounterDate =1;
 					sortCounterMoney=0;
+					sortCounterID=0;
 				}
 				else if(sortCounterDate ==1)
 				{
@@ -321,6 +347,7 @@ public class ViewExpense implements IWindow
 					ascendSortMoney();
 					sortCounterMoney =1;
 					sortCounterDate = 0;
+					sortCounterID=0;
 				}
 				else if(sortCounterMoney ==1)
 				{
@@ -528,6 +555,60 @@ public class ViewExpense implements IWindow
 			}
 			
 			money[j+1]=temp;
+			IDs[j+1] = tempID;
+		}
+		
+		refreshETable(IDs);
+	}
+	
+	private void ascendSortID() {
+		TableItem items[] = expenseTable.getItems();
+		final int length = items.length;
+		int IDs[] = new int[length];
+		
+		for(int i=0; i< length; i++)
+		{
+			IDs[i] = Integer.parseInt(items[i].getText(0));
+		}
+		
+		
+		for(int i=1; i<length; i++)
+		{
+			int tempID = IDs[i];
+			
+			int j;
+			for(j=i-1; (j>=0) && (tempID < IDs[j]); j--)
+			{
+				IDs[j+1] = IDs[j];
+			}
+			
+			IDs[j+1] = tempID;
+		}
+		
+		refreshETable(IDs);
+	}
+	
+	private void descendSortID() {
+		TableItem items[] = expenseTable.getItems();
+		final int length = items.length;
+		int IDs[] = new int[length];
+		
+		for(int i=0; i< length; i++)
+		{
+			IDs[i] = Integer.parseInt(items[i].getText(0));
+		}
+		
+		
+		for(int i=1; i<length; i++)
+		{
+			int tempID = IDs[i];
+			
+			int j;
+			for(j=i-1; (j>=0) && (tempID > IDs[j]); j--)
+			{
+				IDs[j+1] = IDs[j];
+			}
+			
 			IDs[j+1] = tempID;
 		}
 		
