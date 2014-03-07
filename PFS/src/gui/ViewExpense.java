@@ -49,6 +49,7 @@ public class ViewExpense implements IWindow
 	private int sCountMoney=0;
 	private int sCountID =0;
 	private int sCountPay=0;
+	private int sCountDesc=0;
 	private Table labelList;
 	private TableColumn tblclmnId;
 	private TableColumn tblclmnLabel;
@@ -316,6 +317,7 @@ public class ViewExpense implements IWindow
 					sCountDate =0;
 					sCountMoney=0;
 					sCountPay=0;
+					sCountDesc=0;
 				}
 				else if(sCountID ==1)
 				{
@@ -341,6 +343,7 @@ public class ViewExpense implements IWindow
 					sCountMoney=0;
 					sCountID=0;
 					sCountPay=0;
+					sCountDesc=0;
 				}
 				else if(sCountDate ==1)
 				{
@@ -366,6 +369,7 @@ public class ViewExpense implements IWindow
 					sCountDate =0;
 					sCountMoney=0;
 					sCountID=0;
+					sCountDesc=0;
 				}
 				else if(sCountPay ==1)
 				{
@@ -391,11 +395,38 @@ public class ViewExpense implements IWindow
 					sCountDate = 0;
 					sCountID=0;
 					sCountPay=0;
+					sCountDesc=0;
 				}
 				else if(sCountMoney ==1)
 				{
 					descendSortMoney();
 					sCountMoney=0;
+				}
+			}
+		});
+		expenseTable.getColumn(4).addSelectionListener(new SelectionAdapter()
+		{
+			@Override
+			public void widgetSelected(SelectionEvent arg0)
+			{
+				if(expenseTable.getItemCount() <2)
+				{
+					return;
+				}
+				
+				if(sCountDesc == 0)
+				{
+					ascendSortDesc();
+					sCountDesc =1;
+					sCountDate = 0;
+					sCountID=0;
+					sCountPay=0;
+					sCountMoney=0;
+				}
+				else if(sCountDesc ==1)
+				{
+					descendSortDesc();
+					sCountDesc=0;
 				}
 			}
 		});
@@ -519,6 +550,18 @@ public class ViewExpense implements IWindow
 	public void descendSortPay()
 	{
 		int sortedIDs[] = Sort.sortPay(expenseTable.getItems(), Sort.DESCEND);
+		refreshETable(sortedIDs);
+	}
+	
+	private void ascendSortDesc() 
+	{
+		int sortedIDs[] = Sort.sortDesc(expenseTable.getItems(), Sort.ASCEND);
+		refreshETable(sortedIDs);
+	}
+	
+	public void descendSortDesc()
+	{
+		int sortedIDs[] = Sort.sortDesc(expenseTable.getItems(), Sort.DESCEND);
 		refreshETable(sortedIDs);
 	}
 	

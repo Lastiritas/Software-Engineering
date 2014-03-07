@@ -9,8 +9,11 @@ public class Sort {
 	
 	public final static int ASCEND =1;
 	public final static int DESCEND =2;
+	
+	private final static int PAY = 2;
+	private final static int DESCRIPTION=4;
 
-	public static int[] sortDate(TableItem[] items, int order)
+ 	public static int[] sortDate(TableItem[] items, int order)
 	{
 		int length = items.length;
 		SimpleDate date[] = new SimpleDate[length];
@@ -147,15 +150,24 @@ public class Sort {
 
 	public static int[] sortPay(TableItem[] items, int order)
 	{
+		return sortWord(items,order,PAY);
+	}
+	
+	public static int[] sortDesc(TableItem[] items, int order)
+	{
+		return sortWord(items,order,DESCRIPTION);
+	}
+	
+	private static int[] sortWord(TableItem[] items, int order, int string)
+	{
 		int length = items.length;
 		int IDs[] = new int[length];
 		String payTo[] = new String[length];
 		
-		
 		for(int i=0; i< length; i++)
 		{
 			IDs[i] = Integer.parseInt(items[i].getText(0));
-			payTo[i] = items[i].getText(2);
+			payTo[i] = items[i].getText(string);
 		}
 		
 		
