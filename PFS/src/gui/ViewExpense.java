@@ -74,6 +74,26 @@ public class ViewExpense implements IWindow
 		expenseTable.setHeaderVisible(true);
 		expenseTable.setLinesVisible(true);
 		
+		TableColumn tblclmnId = new TableColumn(expenseTable, SWT.NONE);
+		tblclmnId.setWidth(50);
+		tblclmnId.setText("ID");
+		
+		TableColumn tblclmnDate = new TableColumn(expenseTable, SWT.NONE);
+		tblclmnDate.setWidth(125);
+		tblclmnDate.setText("Date");
+		
+		TableColumn tblclmnPayTo = new TableColumn(expenseTable, SWT.NONE);
+		tblclmnPayTo.setWidth(250);
+		tblclmnPayTo.setText("Pay To");
+		
+		TableColumn tblclmnAmount = new TableColumn(expenseTable, SWT.NONE);
+		tblclmnAmount.setWidth(100);
+		tblclmnAmount.setText("Amount");
+		
+		TableColumn tblclmnDescription = new TableColumn(expenseTable, SWT.NONE);
+		tblclmnDescription.setWidth(250);
+		tblclmnDescription.setText("Description");
+		
 		String[] columnHeaders = {"ID", "Date", "Pay To", "Amount", "Description"};
 		
 		for(int i = 0; i < columnHeaders.length; i++)
