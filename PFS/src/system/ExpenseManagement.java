@@ -33,7 +33,10 @@ public class ExpenseManagement implements IIDReader, IDataReader, IDataModifer
 		
 		// need to use the sql statement in the database query
 		
-		final int[] setData = database.getAllExpenseIDsWhere(whereClause);
+		final int[] setData;
+		//setData = database.getAllExpenseIDsWhere(whereClause);
+		setData = database.getAllExpenseIDs();
+		
 		assert setData != null : "Database returned null array";
 	
 		final IDSet output = IDSet.createFromArray(setData);
