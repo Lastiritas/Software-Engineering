@@ -22,11 +22,12 @@ import domainobjects.SimpleDate;
 import system.ExpenseManagement;
 import system.PFSystem;
 import util.Sort;
+import org.eclipse.swt.widgets.Composite;
 
 
 public class ViewExpense implements IWindow 
 {
-	private Shell shell;
+	private Shell shlExpenseView;
 	private Table expenseTable;
 	
 	protected int currID;
@@ -45,10 +46,10 @@ public class ViewExpense implements IWindow
 		Display display = Display.getDefault();
 	
 		createContents();
-		shell.open();
-		shell.layout();
+		shlExpenseView.open();
+		shlExpenseView.layout();
 		
-		while (!shell.isDisposed()) 
+		while (!shlExpenseView.isDisposed()) 
 		{
 			if (!display.readAndDispatch()) 
 			{
@@ -63,14 +64,16 @@ public class ViewExpense implements IWindow
 	 */
 	protected void createContents() 
 	{
-		shell = new Shell();
-		shell.setMinimumSize(new Point(800, 600));
-		shell.setSize(800, 600);
-		shell.setText("PayTo Creation");
+		shlExpenseView = new Shell();
+		shlExpenseView.setMinimumSize(new Point(800, 600));
+		shlExpenseView.setSize(905, 737);
+		shlExpenseView.setText("Expense View");
 		
-		expenseTable = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
-		expenseTable.setLocation(10, 10);
-		expenseTable.setSize(780, 524);
+		Composite composite = new Composite(shlExpenseView, SWT.NONE);
+		composite.setBounds(10, 10, 873, 641);
+		
+		expenseTable = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
+		expenseTable.setBounds(10, 10, 853, 587);
 		expenseTable.setHeaderVisible(true);
 		expenseTable.setLinesVisible(true);
 		
@@ -94,107 +97,8 @@ public class ViewExpense implements IWindow
 		tblclmnDescription.setWidth(250);
 		tblclmnDescription.setText("Description");
 		
-		Menu menu = new Menu(shell, SWT.BAR);
-		menu.setLocation(new Point(0, 0));
-		shell.setMenuBar(menu);
-		
-		MenuItem mntmNewSubmenu = new MenuItem(menu, SWT.CASCADE);
-		mntmNewSubmenu.setText("File");
-		
-		Menu menu_1 = new Menu(mntmNewSubmenu);
-		mntmNewSubmenu.setMenu(menu_1);
-		
-		MenuItem mntmExit = new MenuItem(menu_1, SWT.NONE);
-		mntmExit.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				shell.close();
-			}
-		});
-		mntmExit.setText("Exit");
-		
-		MenuItem mntmFilter = new MenuItem(menu, SWT.CASCADE);
-		mntmFilter.setText("Filter");
-		
-		Menu menu_3 = new Menu(mntmFilter);
-		mntmFilter.setMenu(menu_3);
-		
-		MenuItem mntmCreateFilter = new MenuItem(menu_3, SWT.NONE);
-		mntmCreateFilter.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				IDialog filterDialog = new FilterCreation();
-				ExpenseFilter filter = (ExpenseFilter)filterDialog.open();
-				
-				if(filter != null)
-				{
-					refreshWholeList(filter);
-				}
-				// else - do nothing
-			}
-		});
-		mntmCreateFilter.setText("Create Filter");
-		
-		MenuItem mntmViewCommonLabels = new MenuItem(menu_3, SWT.NONE);
-		mntmViewCommonLabels.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				IDialog miningDialog = new MinedView();
-				ExpenseFilter filter = (ExpenseFilter)miningDialog.open();
-				
-				if(filter != null)
-				{
-					refreshWholeList(filter);
-				}
-				// else - do nothing
-			}
-		});
-		mntmViewCommonLabels.setText("View Common Labels");
-		
-		MenuItem mntmAction = new MenuItem(menu, SWT.CASCADE);
-		mntmAction.setText("Action");
-		
-		Menu menu_2 = new Menu(mntmAction);
-		mntmAction.setMenu(menu_2);
-		
-		MenuItem mntmNewExpense = new MenuItem(menu_2, SWT.NONE);
-		mntmNewExpense.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				newExpense();
-			}
-		});
-		mntmNewExpense.setText("New Expense");
-		
-		MenuItem mntmOpenSelected = new MenuItem(menu_2, SWT.NONE);
-		mntmOpenSelected.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				openSelectedExpense();
-			}
-		});
-		mntmOpenSelected.setText("Open Selected");
-		
-		MenuItem mntmDuplicateSelected = new MenuItem(menu_2, SWT.NONE);
-		mntmDuplicateSelected.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				duplicateSelectedExpense();
-			}
-		});
-		mntmDuplicateSelected.setText("Duplicate Selected");
-		
-		MenuItem mntmDeleteSelected = new MenuItem(menu_2, SWT.NONE);
-		mntmDeleteSelected.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				removeSelectedExpense();
-			}
-		});
-		mntmDeleteSelected.setText("Delete Selected");
-		
-		Button addButton = new Button(shell, SWT.NONE);
-		addButton.setBounds(210, 540, 94, 28);
+		Button addButton = new Button(composite, SWT.NONE);
+		addButton.setBounds(210, 603, 94, 28);
 		addButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -203,8 +107,8 @@ public class ViewExpense implements IWindow
 		});
 		addButton.setText("+");
 		
-		Button duplicateButton = new Button(shell, SWT.NONE);
-		duplicateButton.setBounds(110, 540, 94, 28);
+		Button duplicateButton = new Button(composite, SWT.NONE);
+		duplicateButton.setBounds(110, 603, 94, 28);
 		duplicateButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -213,8 +117,8 @@ public class ViewExpense implements IWindow
 		});
 		duplicateButton.setText("Duplicate");
 		
-		Button deleteButton = new Button(shell, SWT.NONE);
-		deleteButton.setBounds(10, 540, 94, 28);
+		Button deleteButton = new Button(composite, SWT.NONE);
+		deleteButton.setBounds(10, 603, 94, 28);
 		deleteButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -223,8 +127,8 @@ public class ViewExpense implements IWindow
 		});
 		deleteButton.setText("-");
 		
-		Button btnOpen = new Button(shell, SWT.NONE);
-		btnOpen.setBounds(696, 540, 94, 28);
+		Button btnOpen = new Button(composite, SWT.NONE);
+		btnOpen.setBounds(769, 603, 94, 28);
 		btnOpen.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -363,6 +267,105 @@ public class ViewExpense implements IWindow
 				}
 			}
 		});
+		
+		Menu menu = new Menu(shlExpenseView, SWT.BAR);
+		menu.setLocation(new Point(0, 0));
+		shlExpenseView.setMenuBar(menu);
+		
+		MenuItem mntmNewSubmenu = new MenuItem(menu, SWT.CASCADE);
+		mntmNewSubmenu.setText("File");
+		
+		Menu menu_1 = new Menu(mntmNewSubmenu);
+		mntmNewSubmenu.setMenu(menu_1);
+		
+		MenuItem mntmExit = new MenuItem(menu_1, SWT.NONE);
+		mntmExit.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				shlExpenseView.close();
+			}
+		});
+		mntmExit.setText("Exit");
+		
+		MenuItem mntmFilter = new MenuItem(menu, SWT.CASCADE);
+		mntmFilter.setText("Filter");
+		
+		Menu menu_3 = new Menu(mntmFilter);
+		mntmFilter.setMenu(menu_3);
+		
+		MenuItem mntmCreateFilter = new MenuItem(menu_3, SWT.NONE);
+		mntmCreateFilter.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				IDialog filterDialog = new FilterCreation();
+				ExpenseFilter filter = (ExpenseFilter)filterDialog.open();
+				
+				if(filter != null)
+				{
+					refreshWholeList(filter);
+				}
+				// else - do nothing
+			}
+		});
+		mntmCreateFilter.setText("Create Filter");
+		
+		MenuItem mntmViewCommonLabels = new MenuItem(menu_3, SWT.NONE);
+		mntmViewCommonLabels.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				IDialog miningDialog = new MinedView();
+				ExpenseFilter filter = (ExpenseFilter)miningDialog.open();
+				
+				if(filter != null)
+				{
+					refreshWholeList(filter);
+				}
+				// else - do nothing
+			}
+		});
+		mntmViewCommonLabels.setText("View Common Labels");
+		
+		MenuItem mntmAction = new MenuItem(menu, SWT.CASCADE);
+		mntmAction.setText("Action");
+		
+		Menu menu_2 = new Menu(mntmAction);
+		mntmAction.setMenu(menu_2);
+		
+		MenuItem mntmNewExpense = new MenuItem(menu_2, SWT.NONE);
+		mntmNewExpense.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				newExpense();
+			}
+		});
+		mntmNewExpense.setText("New Expense");
+		
+		MenuItem mntmOpenSelected = new MenuItem(menu_2, SWT.NONE);
+		mntmOpenSelected.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				openSelectedExpense();
+			}
+		});
+		mntmOpenSelected.setText("Open Selected");
+		
+		MenuItem mntmDuplicateSelected = new MenuItem(menu_2, SWT.NONE);
+		mntmDuplicateSelected.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				duplicateSelectedExpense();
+			}
+		});
+		mntmDuplicateSelected.setText("Duplicate Selected");
+		
+		MenuItem mntmDeleteSelected = new MenuItem(menu_2, SWT.NONE);
+		mntmDeleteSelected.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				removeSelectedExpense();
+			}
+		});
+		mntmDeleteSelected.setText("Delete Selected");
 		
 		refreshWholeList(new ExpenseFilter());
 	}
