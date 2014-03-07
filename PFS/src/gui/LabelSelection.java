@@ -264,7 +264,7 @@ public class LabelSelection implements IDialog
 			
 			if(!selectedLabels.contains(new Integer(id)))
 			{
-				addLabelToTable(choiceTable, id);
+				GUIHelper.addLabelToTable(choiceTable, id);
 			}
 		}
 	}
@@ -276,7 +276,7 @@ public class LabelSelection implements IDialog
 		for(int i=0; i <selectedLabels.size(); i++)
 		{
 			final int id = selectedLabels.get(i).intValue();
-			addLabelToTable(pickedTable, id);
+			GUIHelper.addLabelToTable(pickedTable, id);
 		}
 	}
 	
@@ -287,15 +287,6 @@ public class LabelSelection implements IDialog
 	
 		inFrom.remove(inIndex);
 		
-		addLabelToTable(inTo, id.intValue());
-	}
-	
-	private static void addLabelToTable(Table inTable, int inId)
-	{
-		domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(inId);
-		
-		TableItem tableItem= new TableItem(inTable, SWT.NONE);
-		tableItem.setText(0, "" + inId);
-		tableItem.setText(1, label.getLabelName());
-	}
+		GUIHelper.addLabelToTable(inTo, id.intValue());
+	}	
 }

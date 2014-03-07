@@ -152,21 +152,14 @@ public class ViewExpense implements IWindow
 			@Override
 			public void widgetSelected(SelectionEvent arg0) 
 			{
-				final IDSet realSet = getIDSetFromTable(labelList);
+				final IDSet realSet = GUIHelper.getLabelIDSetFromTable(labelList);
 				
 				LabelSelection window = new LabelSelection();
 				window.setStartingSet(realSet);
 				IDSet labelIDs = (IDSet)window.open();
 				
 				labelList.removeAll();
-				
-				final int labelsCount = labelIDs.getSize();
-				
-				for(int i = 0; i < labelsCount; i++)
-				{
-					final int id = labelIDs.getValue(i);
-					addLabelToTable(labelList, id);
-				}
+				GUIHelper.addLabelsToTable(labelList, labelIDs);
 			}
 		});
 		editLabelsButton.setBounds(141, 502, 94, 28);
@@ -682,7 +675,7 @@ public class ViewExpense implements IWindow
 			}
 		}
 		
-		final IDSet set = getIDSetFromTable(labelList);
+		final IDSet set = GUIHelper.getLabelIDSetFromTable(labelList);
 		final Expense expense = new Expense(date, Money.fromString(amountField.getText()), method, descriptionField.getText(), payToId, set);
 		
 		boolean updated = PFSystem.getCurrent().getExpenseSystem().update(inID, expense);
@@ -720,11 +713,7 @@ public class ViewExpense implements IWindow
 		labelList.removeAll();
 		
 		final IDSet labelIDs = expense.getLabels();
-		for(int i = 0; i < labelIDs.getSize(); i++)
-		{
-			final int labelID = labelIDs.getValue(i);
-			addLabelToTable(labelList, labelID);
-		}
+		GUIHelper.addLabelsToTable(labelList, labelIDs);
 	}
 	
 	private void addExpense(int inExpenseID)
@@ -788,28 +777,5 @@ public class ViewExpense implements IWindow
 			final int id = expenseIDs.getValue(i);
 			addExpense(id);
 		}
-	}
-	
-	private static void addLabelToTable(Table table, int labelId)
-	{
-		final domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(labelId);
-		
-		final TableItem newItem = new TableItem(table, SWT.NONE);
-		newItem.setText(0, "" + labelId);
-		newItem.setText(1, label.getLabelName());
-	}
-	
-	private static IDSet getIDSetFromTable(Table table)
-	{
-		final int totalItems = table.getItemCount();
-		
-		int[] array = new int[totalItems];
-		
-		for(int i = 0; i < totalItems; i++)
-		{
-			array[i] = Integer.parseInt(table.getItem(i).getText(0));
-		}
-		
-		return IDSet.createFromArray(array);
 	}
 }

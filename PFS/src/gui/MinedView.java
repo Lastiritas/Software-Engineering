@@ -9,6 +9,9 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 
 import domainobjects.ExpenseFilter;
 import domainobjects.IDSet;
@@ -20,20 +23,19 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
 
 public class MinedView implements IDialog 
 {
 	private Shell shell;
-	private List list;
-	private Scale scale;
-	private Label scaleAmountLabel;
 	
-	protected int currID;
-	private Composite composite_1;
-	private Button btnCancel;
-	private Button btnView;
+	private Table table;
+	private Scale thresholdSlider;
+	private Label tresholdLabel;
 	
-	private ExpenseFilter outputFilter = null;
+	private Collection<IDSet> frequentSets = null;
+	
+	private ExpenseFilter outputFilter = new ExpenseFilter();
 	
 	/**
 	 * Open the window.
@@ -54,7 +56,7 @@ public class MinedView implements IDialog
 			}
 		}
 		
-		return null;	// will return a filter
+		return outputFilter;
 	}
 
 	/**
@@ -64,59 +66,62 @@ public class MinedView implements IDialog
 	protected void createContents() 
 	{
 		shell = new Shell();
-		shell.setSize(565, 406);
+		shell.setMinimumSize(new Point(800, 600));
+		shell.setSize(837, 492);
 		shell.setText("Mined Data View");
 		shell.setLayout(null);
 		
-		list = new List(shell, SWT.BORDER | SWT.V_SCROLL);
-		list.setBounds(10, 10, 545, 260);
-		
-		composite_1 = new Composite(shell, SWT.NONE);
-		composite_1.setBounds(10, 289, 545, 44);
+		Composite composite_1 = new Composite(shell, SWT.NONE);
+		composite_1.setBounds(10, 420, 795, 80);
 		composite_1.setLayout(null);
 		
-		scale = new Scale(composite_1, SWT.NONE);
-		scale.setBounds(10, 10, 472, 24);
-		scale.addListener(SWT.Selection, new Listener() {
+		thresholdSlider = new Scale(composite_1, SWT.NONE);
+		thresholdSlider.setBounds(10, 10, 702, 54);
+		thresholdSlider.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				scaleAmountLabel.setText(scale.getSelection() + "%");
+				tresholdLabel.setText(thresholdSlider.getSelection() + "%");
 				refreshList();
 			}
 		});
-		scale.setMinimum(1);
-		scale.setSelection(50);
+		thresholdSlider.setMinimum(1);
+		thresholdSlider.setSelection(50);
 		
-		scaleAmountLabel = new Label(composite_1, SWT.NONE);
-		scaleAmountLabel.setBounds(488, 10, 47, 15);
-		scaleAmountLabel.setAlignment(SWT.RIGHT);
-		scaleAmountLabel.setText(scale.getSelection() + "%");
+		tresholdLabel = new Label(composite_1, SWT.NONE);
+		tresholdLabel.setBounds(718, 10, 67, 54);
+		tresholdLabel.setAlignment(SWT.CENTER);
+		tresholdLabel.setText(thresholdSlider.getSelection() + "%");
 		
-		btnCancel = new Button(shell, SWT.NONE);
+		Button btnCancel = new Button(shell, SWT.NONE);
 		btnCancel.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				closeWithReturn(null);
 			}
 		});
-		btnCancel.setBounds(10, 346, 94, 28);
+		btnCancel.setBounds(10, 506, 94, 28);
 		btnCancel.setText("Cancel");
 		
-		btnView = new Button(shell, SWT.NONE);
+		Button btnView = new Button(shell, SWT.NONE);
 		btnView.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				closeWithReturn(generateFilterFromGUI());
 			}
 		});
-		btnView.setBounds(461, 346, 94, 28);
+		btnView.setBounds(711, 506, 94, 28);
 		btnView.setText("View");
+		
+		table = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
+		table.setBounds(10, 10, 795, 404);
+		table.setHeaderVisible(true);
+		table.setLinesVisible(true);
 		
 		refreshList();
 	}
 	
 	private void refreshList()
 	{
-		final int scaleValue = scale.getSelection();
+		final int scaleValue = thresholdSlider.getSelection();
 		final double frequency = (double)scaleValue / 100.0;
 		
 		updateList(frequency);
@@ -124,26 +129,31 @@ public class MinedView implements IDialog
 	
 	private void updateList(double inFrequency)
 	{
-		Collection<IDSet> frequentSets = PFSystem.getCurrent().getAllFrequentLabelCombinations(inFrequency);
+		frequentSets = PFSystem.getCurrent().getAllFrequentLabelCombinations(inFrequency);
 		
-		list.removeAll();
+		table.removeAll();
 		
 		for(IDSet set : frequentSets)
 		{
-			StringBuilder builder = new StringBuilder();
+			TableItem tableItem = new TableItem(table, SWT.NONE);
+			
+			// make sure that there are enough columns to satisfy the required number of items
+			while(table.getColumnCount() < set.getSize())
+			{
+				TableColumn column = new TableColumn(table, SWT.NONE);
+				column.setWidth(100);
+				column.setText("" + table.getColumnCount()); 	
+			}
 			
 			for(int i = 0; i < set.getSize(); i++)
-			{
+			{	
 				final int id = set.getValue(i);
 				final domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
 				
 				assert(label != null);
-				
-				builder.append(label.getLabelName());
-				builder.append(", ");
-			}
 			
-			list.add(builder.toString());
+				tableItem.setText(i, label.getLabelName());
+			}
 		}
 	}
 	
@@ -152,6 +162,19 @@ public class MinedView implements IDialog
 		ExpenseFilter output = new ExpenseFilter();
 		
 		IDSet set = IDSet.empty();	// need to generate the set values
+	
+		if(frequentSets != null)
+		{
+			final int selectedIndex = table.getSelectionIndex();
+			
+			if(selectedIndex >= 0)
+			{
+				IDSet[] sets = new IDSet[frequentSets.size()];
+				frequentSets.toArray(sets);
+				
+				set = sets[selectedIndex];
+			}
+		}
 		
 		output.assignLabels(set, SetOperation.INTERSECTION);
 		
@@ -159,9 +182,7 @@ public class MinedView implements IDialog
 	}
 	
 	private void closeWithReturn(ExpenseFilter filter)
-	{
-		assert filter == null || filter != outputFilter;	// do not set the filter to itself
-		
+	{		
 		outputFilter = filter;
 		shell.close();
 	}

@@ -49,18 +49,6 @@ public class PaytoSelection implements IDialog
 		return selectedID;
 	}
 
-	/*
-	private int getPayToID()
-	{		
-		if(table.getSelectionCount() == 1)
-		{
-			final int id = Integer.parseInt(table.getSelection()[0].getText(0));
-			return id;
-		}
-		
-		return -1;
-	}
-	*/
 	/**
 	 * Create contents of the window.
 	 * @wbp.parser.entryPoint
@@ -153,15 +141,6 @@ public class PaytoSelection implements IDialog
 				
 		table.removeAll();
 		
-		for(int i = 0; i < payToIDs.getSize(); i++)
-		{
-			final int id = payToIDs.getValue(i);
-			final PayTo payto = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(id);
-			
-			TableItem tableItem = new TableItem(table, SWT.NONE);
-			tableItem.setText(0, "" + id);
-			tableItem.setText(1, payto.getPayToName());
-			tableItem.setText(2, payto.getPayToBranch());
-		}
+		GUIHelper.addPayTosToTable(table, payToIDs);
 	}
 }

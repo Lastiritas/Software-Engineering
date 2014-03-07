@@ -6,11 +6,15 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
 import sun.java2d.pipe.SpanShapeRenderer.Simple;
+import system.PFSystem;
 import domainobjects.DateRange;
 import domainobjects.ExpenseFilter;
+import domainobjects.IDSet;
 import domainobjects.Money;
 import domainobjects.MoneyRange;
+import domainobjects.PayTo;
 import domainobjects.PaymentMethod;
+import domainobjects.SetOperation;
 import domainobjects.SimpleDate;
 
 public class FilterCreation implements IDialog
@@ -32,17 +36,22 @@ public class FilterCreation implements IDialog
 	private Button otherRadio;
 	
 	private Button labelFilterCheck;
-	private Tree labelList;
 	private Button selectLabelsButton;
 	
 	private Button payToFilterCheck;
-	private Tree payToList;
 	private Button selectPayToButton;
 	
 	private Button expenseAllRadio;
 	private Button expenseSomeRadio;
 	
 	private ExpenseFilter outputFilter = null;
+	private Table labelTable;
+	private Table payToTable;
+	private TableColumn tblclmnId;
+	private TableColumn tblclmnLabel;
+	private TableColumn tblclmnId_1;
+	private TableColumn tblclmnName;
+	private TableColumn tblclmnBranch;
 	
 	/**
 	 * Open the window.
@@ -71,11 +80,11 @@ public class FilterCreation implements IDialog
 	protected void createContents()
 	{
 		shell = new Shell(SWT.APPLICATION_MODAL);
-		shell.setSize(506, 515);
+		shell.setSize(755, 681);
 		shell.setText("Label Creation");
 		
 		Composite composite = new Composite(shell, SWT.NONE);
-		composite.setBounds(10, 10, 486, 37);
+		composite.setBounds(10, 10, 733, 52);
 		
 		dateFilterCheck = new Button(composite, SWT.CHECK);
 		dateFilterCheck.addSelectionListener(new SelectionAdapter() {
@@ -87,19 +96,19 @@ public class FilterCreation implements IDialog
 				upperDateSelect.setEnabled(isSelected);
 			}
 		});
-		dateFilterCheck.setBounds(10, 10, 147, 18);
+		dateFilterCheck.setBounds(10, 10, 147, 27);
 		dateFilterCheck.setText("Filter by date");
 		
 		lowerDateSelect = new DateTime(composite, SWT.BORDER);
 		lowerDateSelect.setEnabled(false);
-		lowerDateSelect.setBounds(214, 10, 128, 27);
+		lowerDateSelect.setBounds(437, 15, 128, 27);
 		
 		upperDateSelect = new DateTime(composite, SWT.BORDER);
 		upperDateSelect.setEnabled(false);
-		upperDateSelect.setBounds(348, 10, 128, 27);
+		upperDateSelect.setBounds(595, 15, 128, 27);
 		
 		Composite composite_1 = new Composite(shell, SWT.NONE);
-		composite_1.setBounds(10, 53, 486, 37);
+		composite_1.setBounds(10, 68, 733, 50);
 		
 		amountFilterCheck = new Button(composite_1, SWT.CHECK);
 		amountFilterCheck.addSelectionListener(new SelectionAdapter() {
@@ -112,20 +121,20 @@ public class FilterCreation implements IDialog
 			}
 		});
 		amountFilterCheck.setText("Filter by amount");
-		amountFilterCheck.setBounds(10, 10, 145, 18);
+		amountFilterCheck.setBounds(10, 10, 159, 25);
 		
 		upperAmountText = new Text(composite_1, SWT.BORDER);
 		upperAmountText.setEnabled(false);
 		upperAmountText.setText("$0.00");
-		upperAmountText.setBounds(343, 10, 133, 19);
+		upperAmountText.setBounds(590, 10, 133, 25);
 		
 		lowerAmountText = new Text(composite_1, SWT.BORDER);
 		lowerAmountText.setEnabled(false);
 		lowerAmountText.setText("$0.00");
-		lowerAmountText.setBounds(204, 10, 133, 19);
+		lowerAmountText.setBounds(451, 10, 133, 25);
 		
 		Composite composite_2 = new Composite(shell, SWT.NONE);
-		composite_2.setBounds(10, 96, 486, 63);
+		composite_2.setBounds(10, 124, 733, 73);
 		
 		paymentFilterCheck = new Button(composite_2, SWT.CHECK);
 		paymentFilterCheck.addSelectionListener(new SelectionAdapter() {
@@ -140,34 +149,34 @@ public class FilterCreation implements IDialog
 			}
 		});
 		paymentFilterCheck.setText("Filter by payment");
-		paymentFilterCheck.setBounds(10, 13, 148, 18);
+		paymentFilterCheck.setBounds(10, 13, 167, 25);
 		
 		Group group = new Group(composite_2, SWT.NONE);
-		group.setBounds(164, 13, 312, 44);
+		group.setBounds(330, 13, 393, 54);
 		
 		cashRadio = new Button(group, SWT.RADIO);
 		cashRadio.setEnabled(false);
 		cashRadio.setSelection(true);
 		cashRadio.setText("Cash");
-		cashRadio.setBounds(10, 10, 62, 18);
+		cashRadio.setBounds(72, 26, 67, 18);
 		
 		creditRadio = new Button(group, SWT.RADIO);
 		creditRadio.setEnabled(false);
 		creditRadio.setText("Credit");
-		creditRadio.setBounds(146, 10, 74, 18);
+		creditRadio.setBounds(229, 26, 74, 18);
 		
 		debitRadio = new Button(group, SWT.RADIO);
 		debitRadio.setEnabled(false);
 		debitRadio.setText("Debit");
-		debitRadio.setBounds(78, 10, 62, 18);
+		debitRadio.setBounds(149, 26, 74, 18);
 		
 		otherRadio = new Button(group, SWT.RADIO);
 		otherRadio.setEnabled(false);
 		otherRadio.setText("Other");
-		otherRadio.setBounds(226, 10, 74, 18);
+		otherRadio.setBounds(309, 26, 74, 18);
 		
 		Composite composite_3 = new Composite(shell, SWT.NONE);
-		composite_3.setBounds(10, 165, 210, 307);
+		composite_3.setBounds(10, 203, 733, 201);
 		
 		labelFilterCheck = new Button(composite_3, SWT.CHECK);
 		labelFilterCheck.addSelectionListener(new SelectionAdapter() {
@@ -175,18 +184,14 @@ public class FilterCreation implements IDialog
 			public void widgetSelected(SelectionEvent arg0) {
 				final boolean isSelected = labelFilterCheck.getSelection();
 				
-				labelList.setEnabled(isSelected);
+				labelTable.setEnabled(isSelected);
 				selectLabelsButton.setEnabled(isSelected);
 				expenseAllRadio.setEnabled(isSelected);
 				expenseSomeRadio.setEnabled(isSelected);
 			}
 		});
 		labelFilterCheck.setText("Filter by labels");
-		labelFilterCheck.setBounds(10, 10, 116, 18);
-		
-		labelList = new Tree(composite_3, SWT.BORDER);
-		labelList.setEnabled(false);
-		labelList.setBounds(10, 34, 190, 132);
+		labelFilterCheck.setBounds(10, 10, 142, 28);
 		
 		selectLabelsButton = new Button(composite_3, SWT.NONE);
 		selectLabelsButton.setEnabled(false);
@@ -194,38 +199,56 @@ public class FilterCreation implements IDialog
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				IDialog selection = new LabelSelection();
-				String[] labels = (String[])selection.open();
+				IDSet labels = (IDSet)selection.open();
 				
-				labelList.clearAll(true);
+				labelTable.removeAll();
 				
-				for(String label : labels)
+				final int totalLabels = labels.getSize();
+				for(int i = 0; i < totalLabels; i++)
 				{
+					final int id = labels.getValue(i);
+					final domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
+					
 					// add each label to the list
-					TreeItem labelItem = new TreeItem(labelList, SWT.NONE);
-					labelItem.setText(label);
+					TableItem labelItem = new TableItem(labelTable, SWT.NONE);
+					labelItem.setText(0, "" + id);
+					labelItem.setText(1, label.getLabelName());
 				}
 			}
 		});
-		selectLabelsButton.setBounds(93, 172, 107, 28);
+		selectLabelsButton.setBounds(10, 158, 107, 28);
 		selectLabelsButton.setText("Select Labels");
 		
 		Group grpLabelSet = new Group(composite_3, SWT.NONE);
 		grpLabelSet.setText("Expense Must Have");
-		grpLabelSet.setBounds(10, 206, 190, 91);
+		grpLabelSet.setBounds(533, 44, 190, 108);
 		
 		expenseAllRadio = new Button(grpLabelSet, SWT.RADIO);
 		expenseAllRadio.setEnabled(false);
-		expenseAllRadio.setBounds(10, 10, 91, 18);
+		expenseAllRadio.setBounds(10, 39, 91, 18);
 		expenseAllRadio.setText("All");
 		
 		expenseSomeRadio = new Button(grpLabelSet, SWT.RADIO);
 		expenseSomeRadio.setEnabled(false);
 		expenseSomeRadio.setSelection(true);
 		expenseSomeRadio.setText("Some");
-		expenseSomeRadio.setBounds(10, 36, 91, 18);
+		expenseSomeRadio.setBounds(10, 65, 91, 18);
+		
+		labelTable = new Table(composite_3, SWT.BORDER | SWT.FULL_SELECTION);
+		labelTable.setBounds(10, 44, 517, 108);
+		labelTable.setHeaderVisible(true);
+		labelTable.setLinesVisible(true);
+		
+		tblclmnId = new TableColumn(labelTable, SWT.NONE);
+		tblclmnId.setWidth(100);
+		tblclmnId.setText("ID");
+		
+		tblclmnLabel = new TableColumn(labelTable, SWT.NONE);
+		tblclmnLabel.setWidth(100);
+		tblclmnLabel.setText("Label");
 		
 		Composite composite_4 = new Composite(shell, SWT.NONE);
-		composite_4.setBounds(286, 165, 210, 307);
+		composite_4.setBounds(10, 410, 733, 225);
 		
 		payToFilterCheck = new Button(composite_4, SWT.CHECK);
 		payToFilterCheck.addSelectionListener(new SelectionAdapter() {
@@ -233,16 +256,12 @@ public class FilterCreation implements IDialog
 			public void widgetSelected(SelectionEvent arg0) {
 				final boolean isSelected = payToFilterCheck.getSelection();
 				
-				payToList.setEnabled(isSelected);
+				payToTable.setEnabled(isSelected);
 				selectPayToButton.setEnabled(isSelected);
 			}
 		});
 		payToFilterCheck.setText("Filter by pay to");
-		payToFilterCheck.setBounds(10, 10, 116, 18);
-		
-		payToList = new Tree(composite_4, SWT.BORDER);
-		payToList.setEnabled(false);
-		payToList.setBounds(10, 34, 190, 229);
+		payToFilterCheck.setBounds(10, 10, 148, 28);
 		
 		selectPayToButton = new Button(composite_4, SWT.NONE);
 		selectPayToButton.setEnabled(false);
@@ -250,17 +269,38 @@ public class FilterCreation implements IDialog
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				IDialog selection = new PaytoSelection();
-				int payToID = (int)selection.open();
+				final int payToID = (int)selection.open();
 				
-				payToList.clearAll(true);
+				payToTable.removeAll();
+				
+				PayTo payTo = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(payToID);
 				
 				// set the payTo id
-				TreeItem paytoItem = new TreeItem(payToList, SWT.NONE);
+				TableItem paytoItem = new TableItem(payToTable, SWT.NONE);
 				paytoItem.setText("" + payToID);
+				paytoItem.setText(1, payTo.getPayToName());
+				paytoItem.setText(2, payTo.getPayToBranch());
 			}
 		});
-		selectPayToButton.setBounds(91, 269, 109, 28);
+		selectPayToButton.setBounds(10, 189, 109, 28);
 		selectPayToButton.setText("Select Pay To");
+		
+		payToTable = new Table(composite_4, SWT.BORDER | SWT.FULL_SELECTION);
+		payToTable.setBounds(10, 44, 713, 139);
+		payToTable.setHeaderVisible(true);
+		payToTable.setLinesVisible(true);
+		
+		tblclmnId_1 = new TableColumn(payToTable, SWT.NONE);
+		tblclmnId_1.setWidth(100);
+		tblclmnId_1.setText("ID");
+		
+		tblclmnName = new TableColumn(payToTable, SWT.NONE);
+		tblclmnName.setWidth(100);
+		tblclmnName.setText("Name");
+		
+		tblclmnBranch = new TableColumn(payToTable, SWT.NONE);
+		tblclmnBranch.setWidth(100);
+		tblclmnBranch.setText("Branch");
 		
 		Button filterButton = new Button(shell, SWT.NONE);
 		filterButton.addSelectionListener(new SelectionAdapter() {
@@ -269,7 +309,7 @@ public class FilterCreation implements IDialog
 				closeWithReturn(generateFilterFromGUI());
 			}
 		});
-		filterButton.setBounds(402, 478, 94, 28);
+		filterButton.setBounds(649, 641, 94, 28);
 		filterButton.setText("Filter");
 		
 		Button cancelButton = new Button(shell, SWT.NONE);
@@ -279,7 +319,7 @@ public class FilterCreation implements IDialog
 				closeWithReturn(null);
 			}
 		});
-		cancelButton.setBounds(10, 478, 94, 28);
+		cancelButton.setBounds(10, 641, 94, 28);
 		cancelButton.setText("Cancel");		
 	}
 	
@@ -304,12 +344,12 @@ public class FilterCreation implements IDialog
 		
 		if(labelFilterCheck.getSelection())
 		{
-			//output.assignLabels(inLabelSet, inSetOperation);
+			output.assignLabels(getLabelSet(), getSetOperation());
 		}
 		
 		if(payToFilterCheck.getSelection())
 		{
-			//output.assignPayTo(inPayToSet);
+			output.assignPayTo(getPayToSet());
 		}
 		
 		return output;
@@ -356,6 +396,29 @@ public class FilterCreation implements IDialog
 		{
 			return PaymentMethod.OTHER;
 		}
+	}
+	
+	private IDSet getLabelSet()
+	{
+		return GUIHelper.getLabelIDSetFromTable(labelTable);
+	}
+	
+	private SetOperation getSetOperation()
+	{
+		if(expenseAllRadio.getSelection())
+		{
+			return SetOperation.INTERSECTION;
+		}
+		else
+		{
+			return SetOperation.UNION;
+		}
+	}
+	
+	private IDSet getPayToSet()
+	{
+		final int id = Integer.parseInt(payToTable.getItem(0).getText(0));
+		return IDSet.createFromValue(id);
 	}
 	
 	private void closeWithReturn(ExpenseFilter filter)
