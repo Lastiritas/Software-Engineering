@@ -6,33 +6,39 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.*;
 import org.eclipse.swt.events.*;
 
+import system.LabelManagement;
 import system.PFSystem;
 import util.StringMatch;
 import domainobjects.*;
-import domainobjects.Label;
 
 public class LabelSelection implements IDialog
 {
 	protected Shell shell;
 	private Text textSearchLabel;
 	private Text textSearchPickLabel;
-	protected String transferTo = null;
-	protected String transferFrom = null;
 	protected final int LIST_OPTIONS = SWT.MULTI | SWT.BORDER |SWT.V_SCROLL;
-
-	private List listLabel;
-	private List listPickLabel;
 	
-	private ArrayList<String> labels = new ArrayList<String>(1);
-	private ArrayList<String> pickLabels = new ArrayList<String>(1);
+	private Table choiceTable;
+	private Table pickedTable;
 	
 	private IDSet startingSet = IDSet.empty();
+	private ArrayList<Integer> selectedLabels = new ArrayList<Integer>();
 	
-	public void setStartingSet(IDSet set)
+	public void setStartingSet(IDSet inSet)
 	{
-		startingSet = set;
+		startingSet = inSet;
+		
+		final int setSize = inSet.getSize();
+		
+		for(int i = 0; i < setSize; i++)
+		{
+			selectedLabels.add(new Integer(inSet.getValue(i)));
+		}
 	}
 	
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public Object open()
 	{
 		Display display = Display.getDefault();
@@ -49,19 +55,13 @@ public class LabelSelection implements IDialog
 			}
 		}
 		
-		return getLabels();
-	}
-
-	private String[] getLabels()
-	{
-		String[] labels = new String[pickLabels.size()];
-		
-		for(int i = 0; i < labels.length; i++)
+		final int[] array = new int[selectedLabels.size()];
+		for(int i = 0; i < array.length; i++)
 		{
-			labels[i] = pickLabels.get(i);
+			array[i] = selectedLabels.get(i).intValue();
 		}
 		
-		return labels;
+		return IDSet.createFromArray(array);
 	}
 	
 	/**
@@ -74,16 +74,32 @@ public class LabelSelection implements IDialog
 		shell.setText("Label Management");
 		
 		textSearchLabel = new Text(shell, SWT.BORDER);
+		textSearchLabel.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent arg0) {
+				refreshList();
+				
+				final String text = textSearchLabel.getText();
+				if(text.length() > 0)
+				{
+					filterTable(choiceTable, text);
+				}
+			}
+		});
 		textSearchLabel.setBounds(20, 20, 200, 22);
 		
 		textSearchPickLabel = new Text(shell, SWT.BORDER);
+		textSearchPickLabel.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent arg0) {
+				refreshPickList();
+				
+				final String text = textSearchPickLabel.getText();
+				if(text.length() > 0)
+				{
+					filterTable(pickedTable, text);
+				}
+			}
+		});
 		textSearchPickLabel.setBounds(355, 20, 200, 22);
-		
-		listLabel = new List(shell, LIST_OPTIONS);
-		listLabel.setBounds(20, 50, 200, 260);
-		
-		listPickLabel = new List(shell, LIST_OPTIONS);
-		listPickLabel.setBounds(355, 50, 200, 260);
 		
 		Button btnAdd = new Button(shell, SWT.PUSH);
 		btnAdd.setText(">>>");
@@ -104,100 +120,49 @@ public class LabelSelection implements IDialog
 		Button btnDone = new Button(shell, SWT.PUSH);
 		btnDone.setText("Done");
 		btnDone.setBounds(480,392, 75, 25);
-						
-		loadList(startingSet);
 		
-		//listeners
-		textSearchLabel.addKeyListener(new KeyAdapter() 
-		{
-			public void keyPressed(KeyEvent e) 
-			{
-				String input = textSearchLabel.getText();
-				if(!(input.length() ==0 && (e.character == 8 || e.character == 127)))
-				{	
-					if((e.character >32 && e.character <127) || e.character == 8 || e.character == 127)
-					{
-						if(e.character >32 && e.character <127)
-							input += e.character;
-						refreshList();
-						
-						for(int i=0; i<listLabel.getItemCount(); i++)
-						{
-							if(!StringMatch.match(listLabel.getItem(i),input))
-							{
-								listLabel.remove(listLabel.getItem(i));
-								i=-1;
-							}
-						}
-	
-					}
-				}
-			}
-		});
+		choiceTable = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
+		choiceTable.setBounds(20, 48, 200, 262);
+		choiceTable.setHeaderVisible(true);
+		choiceTable.setLinesVisible(true);
 		
-		textSearchPickLabel.addKeyListener(new KeyAdapter() 
-		{
-			public void keyPressed(KeyEvent e) 
-			{
-				String input = textSearchPickLabel.getText();
-				if(!(input.length() ==0 && (e.character == 8 || e.character == 127)))
-				{
-					if((e.character >32 && e.character <127) || e.character == 8 || e.character == 127)
-					{
-						if(e.character >32 && e.character <127)
-							input += e.character;
-						refreshPickList();
-						
-						for(int i=0; i<listPickLabel.getItemCount(); i++)
-						{
-							if(!StringMatch.match(listPickLabel.getItem(i),input))
-							{
-								listPickLabel.remove(listPickLabel.getItem(i));
-								i=-1;
-							}
-						}
-						
-						
-					}
-				}
-			}
-		});
+		TableColumn tblclmnId = new TableColumn(choiceTable, SWT.NONE);
+		tblclmnId.setWidth(100);
+		tblclmnId.setText("ID");
 		
-		listLabel.addMouseListener(new MouseAdapter() 
-		{
-			public void mouseDown(MouseEvent e) 
-			{
-				if(listLabel.getSelection().length!=0)
-				{
-					transferTo  = listLabel.getSelection()[0];
-				}
-			}
-		});
+		TableColumn tblclmnLabel = new TableColumn(choiceTable, SWT.NONE);
+		tblclmnLabel.setWidth(100);
+		tblclmnLabel.setText("Label");
 		
-		listPickLabel.addMouseListener(new MouseAdapter() 
-		{
-			public void mouseDown(MouseEvent e) 
-			{
-				if(listPickLabel.getSelection().length!=0)
-				{
-					transferFrom  = listPickLabel.getSelection()[0];
-				}
-			}
-		});
+		pickedTable = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
+		pickedTable.setLinesVisible(true);
+		pickedTable.setHeaderVisible(true);
+		pickedTable.setBounds(355, 48, 200, 262);
+		
+		TableColumn tableColumn = new TableColumn(pickedTable, SWT.NONE);
+		tableColumn.setWidth(100);
+		tableColumn.setText("ID");
+		
+		TableColumn tableColumn_1 = new TableColumn(pickedTable, SWT.NONE);
+		tableColumn_1.setWidth(100);
+		tableColumn_1.setText("Label");
+						
+		refreshList();
+		refreshPickList();
 		
 		btnAdd.addSelectionListener(new SelectionAdapter() 
 		{
 			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
-				if(transferTo !=null)
+				final int selectedIndex = choiceTable.getSelectionIndex();
+				
+				if(selectedIndex >= 0)
 				{
-					listLabel.remove(transferTo);
-					labels.remove(transferTo);
-
-					pickLabels.add(transferTo);
-					listPickLabel.add(transferTo);
-					transferTo =null;
+					final int id = Integer.parseInt(choiceTable.getItem(selectedIndex).getText(0));
+					selectedLabels.add(new Integer(id));
+					
+					moveLabelFromTableToTable(choiceTable, pickedTable, selectedIndex);
 				}
 			}
 		});
@@ -207,14 +172,14 @@ public class LabelSelection implements IDialog
 			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
-				if(transferFrom !=null)
+				final int selectedIndex = pickedTable.getSelectionIndex();
+				
+				if(selectedIndex >= 0)
 				{
-					listPickLabel.remove(transferFrom);
-					pickLabels.remove(transferFrom);
+					final int id = Integer.parseInt(pickedTable.getItem(selectedIndex).getText(0));
+					selectedLabels.remove(new Integer(id));
 					
-					labels.add(transferFrom);
-					listLabel.add(transferFrom);
-					transferFrom =null;
+					moveLabelFromTableToTable(pickedTable, choiceTable, selectedIndex);
 				}
 			}
 		});
@@ -225,14 +190,18 @@ public class LabelSelection implements IDialog
 			public void widgetSelected(SelectionEvent e) 
 			{
 				LabelCreation createLabel = new LabelCreation();
-				String newLabel = createLabel.open();
-				if(newLabel !=null)
+				String labelName = createLabel.open();
+				
+				if(labelName != null)
 				{
-					Label inLabel = new Label(newLabel);
-					int newID = PFSystem.getCurrent().getLabelSystem().create();
-					PFSystem.getCurrent().getLabelSystem().update(newID,inLabel);
-					labels.add(newLabel);
-					listLabel.add(newLabel);
+					final LabelManagement labelManager = PFSystem.getCurrent().getLabelSystem();
+					
+					final int newID = labelManager.create();
+					
+					domainobjects.Label newLabel = new domainobjects.Label(labelName);
+					labelManager.update(newID, newLabel);
+					
+					refreshList();
 				}
 			}
 		});
@@ -241,6 +210,15 @@ public class LabelSelection implements IDialog
 		{
 			public void widgetSelected(SelectionEvent e) 
 			{
+				selectedLabels.clear();
+				
+				final int totalLabels = startingSet.getSize();
+				for(int i = 0; i < totalLabels; i++)
+				{
+					final int id = startingSet.getValue(i);
+					selectedLabels.add(new Integer(id));
+				}
+				
 				shell.close();
 			}
 		});
@@ -255,46 +233,69 @@ public class LabelSelection implements IDialog
 		});
 	}
 	
-	public void loadList(IDSet includedID)
-	{
-		IDSet labelIDs = PFSystem.getCurrent().getLabelSystem().getAllIDs();
-				
-		for(int i=0; i <labelIDs.getSize(); i++)
-		{			
-			if(!includedID.contains(labelIDs.getValue(i)))
-			{
-				final int id = labelIDs.getValue(i);
-				Label label = (Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
-			
-				labels.add(label.getLabelName());
-			}	
-		}
-
-		for(int i = 0; i < includedID.getSize(); i++)
-		{
-			final int id = labelIDs.getValue(i);
-			Label label = (Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
-			
-			pickLabels.add(label.getLabelName());
-		}
+	private static void filterTable(Table inTable, String inFilterText)
+	{					
+		assert(inTable != null);
+		assert(inFilterText != null);
+		assert(inFilterText.length() > 0);
 		
-		refreshList();
-		refreshPickList();		
+		final int originalTableSize = inTable.getItemCount();
+			
+		for(int i = originalTableSize - 1; i >= 0; i--)
+		{
+			final String label = inTable.getItem(i).getText(1);
+					
+			if(!StringMatch.match(label, inFilterText))
+			{
+				inTable.remove(i);	
+			}
+		}
 	}
 	
 	private void refreshList()
 	{
-		listLabel.removeAll();
-		for(int i=0; i <labels.size(); i++)
-			listLabel.add(labels.get(i));
+		choiceTable.removeAll();
+		
+		IDSet labels = PFSystem.getCurrent().getLabelSystem().getAllIDs();
+		
+		for(int i = 0; i < labels.getSize(); i++)
+		{	
+			final int id = labels.getValue(i);
+			
+			if(!selectedLabels.contains(new Integer(id)))
+			{
+				addLabelToTable(choiceTable, id);
+			}
+		}
 	}
 	
 	private void refreshPickList()
 	{
-		listPickLabel.removeAll();
-		for(int i=0; i <pickLabels.size(); i++)
-			listPickLabel.add(pickLabels.get(i));
+		pickedTable.removeAll();
 		
+		for(int i=0; i <selectedLabels.size(); i++)
+		{
+			final int id = selectedLabels.get(i).intValue();
+			addLabelToTable(pickedTable, id);
+		}
 	}
-
+	
+	private static void moveLabelFromTableToTable(Table inFrom, Table inTo, int inIndex)
+	{
+		TableItem item = inFrom.getItem(inIndex);
+		Integer id = Integer.parseInt(item.getText(0));
+	
+		inFrom.remove(inIndex);
+		
+		addLabelToTable(inTo, id.intValue());
+	}
+	
+	private static void addLabelToTable(Table inTable, int inId)
+	{
+		domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(inId);
+		
+		TableItem tableItem= new TableItem(inTable, SWT.NONE);
+		tableItem.setText(0, "" + inId);
+		tableItem.setText(1, label.getLabelName());
+	}
 }

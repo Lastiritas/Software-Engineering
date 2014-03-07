@@ -7,7 +7,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -41,7 +40,6 @@ public class ViewExpense implements IWindow
 	private Button debitRadio;
 	private Button otherRadio;
 	private Button saveButton;
-	private List labelsList;
 	private Button editLabelsButton;
 	protected int currID;
 	private Button btnFilter;
@@ -49,6 +47,9 @@ public class ViewExpense implements IWindow
 	private int sortCounterDate =0;
 	private int sortCounterMoney=0;
 	private int sortCounterID =0;
+	private Table labelList;
+	private TableColumn tblclmnId;
+	private TableColumn tblclmnLabel;
 	
 	/**
 	 * Open the window.
@@ -77,7 +78,7 @@ public class ViewExpense implements IWindow
 	protected void createContents() 
 	{
 		shell = new Shell();
-		shell.setSize(918, 673);
+		shell.setSize(968, 740);
 		shell.setText("PayTo Creation");
 		
 		editPanel = new Composite(shell, SWT.NONE);
@@ -145,27 +146,26 @@ public class ViewExpense implements IWindow
 		lblDescriptoin.setBounds(20, 218, 83, 14);
 		lblDescriptoin.setText("Description");
 		
-		labelsList = new List(editPanel, SWT.BORDER);
-		labelsList.setBounds(20, 373, 213, 123);
-		
 		editLabelsButton = new Button(editPanel, SWT.NONE);
 		editLabelsButton.addSelectionListener(new SelectionAdapter() 
 		{
 			@Override
 			public void widgetSelected(SelectionEvent arg0) 
-			{	
-				String[] existingLabel = labelsList.getItems();
-				final IDSet realSet = labelToIDSet(existingLabel);
+			{
+				final IDSet realSet = getIDSetFromTable(labelList);
 				
 				LabelSelection window = new LabelSelection();
 				window.setStartingSet(realSet);
-				String[] labels = (String[])window.open();
+				IDSet labelIDs = (IDSet)window.open();
 				
-				labelsList.removeAll();
-								
-				for(int i = 0; i < labels.length; i++)
+				labelList.removeAll();
+				
+				final int labelsCount = labelIDs.getSize();
+				
+				for(int i = 0; i < labelsCount; i++)
 				{
-					labelsList.add(labels[i]);
+					final int id = labelIDs.getValue(i);
+					addLabelToTable(labelList, id);
 				}
 			}
 		});
@@ -193,6 +193,19 @@ public class ViewExpense implements IWindow
 		});
 		saveButton.setBounds(139, 593, 94, 28);
 		saveButton.setText("Save");
+		
+		labelList = new Table(editPanel, SWT.BORDER | SWT.FULL_SELECTION);
+		labelList.setBounds(20, 373, 213, 123);
+		labelList.setHeaderVisible(true);
+		labelList.setLinesVisible(true);
+		
+		tblclmnId = new TableColumn(labelList, SWT.NONE);
+		tblclmnId.setWidth(100);
+		tblclmnId.setText("ID");
+		
+		tblclmnLabel = new TableColumn(labelList, SWT.NONE);
+		tblclmnLabel.setWidth(100);
+		tblclmnLabel.setText("Label");
 		
 		Composite composite_1 = new Composite(shell, SWT.NONE);
 		composite_1.setBounds(10, 10, 649, 631);
@@ -669,8 +682,7 @@ public class ViewExpense implements IWindow
 			}
 		}
 		
-		String[] existingLabel = labelsList.getItems();
-		final IDSet set = labelToIDSet(existingLabel);
+		final IDSet set = getIDSetFromTable(labelList);
 		final Expense expense = new Expense(date, Money.fromString(amountField.getText()), method, descriptionField.getText(), payToId, set);
 		
 		boolean updated = PFSystem.getCurrent().getExpenseSystem().update(inID, expense);
@@ -705,15 +717,13 @@ public class ViewExpense implements IWindow
 		
 		descriptionField.setText(expense.getDescription());
 		
-		labelsList.removeAll();
+		labelList.removeAll();
 		
 		final IDSet labelIDs = expense.getLabels();
 		for(int i = 0; i < labelIDs.getSize(); i++)
 		{
 			final int labelID = labelIDs.getValue(i);
-			domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(labelID);
-			
-			labelsList.add(label.getLabelName());
+			addLabelToTable(labelList, labelID);
 		}
 	}
 	
@@ -779,32 +789,27 @@ public class ViewExpense implements IWindow
 			addExpense(id);
 		}
 	}
-
-	public IDSet labelToIDSet(String[] labels) {
-		IDSet allLabelIDs = PFSystem.getCurrent().getLabelSystem().getAllIDs();
+	
+	private static void addLabelToTable(Table table, int labelId)
+	{
+		final domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(labelId);
 		
-		int[] rawData = new int[labels.length];
-		int rawDataCount = 0;
+		final TableItem newItem = new TableItem(table, SWT.NONE);
+		newItem.setText(0, "" + labelId);
+		newItem.setText(1, label.getLabelName());
+	}
+	
+	private static IDSet getIDSetFromTable(Table table)
+	{
+		final int totalItems = table.getItemCount();
 		
-		for(int i = 0; i < allLabelIDs.getSize(); i++)
+		int[] array = new int[totalItems];
+		
+		for(int i = 0; i < totalItems; i++)
 		{
-			final int id = allLabelIDs.getValue(i);
-			final domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
-			
-			for(int j = 0; j < labels.length; j++)
-			{
-				if(labels[j].equals(label.getLabelName()))
-				{
-					// id was found
-					rawData[rawDataCount] = id;
-					rawDataCount++;
-				}
-			}
+			array[i] = Integer.parseInt(table.getItem(i).getText(0));
 		}
 		
-		int[] realData = new int[rawDataCount];
-		System.arraycopy(rawData, 0, realData, 0, rawDataCount);
-		
-		return IDSet.createFromArray(realData);
+		return IDSet.createFromArray(array);
 	}
 }
