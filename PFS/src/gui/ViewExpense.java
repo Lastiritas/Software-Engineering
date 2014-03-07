@@ -94,30 +94,6 @@ public class ViewExpense implements IWindow
 		tblclmnDescription.setWidth(250);
 		tblclmnDescription.setText("Description");
 		
-		String[] columnHeaders = {"ID", "Date", "Pay To", "Amount", "Description"};
-		
-		for(int i = 0; i < columnHeaders.length; i++)
-		{
-			TableColumn column = new TableColumn (expenseTable, SWT.NONE);
-			if(i==0)
-			{
-				column.setWidth(50);
-			}
-			else if(i==2)
-			{
-				column.setWidth(125);
-			}
-			else if(i==4)
-			{
-				column.setWidth(250);
-			}
-			else
-			{
-				column.setWidth(100);
-			}
-			column.setText (columnHeaders[i]);
-		}
-		
 		Menu menu = new Menu(shell, SWT.BAR);
 		menu.setLocation(new Point(0, 0));
 		shell.setMenuBar(menu);
