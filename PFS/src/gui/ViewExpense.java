@@ -151,69 +151,74 @@ public class ViewExpense implements IWindow
 		});
 		mntmViewCommonLabels.setText("View Common Labels");
 		
+		MenuItem mntmAction = new MenuItem(menu, SWT.CASCADE);
+		mntmAction.setText("Action");
+		
+		Menu menu_2 = new Menu(mntmAction);
+		mntmAction.setMenu(menu_2);
+		
+		MenuItem mntmNewExpense = new MenuItem(menu_2, SWT.NONE);
+		mntmNewExpense.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				newExpense();
+			}
+		});
+		mntmNewExpense.setText("New Expense");
+		
+		MenuItem mntmOpenSelected = new MenuItem(menu_2, SWT.NONE);
+		mntmOpenSelected.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				openSelectedExpense();
+			}
+		});
+		mntmOpenSelected.setText("Open Selected");
+		
+		MenuItem mntmDuplicateSelected = new MenuItem(menu_2, SWT.NONE);
+		mntmDuplicateSelected.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				duplicateSelectedExpense();
+			}
+		});
+		mntmDuplicateSelected.setText("Duplicate Selected");
+		
+		MenuItem mntmDeleteSelected = new MenuItem(menu_2, SWT.NONE);
+		mntmDeleteSelected.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				removeSelectedExpense();
+			}
+		});
+		mntmDeleteSelected.setText("Delete Selected");
+		
 		Button addButton = new Button(shell, SWT.NONE);
 		addButton.setBounds(210, 540, 94, 28);
-		addButton.addSelectionListener(new SelectionAdapter() 
-		{
+		addButton.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent arg0) 
-			{
-				final int id = PFSystem.getCurrent().getExpenseSystem().create();
-				addExpense(id);
-				expenseTable.select(expenseTable.getItemCount() - 1);
+			public void widgetSelected(SelectionEvent arg0) {
+				newExpense();
 			}
 		});
 		addButton.setText("+");
 		
 		Button duplicateButton = new Button(shell, SWT.NONE);
 		duplicateButton.setBounds(110, 540, 94, 28);
-		duplicateButton.addSelectionListener(new SelectionAdapter() 
-		{
+		duplicateButton.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent arg0) 
-			{
-				if(expenseTable.getSelectionCount() == 0)
-				{
-					return;
-				}
-				
-				final TableItem[] items = expenseTable.getSelection();
-				
-				final int selectedID = Integer.parseInt(items[0].getText(0));
-				final Expense selectedExpense = (Expense)PFSystem.getCurrent().getExpenseSystem().getDataByID(selectedID);
-								
-				final int createdID = PFSystem.getCurrent().getExpenseSystem().create();
-				PFSystem.getCurrent().getExpenseSystem().update(createdID, selectedExpense);
-				
-				addExpense(createdID);
-								
-				expenseTable.select(expenseTable.getItemCount() - 1);
+			public void widgetSelected(SelectionEvent arg0) {
+				duplicateSelectedExpense();
 			}
 		});
 		duplicateButton.setText("Duplicate");
 		
 		Button deleteButton = new Button(shell, SWT.NONE);
 		deleteButton.setBounds(10, 540, 94, 28);
-		deleteButton.addSelectionListener(new SelectionAdapter() 
-		{
+		deleteButton.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent arg0) 
-			{
-				if(expenseTable.getSelectionCount() == 0)
-				{
-					return;
-				}
-				
-				final int selectedIndex = expenseTable.getSelectionIndex();
-				final TableItem[] items = expenseTable.getSelection();
-				
-				final int id = Integer.parseInt(items[0].getText(0));
-				final boolean deleted = PFSystem.getCurrent().getExpenseSystem().delete(id);
-				
-				if(deleted)
-				{
-					expenseTable.remove(selectedIndex);
-				}
+			public void widgetSelected(SelectionEvent arg0) {
+				removeSelectedExpense();
 			}
 		});
 		deleteButton.setText("-");
@@ -223,22 +228,10 @@ public class ViewExpense implements IWindow
 		btnOpen.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				final int selectedExpenseIndex = expenseTable.getSelectionIndex();
-				
-				if(selectedExpenseIndex >= 0)
-				{
-					final int expenseId = Integer.parseInt(expenseTable.getItem(selectedExpenseIndex).getText(0));
-					
-					EditExpense editExpenseWindow = new EditExpense();
-					editExpenseWindow.setExpenseId(expenseId);
-					editExpenseWindow.open();
-					
-					updateExpenseForRow(selectedExpenseIndex, expenseId);
-				}
+				openSelectedExpense();
 			}
 		});
 		btnOpen.setText("Open");
-		
 		
 		expenseTable.getColumn(0).addSelectionListener(new SelectionAdapter()
 		{
@@ -439,11 +432,78 @@ public class ViewExpense implements IWindow
 		expenseTable.removeAll();
 		for(int i=0; i<arr.length; i++)
 		{
-			addExpense(arr[i]);
+			addExpenseToTable(arr[i]);
 		}
 	}
 	
-	private void addExpense(int inExpenseID)
+	private void newExpense()
+	{
+		final int id = PFSystem.getCurrent().getExpenseSystem().create();
+		
+		addExpenseToTable(id);
+		expenseTable.select(expenseTable.getItemCount() - 1);
+		
+		openSelectedExpense();
+	}
+	
+	private void duplicateSelectedExpense()
+	{
+		if(expenseTable.getSelectionCount() == 0)
+		{
+			return;
+		}
+		
+		final TableItem[] items = expenseTable.getSelection();
+		
+		final int selectedID = Integer.parseInt(items[0].getText(0));
+		final Expense selectedExpense = (Expense)PFSystem.getCurrent().getExpenseSystem().getDataByID(selectedID);
+						
+		final int createdID = PFSystem.getCurrent().getExpenseSystem().create();
+		PFSystem.getCurrent().getExpenseSystem().update(createdID, selectedExpense);
+		
+		addExpenseToTable(createdID);
+						
+		expenseTable.select(expenseTable.getItemCount() - 1);
+	}
+	
+	private void removeSelectedExpense()
+	{
+		if(expenseTable.getSelectionCount() == 0)
+		{
+			return;
+		}
+		
+		final int selectedIndex = expenseTable.getSelectionIndex();
+		final TableItem[] items = expenseTable.getSelection();
+		
+		final int id = Integer.parseInt(items[0].getText(0));
+		final boolean deleted = PFSystem.getCurrent().getExpenseSystem().delete(id);
+		
+		if(deleted)
+		{
+			expenseTable.remove(selectedIndex);
+		}
+	}
+	
+	private void openSelectedExpense()
+	{
+		if(expenseTable.getSelectionCount() == 0)
+		{
+			return;
+		}
+		
+		final int selectedExpenseIndex = expenseTable.getSelectionIndex();
+		
+		final int expenseId = Integer.parseInt(expenseTable.getItem(selectedExpenseIndex).getText(0));
+			
+		EditExpense editExpenseWindow = new EditExpense();
+		editExpenseWindow.setExpenseId(expenseId);
+		editExpenseWindow.open();
+			
+		updateExpenseForRow(selectedExpenseIndex, expenseId);
+	}
+	
+	private void addExpenseToTable(int inExpenseID)
 	{
 		new TableItem(expenseTable, SWT.NONE);	// will add to the end of the list
 		
@@ -501,7 +561,7 @@ public class ViewExpense implements IWindow
 		for(int i = 0; i < totalExpenses; i++)
 		{
 			final int id = expenseIDs.getValue(i);
-			addExpense(id);
+			addExpenseToTable(id);
 		}
 	}
 }
