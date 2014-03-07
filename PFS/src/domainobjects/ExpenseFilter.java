@@ -48,25 +48,25 @@ public class ExpenseFilter
 		if(useDateRange)
 		{
 			// add the condition which says the date must be in range: date >= daterange.min and date <= daterange.max
-			statement.append(String.format("date >= %d and date <= %d", dateRange.getLower().toInteger(), dateRange.getUpper().toInteger()));
+			statement.append(String.format("(date >= %d and date <= %d)", dateRange.getLower().toInteger(), dateRange.getUpper().toInteger()));
 		}
 		
 		if(useMoneyRange)
 		{
 			// add the condition which says the amount must be in range: amount >= amountrange.min and amount <= amountrange.max
-			statement.append(String.format("amount >= %d and amount <= %d", moneyRange.getLower().getTotalCents(), moneyRange.getUpper().getTotalCents()));
+			statement.append(String.format("(amount >= %d and amount <= %d)", moneyRange.getLower().getTotalCents(), moneyRange.getUpper().getTotalCents()));
 		}
 		
 		if(usePaymentMethod)
 		{
 			// add the condition which says the payment method must match: method = paymentmethod
-			statement.append(String.format("method = %d", PaymentMethodHelper.toInteger(paymentMethod)));
+			statement.append(String.format("(method = %d)", PaymentMethodHelper.toInteger(paymentMethod)));
 		}
 		
 		if(usePayTo)
 		{
 			// add the condition which says the expense must have the payTos: payto in selectedpaytos
-			statement.append("payto in (");
+			statement.append("(payto in (");
 			
 			for(int i = 0; i < payTos.getSize(); i++)
 			{
@@ -75,6 +75,7 @@ public class ExpenseFilter
 			}
 			
 			statement.replace(statement.length() - 1, statement.length(), ")");
+			statement.append(")");
 		}
 		
 		if(useLabels)
@@ -89,7 +90,7 @@ public class ExpenseFilter
 				statement.append(" INTERSECT ");
 			}
 			
-			statement.append("id in (");
+			statement.append("(id in (");
 			
 			for(int i = 0; i < labels.getSize(); i++)
 			{
@@ -101,7 +102,7 @@ public class ExpenseFilter
 				statement.append(String.format("(SELECT id FROM expenselabels WHERE label = %d)", labels.getValue(i)));				
 			}
 			
-			statement.append(")");
+			statement.append("))");
 		}
 		
 		return statement.toString();
