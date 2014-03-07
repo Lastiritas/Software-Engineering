@@ -6,12 +6,12 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+<<<<<<< HEAD
 import org.eclipse.swt.widgets.Text;
+=======
+>>>>>>> origin/ExpenseEditMove
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
@@ -20,7 +20,6 @@ import domainobjects.ExpenseFilter;
 import domainobjects.IDSet;
 import domainobjects.Money;
 import domainobjects.PayTo;
-import domainobjects.PaymentMethod;
 import domainobjects.SimpleDate;
 import system.ExpenseManagement;
 import system.PFSystem;
@@ -30,6 +29,7 @@ public class ViewExpense implements IWindow
 {
 	private Shell shell;
 	private Table expenseTable;
+<<<<<<< HEAD
 	private Text payToField;
 	private Text amountField;
 	private Text descriptionField;
@@ -53,6 +53,12 @@ public class ViewExpense implements IWindow
 	private Table labelList;
 	private TableColumn tblclmnId;
 	private TableColumn tblclmnLabel;
+=======
+	protected int currID;
+	private Button btnFilter;
+	private Button btnViewMining;
+	private Button btnEditSelected;
+>>>>>>> origin/ExpenseEditMove
 	
 	/**
 	 * Open the window.
@@ -84,6 +90,7 @@ public class ViewExpense implements IWindow
 		shell.setSize(968, 740);
 		shell.setText("PayTo Creation");
 		
+<<<<<<< HEAD
 		editPanel = new Composite(shell, SWT.NONE);
 		editPanel.setBounds(665, 10, 243, 631);
 		
@@ -203,8 +210,10 @@ public class ViewExpense implements IWindow
 		tblclmnLabel.setWidth(100);
 		tblclmnLabel.setText("Label");
 		
+=======
+>>>>>>> origin/ExpenseEditMove
 		Composite composite_1 = new Composite(shell, SWT.NONE);
-		composite_1.setBounds(10, 10, 649, 631);
+		composite_1.setBounds(10, 10, 882, 631);
 		
 		Button deleteButton = new Button(composite_1, SWT.NONE);
 		deleteButton.addSelectionListener(new SelectionAdapter() 
@@ -229,7 +238,7 @@ public class ViewExpense implements IWindow
 				}
 			}
 		});
-		deleteButton.setBounds(345, 593, 94, 28);
+		deleteButton.setBounds(578, 593, 94, 28);
 		deleteButton.setText("-");
 		
 		Button addButton = new Button(composite_1, SWT.NONE);
@@ -241,10 +250,9 @@ public class ViewExpense implements IWindow
 				final int id = PFSystem.getCurrent().getExpenseSystem().create();
 				addExpense(id);
 				expenseTable.select(expenseTable.getItemCount() - 1);
-				openExpenseInEditingPane(id);
 			}
 		});
-		addButton.setBounds(545, 593, 94, 28);
+		addButton.setBounds(778, 593, 94, 28);
 		addButton.setText("+");
 		
 		expenseTable = new Table(composite_1, SWT.BORDER | SWT.FULL_SELECTION);
@@ -262,10 +270,10 @@ public class ViewExpense implements IWindow
 				
 				currID = Integer.parseInt(item.getText(0));
 				
-				openExpenseInEditingPane(currID);
+				btnEditSelected.setEnabled(true);
 			}
 		});
-		expenseTable.setBounds(10, 10, 629, 577);
+		expenseTable.setBounds(10, 10, 862, 577);
 		expenseTable.setHeaderVisible(true);
 		expenseTable.setLinesVisible(true);
 		
@@ -448,7 +456,7 @@ public class ViewExpense implements IWindow
 				expenseTable.select(expenseTable.getItemCount() - 1);
 			}
 		});
-		duplicateButton.setBounds(445, 593, 94, 28);
+		duplicateButton.setBounds(678, 593, 94, 28);
 		duplicateButton.setText("Duplicate");
 		
 		Button btnQuit = new Button(composite_1, SWT.NONE);
@@ -495,6 +503,7 @@ public class ViewExpense implements IWindow
 		btnViewMining.setBounds(210, 593, 94, 28);
 		btnViewMining.setText("Labels");
 		
+<<<<<<< HEAD
 		refreshWholeList(new ExpenseFilter());
 	}
 	
@@ -616,13 +625,26 @@ public class ViewExpense implements IWindow
 		final Expense expense = new Expense(date, Money.fromString(amountField.getText()), method, descriptionField.getText(), payToId, set);
 		
 		boolean updated = PFSystem.getCurrent().getExpenseSystem().update(inID, expense);
-		
-		if(updated)
+=======
+		btnEditSelected = new Button(composite_1, SWT.NONE);
+		btnEditSelected.setBounds(478, 593, 94, 28);
+		btnEditSelected.setEnabled(false);
+		btnEditSelected.setText("Edit Expense");
+		btnEditSelected.addSelectionListener(new SelectionAdapter() 
 		{
-			updateExpenseForRow(inTableIndex, inID);
-		}
+			@Override
+			public void widgetSelected(SelectionEvent arg0) 
+			{	
+				EditExpense window = new EditExpense();
+				window.open(currID);
+			}
+		});
+>>>>>>> origin/ExpenseEditMove
+		
+		refreshWholeList(new ExpenseFilter());
 	}
 	
+<<<<<<< HEAD
 	private void openExpenseInEditingPane(int inID)
 	{
 		final Expense expense = (Expense)PFSystem.getCurrent().getExpenseSystem().getDataByID(inID);
@@ -652,6 +674,8 @@ public class ViewExpense implements IWindow
 		final IDSet labelIDs = expense.getLabels();
 		GUIHelper.addLabelsToTable(labelList, labelIDs);
 	}
+=======
+>>>>>>> origin/ExpenseEditMove
 	
 	private void addExpense(int inExpenseID)
 	{
@@ -670,7 +694,13 @@ public class ViewExpense implements IWindow
 		}
 		
 		SimpleDate date = SimpleDate.Now();
+<<<<<<< HEAD
 		date = expense.getDate();
+=======
+		date.setMonth(expense.getDate().getMonth());
+		date.setDay(expense.getDate().getDay());
+		date.setYear(expense.getDate().getYear());
+>>>>>>> origin/ExpenseEditMove
 				
 		final int payToID = expense.getPayTo();
 		PayTo payto = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(payToID);		

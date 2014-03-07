@@ -24,6 +24,11 @@ public class PayTo
 		return branch;
 	}
 	
+	public String toString()
+	{
+		return payToName + ", " + branch;
+	}
+	
 	private final String payToName;
 	private final String branch;
 }
