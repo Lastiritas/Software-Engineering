@@ -24,6 +24,7 @@ import domainobjects.PaymentMethod;
 import domainobjects.SimpleDate;
 import system.ExpenseManagement;
 import system.PFSystem;
+import util.Sort;
 
 public class ViewExpense implements IWindow 
 {
@@ -44,9 +45,11 @@ public class ViewExpense implements IWindow
 	protected int currID;
 	private Button btnFilter;
 	private Button btnViewMining;
-	private int sortCounterDate =0;
-	private int sortCounterMoney=0;
-	private int sortCounterID =0;
+	private int sCountDate =0;
+	private int sCountMoney=0;
+	private int sCountID =0;
+	private int sCountPay=0;
+	private int sCountDesc=0;
 	private Table labelList;
 	private TableColumn tblclmnId;
 	private TableColumn tblclmnLabel;
@@ -300,17 +303,19 @@ public class ViewExpense implements IWindow
 					return;
 				}
 				
-				if(sortCounterID == 0)
+				if(sCountID == 0)
 				{
 					ascendSortID();
-					sortCounterID=1;
-					sortCounterDate =0;
-					sortCounterMoney=0;
+					sCountID=1;
+					sCountDate =0;
+					sCountMoney=0;
+					sCountPay=0;
+					sCountDesc=0;
 				}
-				else if(sortCounterID ==1)
+				else if(sCountID ==1)
 				{
 					descendSortID();
-					sortCounterID=0;
+					sCountID=0;
 				}
 			}
 		});
@@ -324,17 +329,45 @@ public class ViewExpense implements IWindow
 					return;
 				}
 				
-				if(sortCounterDate == 0)
+				if(sCountDate == 0)
 				{
 					ascendSortDate();
-					sortCounterDate =1;
-					sortCounterMoney=0;
-					sortCounterID=0;
+					sCountDate =1;
+					sCountMoney=0;
+					sCountID=0;
+					sCountPay=0;
+					sCountDesc=0;
 				}
-				else if(sortCounterDate ==1)
+				else if(sCountDate ==1)
 				{
 					descendSortDate();
-					sortCounterDate=0;
+					sCountDate=0;
+				}
+			}
+		});
+		expenseTable.getColumn(2).addSelectionListener(new SelectionAdapter()
+		{
+			@Override
+			public void widgetSelected(SelectionEvent arg0)
+			{
+				if(expenseTable.getItemCount() <2)
+				{
+					return;
+				}
+				
+				if(sCountPay == 0)
+				{
+					ascendSortPay();
+					sCountPay=1;
+					sCountDate =0;
+					sCountMoney=0;
+					sCountID=0;
+					sCountDesc=0;
+				}
+				else if(sCountPay ==1)
+				{
+					descendSortPay();
+					sCountPay=0;
 				}
 			}
 		});
@@ -348,17 +381,45 @@ public class ViewExpense implements IWindow
 					return;
 				}
 				
-				if(sortCounterMoney == 0)
+				if(sCountMoney == 0)
 				{
 					ascendSortMoney();
-					sortCounterMoney =1;
-					sortCounterDate = 0;
-					sortCounterID=0;
+					sCountMoney =1;
+					sCountDate = 0;
+					sCountID=0;
+					sCountPay=0;
+					sCountDesc=0;
 				}
-				else if(sortCounterMoney ==1)
+				else if(sCountMoney ==1)
 				{
 					descendSortMoney();
-					sortCounterMoney=0;
+					sCountMoney=0;
+				}
+			}
+		});
+		expenseTable.getColumn(4).addSelectionListener(new SelectionAdapter()
+		{
+			@Override
+			public void widgetSelected(SelectionEvent arg0)
+			{
+				if(expenseTable.getItemCount() <2)
+				{
+					return;
+				}
+				
+				if(sCountDesc == 0)
+				{
+					ascendSortDesc();
+					sCountDesc =1;
+					sCountDate = 0;
+					sCountID=0;
+					sCountPay=0;
+					sCountMoney=0;
+				}
+				else if(sCountDesc ==1)
+				{
+					descendSortDesc();
+					sCountDesc=0;
 				}
 			}
 		});
@@ -437,190 +498,66 @@ public class ViewExpense implements IWindow
 		refreshWholeList(new ExpenseFilter());
 	}
 	
-	private void ascendSortDate() {
-		TableItem items[] = expenseTable.getItems();
-		final int length = items.length;
-		SimpleDate date[] = new SimpleDate[length];
-		int IDs[] = new int[length];
-		
-		for(int i=0; i< length; i++)
-		{
-			IDs[i] = Integer.parseInt(items[i].getText(0));
-			date[i] = SimpleDate.Now();
-			date[i].setDate(items[i].getText(1));
-		}
-		
-		
-		for(int i=1; i<length; i++)
-		{
-			SimpleDate temp = date[i];
-			int tempID = IDs[i];
-			
-			int j;
-			for(j=i-1; (j>=0) && (temp.compareTo(date[j])) < 0; j--)
-			{
-				date[j+1] = date[j];
-				IDs[j+1] = IDs[j];
-			}
-			
-			date[j+1]=temp;
-			IDs[j+1] = tempID;
-		}
-		
-		refreshETable(IDs);
+	private void ascendSortDate() 
+	{
+		int sortedIDs[] = Sort.sortDate(expenseTable.getItems(), Sort.ASCEND);
+		refreshETable(sortedIDs);
 	}
 	
-	private void descendSortDate() {
-		TableItem items[] = expenseTable.getItems();
-		final int length = items.length;
-		SimpleDate date[] = new SimpleDate[length];
-		int IDs[] = new int[length];
-		
-		for(int i=0; i< length; i++)
-		{
-			IDs[i] = Integer.parseInt(items[i].getText(0));
-			date[i] = SimpleDate.Now();
-			date[i].setDate(items[i].getText(1));
-		}
-		
-		
-		for(int i=1; i<length; i++)
-		{
-			SimpleDate temp = date[i];
-			int tempID = IDs[i];
-			
-			int j;
-			for(j=i-1; (j>=0) && (temp.compareTo(date[j])) > 0; j--)
-			{
-				date[j+1] = date[j];
-				IDs[j+1] = IDs[j];
-			}
-			
-			date[j+1]=temp;
-			IDs[j+1] = tempID;
-		}
-		
-		refreshETable(IDs);
+	private void descendSortDate() 
+	{
+		int sortedIDs[] = Sort.sortDate(expenseTable.getItems(), Sort.DESCEND);
+		refreshETable(sortedIDs);
 	}
 	
-	private void ascendSortMoney() {
-		TableItem items[] = expenseTable.getItems();
-		final int length = items.length;
-		Money money[] = new Money[length];
-		int IDs[] = new int[length];
-		
-		for(int i=0; i< length; i++)
-		{
-			IDs[i] = Integer.parseInt(items[i].getText(0));
-			money[i] = Money.fromString(items[i].getText(3));
-		}
-		
-		
-		for(int i=1; i<length; i++)
-		{
-			Money temp = money[i];
-			int tempID = IDs[i];
-			
-			int j;
-			for(j=i-1; (j>=0) && (temp.compareTo(money[j]) < 0); j--)
-			{
-				money[j+1] = money[j];
-				IDs[j+1] = IDs[j];
-			}
-			
-			money[j+1]=temp;
-			IDs[j+1] = tempID;
-		}
-		
-		refreshETable(IDs);
+	private void ascendSortMoney()
+	{
+		int sortedIDs[] = Sort.sortMoney(expenseTable.getItems(), Sort.ASCEND);
+		refreshETable(sortedIDs);
 	}
 	
-	private void descendSortMoney() {
-		TableItem items[] = expenseTable.getItems();
-		final int length = items.length;
-		Money money[] = new Money[length];
-		int IDs[] = new int[length];
-		
-		for(int i=0; i< length; i++)
-		{
-			IDs[i] = Integer.parseInt(items[i].getText(0));
-			money[i] = Money.fromString(items[i].getText(3));
-		}
-		
-		
-		for(int i=1; i<length; i++)
-		{
-			Money temp = money[i];
-			int tempID = IDs[i];
-			
-			int j;
-			for(j=i-1; (j>=0) && (temp.compareTo(money[j]) > 0); j--)
-			{
-				money[j+1] = money[j];
-				IDs[j+1] = IDs[j];
-			}
-			
-			money[j+1]=temp;
-			IDs[j+1] = tempID;
-		}
-		
-		refreshETable(IDs);
+	private void descendSortMoney() 
+	{
+		int sortedIDs[] = Sort.sortMoney(expenseTable.getItems(), Sort.DESCEND);
+		refreshETable(sortedIDs);
 	}
 	
-	private void ascendSortID() {
-		TableItem items[] = expenseTable.getItems();
-		final int length = items.length;
-		int IDs[] = new int[length];
-		
-		for(int i=0; i< length; i++)
-		{
-			IDs[i] = Integer.parseInt(items[i].getText(0));
-		}
-		
-		
-		for(int i=1; i<length; i++)
-		{
-			int tempID = IDs[i];
-			
-			int j;
-			for(j=i-1; (j>=0) && (tempID < IDs[j]); j--)
-			{
-				IDs[j+1] = IDs[j];
-			}
-			
-			IDs[j+1] = tempID;
-		}
-		
-		refreshETable(IDs);
+	private void ascendSortID() 
+	{
+		int sortedIDs[] = Sort.sortID(expenseTable.getItems(), Sort.ASCEND);
+		refreshETable(sortedIDs);
 	}
 	
-	private void descendSortID() {
-		TableItem items[] = expenseTable.getItems();
-		final int length = items.length;
-		int IDs[] = new int[length];
-		
-		for(int i=0; i< length; i++)
-		{
-			IDs[i] = Integer.parseInt(items[i].getText(0));
-		}
-		
-		
-		for(int i=1; i<length; i++)
-		{
-			int tempID = IDs[i];
-			
-			int j;
-			for(j=i-1; (j>=0) && (tempID > IDs[j]); j--)
-			{
-				IDs[j+1] = IDs[j];
-			}
-			
-			IDs[j+1] = tempID;
-		}
-		
-		refreshETable(IDs);
+	private void descendSortID() 
+	{
+		int sortedIDs[] = Sort.sortID(expenseTable.getItems(), Sort.DESCEND);
+		refreshETable(sortedIDs);
 	}
-		
+			
+	private void ascendSortPay() 
+	{
+		int sortedIDs[] = Sort.sortPay(expenseTable.getItems(), Sort.ASCEND);
+		refreshETable(sortedIDs);
+	}
+	
+	public void descendSortPay()
+	{
+		int sortedIDs[] = Sort.sortPay(expenseTable.getItems(), Sort.DESCEND);
+		refreshETable(sortedIDs);
+	}
+	
+	private void ascendSortDesc() 
+	{
+		int sortedIDs[] = Sort.sortDesc(expenseTable.getItems(), Sort.ASCEND);
+		refreshETable(sortedIDs);
+	}
+	
+	public void descendSortDesc()
+	{
+		int sortedIDs[] = Sort.sortDesc(expenseTable.getItems(), Sort.DESCEND);
+		refreshETable(sortedIDs);
+	}
+	
 	private void refreshETable(int arr[])
 	{
 		expenseTable.removeAll();
