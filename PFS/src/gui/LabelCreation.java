@@ -4,11 +4,9 @@ import org.eclipse.swt.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.events.*;
 
-import system.IDataModifer;
 import system.PFSystem;
 import util.StringMatch;
 import domainobjects.*;
-import dataAccessLayer.*;
 
 public class LabelCreation implements IDialog
 {

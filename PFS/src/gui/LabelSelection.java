@@ -33,6 +33,9 @@ public class LabelSelection implements IDialog
 		startingSet = set;
 	}
 	
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public Object open()
 	{
 		Display display = Display.getDefault();

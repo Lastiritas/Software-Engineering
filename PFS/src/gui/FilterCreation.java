@@ -186,7 +186,7 @@ public class FilterCreation implements IDialog
 		
 		labelList = new Tree(composite_3, SWT.BORDER);
 		labelList.setEnabled(false);
-		labelList.setBounds(10, 34, 190, 132);
+		labelList.setBounds(10, 34, 190, 120);
 		
 		selectLabelsButton = new Button(composite_3, SWT.NONE);
 		selectLabelsButton.setEnabled(false);
@@ -202,7 +202,7 @@ public class FilterCreation implements IDialog
 				}
 			}
 		});
-		selectLabelsButton.setBounds(93, 172, 107, 28);
+		selectLabelsButton.setBounds(93, 160, 107, 28);
 		selectLabelsButton.setText("Select Labels");
 		
 		Group grpLabelSet = new Group(composite_3, SWT.NONE);
@@ -211,14 +211,14 @@ public class FilterCreation implements IDialog
 		
 		expenseAllRadio = new Button(grpLabelSet, SWT.RADIO);
 		expenseAllRadio.setEnabled(false);
-		expenseAllRadio.setBounds(10, 10, 91, 18);
+		expenseAllRadio.setBounds(10, 24, 91, 18);
 		expenseAllRadio.setText("All");
 		
 		expenseSomeRadio = new Button(grpLabelSet, SWT.RADIO);
 		expenseSomeRadio.setEnabled(false);
 		expenseSomeRadio.setSelection(true);
 		expenseSomeRadio.setText("Some");
-		expenseSomeRadio.setBounds(10, 36, 91, 18);
+		expenseSomeRadio.setBounds(10, 48, 91, 18);
 		
 		Composite composite_4 = new Composite(shell, SWT.NONE);
 		composite_4.setBounds(286, 165, 210, 307);

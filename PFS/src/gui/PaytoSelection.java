@@ -95,7 +95,7 @@ public class PaytoSelection implements IDialog
 				output = selection.getParentItem().getText() + ", " + selection.getText();
 			}
 		});
-		tree.setBounds(12, 10, 412, 211);
+		tree.setBounds(12, 10, 426, 211);
 
 		populateList(tree);
 		
@@ -120,7 +120,7 @@ public class PaytoSelection implements IDialog
 				shell.close();
 			}
 		});
-		okayButton.setBounds(349, 227, 75, 25);
+		okayButton.setBounds(363, 227, 75, 25);
 		okayButton.setText("Okay");
 		
 		Button addButton = new Button(shell, SWT.NONE);
@@ -136,7 +136,7 @@ public class PaytoSelection implements IDialog
 				
 			}
 		});
-		addButton.setBounds(180, 227, 75, 25);
+		addButton.setBounds(185, 227, 75, 25);
 		addButton.setText("+");
 		
 	}
