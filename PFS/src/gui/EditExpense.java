@@ -19,37 +19,33 @@ import domainobjects.PayTo;
 import domainobjects.PaymentMethod;
 import domainobjects.SimpleDate;
 import system.PFSystem;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 
-public class EditExpense {
-
+public class EditExpense implements IWindow
+{
 	protected Shell shell;
 	private Text descriptionField;
-	private Text payToField;
 	private Text amountField;
+	private DateTime datePicker;
 	
-	private int payToID;
-	private Expense expense;
-
-	/**
-	 * Launch the application.
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		try {
-			EditExpense window = new EditExpense();
-			window.open(0);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	private Button cashRadio;
+	private Button creditRadio;
+	private Button debitRadio;
+	private Button otherRadio;
+	
+	private Button payToButton;
+	
+	private int expenseID;
+	private Table labelTable;
 
 	/**
 	 * Open the window.
 	 */
-	public void open(int eID) {
+	public void open() 
+	{
 		Display display = Display.getDefault();
-		createContents(eID);
-		readData();
+		createContents();
 		shell.open();
 		shell.layout();
 		while (!shell.isDisposed()) {
@@ -57,29 +53,34 @@ public class EditExpense {
 				display.sleep();
 			}
 		}
-	
 	}
 
+	public void setExpenseId(int inExpenseID)
+	{
+		expenseID = inExpenseID;
+	}
+	
 	/**
 	 * Create contents of the window.
+	 * @wbp.parser.entryPoint
 	 */
-	protected void createContents(final int eID) {
+	protected void createContents() 
+	{
 		shell = new Shell();
 		shell.setSize(502, 333);
 		shell.setText("Expense Edit");
 		
-		PaymentMethod method = (((Expense) PFSystem.getCurrent().getExpenseSystem().getDataByID(eID)).getPaymentMethod());
+		final Expense expense = (Expense)PFSystem.getCurrent().getExpenseSystem().getDataByID(expenseID);
+		
+		PaymentMethod method = expense.getPaymentMethod();
 		
 		descriptionField = new Text(shell, SWT.BORDER);
 		descriptionField.setBounds(10, 127, 213, 129);
-		descriptionField.setText(((Expense) PFSystem.getCurrent().getExpenseSystem().getDataByID(eID)).getDescription());
+		descriptionField.setText(expense.getDescription());
 		
 		Label lblDescription = new Label(shell, SWT.NONE);
 		lblDescription.setText("Description");
 		lblDescription.setBounds(10, 107, 83, 14);
-		
-		final List labelsList = new List(shell, SWT.BORDER);
-		labelsList.setBounds(261, 127, 213, 129);
 		//labelsList.set...
 		
 		Button btnEditLabels = new Button(shell, SWT.NONE);
@@ -88,44 +89,14 @@ public class EditExpense {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) 
 			{	
-				IDSet allLabelIDs = ((Expense)PFSystem.getCurrent().getExpenseSystem().getDataByID(eID)).getLabels();
-				
-				String[] exisitingLabel = labelsList.getItems();
-				
-				int[] rawData = new int[exisitingLabel.length];
-				int rawDataCount = 0;
-				
-				for(int i = 0; i < allLabelIDs.getSize(); i++)
-				{
-					final int id = allLabelIDs.getValue(i);
-					final domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
-					
-					for(int j = 0; j < exisitingLabel.length; j++)
-					{
-						if(exisitingLabel[i].equals(label.getLabelName()))
-						{
-							// id was found
-							rawData[rawDataCount] = id;
-							rawDataCount++;
-						}
-					}
-				}
-				
-				int[] realData = new int[rawDataCount];
-				System.arraycopy(rawData, 0, realData, 0, rawDataCount);
-				
-				IDSet realSet = IDSet.createFromArray(realData);
+				final IDSet startingLabels = GUIHelper.getLabelIDSetFromTable(labelTable);
 				
 				LabelSelection window = new LabelSelection();
-				window.setStartingSet(realSet);
-				String[] labels = (String[])window.open();
-				
-				labelsList.removeAll();
-								
-				for(int i = 0; i < labels.length; i++)
-				{
-					labelsList.add(labels[i]);
-				}
+				window.setStartingSet(startingLabels);
+				final IDSet labelIds = (IDSet)window.open();
+
+				labelTable.removeAll();
+				GUIHelper.addLabelsToTable(labelTable, labelIds);
 			}
 		});
 		btnEditLabels.setText("Edit Labels");
@@ -137,68 +108,64 @@ public class EditExpense {
 		
 		Group grpPaymentMethod = new Group(shell, SWT.NONE);
 		grpPaymentMethod.setText("Payment Method");
-		grpPaymentMethod.setBounds(251, 10, 223, 74);
+		grpPaymentMethod.setBounds(251, 10, 223, 91);
 		
-		final Button cashRadio = new Button(grpPaymentMethod, SWT.RADIO);
+		cashRadio = new Button(grpPaymentMethod, SWT.RADIO);
 		cashRadio.setText("Cash");
-		cashRadio.setBounds(14, 22, 91, 18);
+		cashRadio.setBounds(10, 10, 91, 18);
 		
-		final Button creditRadio = new Button(grpPaymentMethod, SWT.RADIO);
+		creditRadio = new Button(grpPaymentMethod, SWT.RADIO);
 		creditRadio.setText("Credit");
-		creditRadio.setBounds(14, 46, 91, 18);
+		creditRadio.setBounds(10, 34, 91, 18);
 		
-		final Button debitRadio = new Button(grpPaymentMethod, SWT.RADIO);
+		debitRadio = new Button(grpPaymentMethod, SWT.RADIO);
 		debitRadio.setText("Debit");
-		debitRadio.setBounds(118, 22, 91, 18);
+		debitRadio.setBounds(114, 10, 91, 18);
 		
-		Button otherRadio = new Button(grpPaymentMethod, SWT.RADIO);
+		otherRadio = new Button(grpPaymentMethod, SWT.RADIO);
 		otherRadio.setText("Other");
-		otherRadio.setBounds(118, 46, 91, 18);
+		otherRadio.setBounds(114, 34, 91, 18);
 		
 		cashRadio.setSelection(method == PaymentMethod.CASH);
 		debitRadio.setSelection(method == PaymentMethod.DEBIT);
 		creditRadio.setSelection(method == PaymentMethod.CREDIT);
 		otherRadio.setSelection(method == PaymentMethod.OTHER);
 		
-		final DateTime datePicker = new DateTime(shell, SWT.BORDER);
-		datePicker.setDate(((Expense) PFSystem.getCurrent().getExpenseSystem().getDataByID(eID)).getDate().getDay(),((Expense) PFSystem.getCurrent().getExpenseSystem().getDataByID(eID)).getDate().getMonth(),((Expense) PFSystem.getCurrent().getExpenseSystem().getDataByID(eID)).getDate().getYear());
-		datePicker.setBounds(110, 35, 123, 27);
-		
-		payToField = new Text(shell, SWT.BORDER);
-		payToField.setEditable(false);
-		
-	/*	Better to have actual payTo returned by Expense
-	 	int payToID = ((Expense) PFSystem.getCurrent().getExpenseSystem().getDataByID(eID)).getPayTo();
-		StubDatabase data = new StubDatabase();
-		payToField.setText(data.getPayToByID(payToID).toString());
-	*/
-		payToField.setBounds(110, 10, 123, 19);
+		final SimpleDate date = expense.getDate();
+		datePicker = new DateTime(shell, SWT.BORDER);
+		datePicker.setDate(date.getMonth(), date.getDay(), date.getYear());
+		datePicker.setBounds(100, 37, 123, 27);
 		
 		amountField = new Text(shell, SWT.BORDER);
-		amountField.setText(((Expense) PFSystem.getCurrent().getExpenseSystem().getDataByID(eID)).getAmount().toString());
-		amountField.setBounds(110, 68, 123, 19);
+		amountField.setText(((Expense) PFSystem.getCurrent().getExpenseSystem().getDataByID(expenseID)).getAmount().toString());
+		amountField.setBounds(100, 67, 123, 19);
 		
 		Label lblAmount = new Label(shell, SWT.NONE);
 		lblAmount.setText("Amount");
 		lblAmount.setBounds(10, 70, 59, 14);
 		
-		Button payToButton = new Button(shell, SWT.NONE);
+		payToButton = new Button(shell, SWT.NONE);
 		payToButton.setAlignment(SWT.LEFT);
 		payToButton.setText("Pay To");
-		payToButton.setBounds(10, 7, 94, 24);
+		payToButton.setBounds(10, 7, 213, 24);
 		payToButton.addSelectionListener(new SelectionAdapter() 
 		{
 			@Override
 			public void widgetSelected(SelectionEvent arg0) 
 			{
 				PaytoSelection window = new PaytoSelection();
-				payToID = (int)window.open();
 				
-				PayTo payTo = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(payToID);
+				int payToID = (int)window.open();
 				
-				payToField.setText(payTo.getPayToName() + ", " + payTo.getPayToBranch());
+				final PayTo payTo = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(payToID);
+				
+				payToButton.setText(payTo.toString()); 
 			}
 		});
+		
+	 	final int payToID = expense.getPayTo();
+	 	final PayTo payTo = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(payToID);
+	 	payToButton.setText(payTo.toString());
 		
 		Label lblDate = new Label(shell, SWT.NONE);
 		lblDate.setText("Date");
@@ -212,69 +179,29 @@ public class EditExpense {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) 
 			{	
-				SimpleDate date = SimpleDate.Now();
-				date.setDay(datePicker.getDay());
-				date.setMonth(datePicker.getMonth());
-				date.setYear(datePicker.getYear());
-				
-				PaymentMethod method = PaymentMethod.CASH;
-				if(cashRadio.getSelection())
-				{
-					method = PaymentMethod.CASH;
-				}
-				else if(debitRadio.getSelection())
-				{
-					method = PaymentMethod.DEBIT;
-				}
-				else if(creditRadio.getSelection())
-				{
-					method = PaymentMethod.CREDIT;
-				}
-				else
-				{
-					method = PaymentMethod.OTHER;
-				}
-				
-				IDSet allLabelIDs = PFSystem.getCurrent().getLabelSystem().getAllIDs();
-				
-				String[] exisitingLabel = labelsList.getItems();
-				
-				int[] rawData = new int[exisitingLabel.length];
-				int rawDataCount = 0;
-				
-				for(int i = 0; i < allLabelIDs.getSize(); i++)
-				{
-					final int id = allLabelIDs.getValue(i);
-					final domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
-					
-					for(int j = 0; j < exisitingLabel.length; j++)
-					{
-						if(exisitingLabel[j].equals(label.getLabelName()))
-						{
-							// id was found
-							rawData[rawDataCount] = id;
-							rawDataCount++;
-							
-						}
-					}
-				}
-				
-				int[] realData = new int[rawDataCount];
-				System.arraycopy(rawData, 0, realData, 0, rawDataCount);
-				
-				final IDSet set = IDSet.createFromArray(realData);
-				
-				expense = new Expense(date, Money.fromString(amountField.getText()), method, descriptionField.getText(), payToID, set);
-				PFSystem.getCurrent().getExpenseSystem().update(eID, expense);
+				final Expense newExpense = createExpenseFromGUI();
+				PFSystem.getCurrent().getExpenseSystem().update(expenseID, newExpense);	
 				
 				shell.close();
-		
 			}
 		});
 		
 		Button btnCancel = new Button(shell, SWT.NONE);
 		btnCancel.setText("Cancel");
 		btnCancel.setBounds(10, 262, 94, 28);
+		
+		labelTable = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
+		labelTable.setBounds(251, 127, 223, 129);
+		labelTable.setHeaderVisible(true);
+		labelTable.setLinesVisible(true);
+		
+		TableColumn tblclmnId = new TableColumn(labelTable, SWT.NONE);
+		tblclmnId.setWidth(100);
+		tblclmnId.setText("ID");
+		
+		TableColumn tblclmnLabel = new TableColumn(labelTable, SWT.NONE);
+		tblclmnLabel.setWidth(100);
+		tblclmnLabel.setText("Label");
 		btnCancel.addSelectionListener(new SelectionAdapter()
 		{
 			@Override
@@ -286,8 +213,48 @@ public class EditExpense {
 
 	}
 	
-	private void readData(){
+	private SimpleDate getDateFromGUI()
+	{
+		SimpleDate date = SimpleDate.Now();
+		date.setDay(datePicker.getDay());
+		date.setMonth(datePicker.getMonth());
+		date.setYear(datePicker.getYear());
+		
+		return date;
 	}
 	
+	private PaymentMethod getPaymentMethodFromGUI()
+	{
+		PaymentMethod method = PaymentMethod.CASH;
+		
+		if(cashRadio.getSelection())
+		{
+			method = PaymentMethod.CASH;
+		}
+		else if(debitRadio.getSelection())
+		{
+			method = PaymentMethod.DEBIT;
+		}
+		else if(creditRadio.getSelection())
+		{
+			method = PaymentMethod.CREDIT;
+		}
+		else
+		{
+			method = PaymentMethod.OTHER;
+		}
+		
+		return method;
+	}
+	
+	private Expense createExpenseFromGUI()
+	{
+		SimpleDate date = getDateFromGUI();
+		
+		PaymentMethod method = getPaymentMethodFromGUI();
 
+		IDSet labelIds = GUIHelper.getLabelIDSetFromTable(labelTable);
+				
+		return new Expense(date, Money.fromString(amountField.getText()), method, descriptionField.getText(), 1, labelIds);
+	}
 }

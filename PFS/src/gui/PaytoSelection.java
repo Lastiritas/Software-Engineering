@@ -77,7 +77,7 @@ public class PaytoSelection implements IDialog
 				}
 			}
 		});
-<<<<<<< HEAD
+		
 		table.setBounds(10, 10, 430, 249);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
@@ -93,11 +93,6 @@ public class PaytoSelection implements IDialog
 		TableColumn tblclmnLocation = new TableColumn(table, SWT.NONE);
 		tblclmnLocation.setWidth(100);
 		tblclmnLocation.setText("Location");
-=======
-		tree.setBounds(12, 10, 426, 211);
-
-		populateList(tree);
->>>>>>> origin/ExpenseEditMove
 		
 		Button cancelButton = new Button(shell, SWT.NONE);
 		cancelButton.addSelectionListener(new SelectionAdapter() 
@@ -121,11 +116,7 @@ public class PaytoSelection implements IDialog
 				shell.close();
 			}
 		});
-<<<<<<< HEAD
 		okayButton.setBounds(365, 265, 75, 25);
-=======
-		okayButton.setBounds(363, 227, 75, 25);
->>>>>>> origin/ExpenseEditMove
 		okayButton.setText("Okay");
 		
 		Button addButton = new Button(shell, SWT.NONE);
@@ -139,11 +130,7 @@ public class PaytoSelection implements IDialog
 				populateList(table);
 			}
 		});
-<<<<<<< HEAD
 		addButton.setBounds(180, 265, 75, 25);
-=======
-		addButton.setBounds(185, 227, 75, 25);
->>>>>>> origin/ExpenseEditMove
 		addButton.setText("+");
 	
 		populateList(table);

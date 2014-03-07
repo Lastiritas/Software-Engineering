@@ -191,15 +191,7 @@ public class FilterCreation implements IDialog
 			}
 		});
 		labelFilterCheck.setText("Filter by labels");
-<<<<<<< HEAD
 		labelFilterCheck.setBounds(10, 10, 142, 28);
-=======
-		labelFilterCheck.setBounds(10, 10, 116, 18);
-		
-		labelList = new Tree(composite_3, SWT.BORDER);
-		labelList.setEnabled(false);
-		labelList.setBounds(10, 34, 190, 120);
->>>>>>> origin/ExpenseEditMove
 		
 		selectLabelsButton = new Button(composite_3, SWT.NONE);
 		selectLabelsButton.setEnabled(false);
@@ -224,11 +216,8 @@ public class FilterCreation implements IDialog
 				}
 			}
 		});
-<<<<<<< HEAD
-		selectLabelsButton.setBounds(10, 158, 107, 28);
-=======
+		
 		selectLabelsButton.setBounds(93, 160, 107, 28);
->>>>>>> origin/ExpenseEditMove
 		selectLabelsButton.setText("Select Labels");
 		
 		Group grpLabelSet = new Group(composite_3, SWT.NONE);
@@ -237,18 +226,13 @@ public class FilterCreation implements IDialog
 		
 		expenseAllRadio = new Button(grpLabelSet, SWT.RADIO);
 		expenseAllRadio.setEnabled(false);
-<<<<<<< HEAD
-		expenseAllRadio.setBounds(10, 39, 91, 18);
-=======
 		expenseAllRadio.setBounds(10, 24, 91, 18);
->>>>>>> origin/ExpenseEditMove
 		expenseAllRadio.setText("All");
 		
 		expenseSomeRadio = new Button(grpLabelSet, SWT.RADIO);
 		expenseSomeRadio.setEnabled(false);
 		expenseSomeRadio.setSelection(true);
 		expenseSomeRadio.setText("Some");
-<<<<<<< HEAD
 		expenseSomeRadio.setBounds(10, 65, 91, 18);
 		
 		labelTable = new Table(composite_3, SWT.BORDER | SWT.FULL_SELECTION);
@@ -263,9 +247,6 @@ public class FilterCreation implements IDialog
 		tblclmnLabel = new TableColumn(labelTable, SWT.NONE);
 		tblclmnLabel.setWidth(100);
 		tblclmnLabel.setText("Label");
-=======
-		expenseSomeRadio.setBounds(10, 48, 91, 18);
->>>>>>> origin/ExpenseEditMove
 		
 		Composite composite_4 = new Composite(shell, SWT.NONE);
 		composite_4.setBounds(10, 410, 733, 225);
