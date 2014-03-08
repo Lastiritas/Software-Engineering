@@ -46,9 +46,10 @@ Tasks Completed by Team Members:
     
   - Josh Krcadinac
     - Sorted View (2 days)
+    - Extended sorting to all columns and moved to seperate file (1 day)
     - Clean up packages (1 day)
-    - Update SimpleDate functionality (1 hour)
-    - 
+    - Update SimpleDate and Database functionality (2 hour)
+    - Aesthetics (1/2 day)
     
   -Madeline Lavergne
     - 
