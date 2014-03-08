@@ -35,7 +35,10 @@ Meetings
 Tasks Completed by Team Members:
 
   - Aaron Vaage
-    -
+    - Create filtering system (3 days)
+    - Create filter creation window (2 days)
+    - Data mining for Labels (7 days)
+    - Menu tweaks (2 day)
     
   - Jeremy Vogt
     - 
