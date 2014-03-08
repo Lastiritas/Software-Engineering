@@ -82,6 +82,26 @@ public class IDSetTest extends TestCase
 			assertTrue("Value in intersection that was not in set 1", set1.contains(intersection.getValue(i)));
 		}
 	}
+	
+	public void testSetDifference()
+	{
+		int[] data0 = { 1, 2, 3, 4, 5};
+		IDSet set0 = IDSet.createFromArray(data0);
+		
+		int[] data1 = { 3, 4, 5, 6, 7};
+		IDSet set1 = IDSet.createFromArray(data1);
+		
+		int[] expectedData = { 1, 2};
+		IDSet expectedSet = IDSet.createFromArray(expectedData);
+		
+		int expectedSize = 2;
+		
+		IDSet actualSet = set0.setDifference(set1);
+		
+		assertEquals(actualSet.getSize(), expectedSize);
+		assertEquals(actualSet.getValue(0), expectedSet.getValue(0));
+		assertEquals(actualSet.getValue(1), expectedSet.getValue(1));
+	}
 
 	public void testEquals()
 	{
