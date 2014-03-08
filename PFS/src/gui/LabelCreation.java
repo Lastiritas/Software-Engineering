@@ -42,7 +42,7 @@ public class LabelCreation implements IDialog
 	
 	protected void createContents()
 	{
-		shell = new Shell(SWT.APPLICATION_MODAL);
+		shell = new Shell(SWT.SYSTEM_MODAL | SWT.DIALOG_TRIM);
 		shell.setSize(320, 300);
 		shell.setText("Label Creation");
 		

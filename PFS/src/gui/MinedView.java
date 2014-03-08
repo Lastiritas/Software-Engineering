@@ -65,7 +65,7 @@ public class MinedView implements IDialog
 	 */
 	protected void createContents() 
 	{
-		shell = new Shell();
+		shell = new Shell(SWT.SYSTEM_MODAL | SWT.DIALOG_TRIM);
 		shell.setMinimumSize(new Point(800, 600));
 		shell.setSize(837, 492);
 		shell.setText("Mined Data View");
