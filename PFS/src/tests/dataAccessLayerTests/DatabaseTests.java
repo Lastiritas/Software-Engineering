@@ -14,8 +14,8 @@ public class DatabaseTests extends TestCase
 {
 	protected void setUp() throws Exception 
 	{
-		database = new Database("Tests");
-		database.open("Tests");
+		database = new Database("PFS");
+		database.open("PFS");
 	}
 	
 	protected void tearDown() throws Exception

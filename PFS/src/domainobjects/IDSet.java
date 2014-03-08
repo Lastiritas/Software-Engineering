@@ -28,14 +28,6 @@ public class IDSet
 		int[] newSet = intersect(values, inSet.values);
 		return createFromArray(newSet);
 	}
-	
-	public IDSet setDifference(IDSet inSet)
-	{
-		assert inSet != null;
-		
-		int[] newSet = setDifference(values, inSet.values);
-		return createFromArray(newSet);
-	}
 
 	public boolean contains(int inValue)
 	{
@@ -228,38 +220,6 @@ public class IDSet
 		int[] output = new int[similarCount];
 		System.arraycopy(similarCollection, 0, output, 0, similarCount);
 
-		return output;
-	}
-	
-	private static int[] setDifference(int[] inSet0, int[] inSet1)
-	{
-		//performs inSet0 - inSet1
-		assert inSet0 != null;
-		assert inSet1 != null;
-		boolean found;
-		int[] assertedValues = new int[inSet0.length];
-		int notFoundValues = 0;
-		
-		for(int set0 = 0; set0 < inSet0.length; set0++)
-		{
-			found = false;
-			for(int set1 = 0; set1 < inSet1.length; set1++)
-			{
-				if(inSet0[set0] == inSet1[set1])
-				{
-					found = true; //they have elements in common do not added to the end result
-				}
-			}
-			if(!found)
-			{
-				assertedValues[notFoundValues] = inSet0[set0];
-				notFoundValues++;
-			}
-		}
-		
-		int[] output = new int[notFoundValues];
-		System.arraycopy(assertedValues, 0, output, 0, notFoundValues);
-		
 		return output;
 	}
 	
