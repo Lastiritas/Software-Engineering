@@ -38,7 +38,7 @@ public class Database implements IDatabase
 		{
 			dbType = "HSQL";
 			Class.forName("org.hsqldb.jdbcDriver").newInstance();
-			url = "jdbc:hsqldb:database/" + dbName;
+			url = String.format("jdbc:hsqldb:database/%s", dbName);
 			c1 = DriverManager.getConnection(url, "SA", "");
 			statement = c1.createStatement();
 		}
@@ -67,7 +67,7 @@ public class Database implements IDatabase
 	public Expense getExpenseByID(int inId)
 	{
 		assert inId > 0;
-		return getExpenseWhere("expenseID="+inId);
+		return getExpenseWhere(String.format("expenseID=%d",inId));
 	}
 	
 	public Expense getExpenseWhere(String whereClause)
@@ -77,7 +77,7 @@ public class Database implements IDatabase
 		
 		try
 		{
-			cmdString = "Select * from Expenses where "+ whereClause;
+			cmdString = String.format("Select * from Expenses where %s", whereClause);
 			resltSet = statement.executeQuery(cmdString);
 			expense = convertToExpense(resltSet);
 			resltSet.close();
@@ -159,7 +159,7 @@ public class Database implements IDatabase
 		
 		try
 		{
-			cmdString = "Select expenseID from Expenses where " + whereClause;
+			cmdString = String.format("Select expenseID from Expenses where %s", whereClause);
 			resltSet = statement.executeQuery(cmdString);
 			
 			while(resltSet.next())
@@ -190,19 +190,17 @@ public class Database implements IDatabase
 		
 		try
 		{
-			values = expenseId
-					+", "+ inNewValue.getDate().toInteger() 
-					+", "+inNewValue.getAmount().getTotalCents()
-					+", " + inNewValue.getPaymentMethod().ordinal()
-					+", '" + inNewValue.getDescription()
-					+"', " + inNewValue.getPayTo();
-			cmdString = "Insert into Expenses " + "Values(" + values + ")";
+			values = String.format("%d, %d, %d, %d, '%s', %d", expenseId, 
+					inNewValue.getDate().toInteger(), inNewValue.getAmount().getTotalCents(), 
+					inNewValue.getPaymentMethod().ordinal(), inNewValue.getDescription(), 
+					inNewValue.getPayTo());
+			cmdString = String.format("Insert into Expenses Values(%s)", values);
 			insertedSuccessful = statement.executeUpdate(cmdString);
 			result = checkWarning(statement, insertedSuccessful);
 			assert result == null;
 			
-			//Now add the labels to the ExpenseLabel table
-			insertedSuccessful = addExpenseLabel(labels, expenseId);
+			//Now add or update the labels to the ExpenseLabel table
+			insertedSuccessful = updateExpenseLabel(labels, expenseId);
 		}
 		catch(Exception ex)
 		{
@@ -224,20 +222,23 @@ public class Database implements IDatabase
 		String values;
 		String where;
 		String result = null;
+		IDSet labels = inNewValue.getLabels();
 		int successful = 0;
 		
 		try
 		{
-			values = "date=" + inNewValue.getDate().toInteger() 
-					+", cents=" + inNewValue.getAmount().getTotalCents()
-					+", paymentMethod=" + inNewValue.getPaymentMethod().ordinal()
-					+", description='" + inNewValue.getDescription()
-					+"', payTo=" + inNewValue.getPayTo();
-			where = "where expenseID=" + inId;
-			cmdString = "Update Expenses " + " Set " + values + " " + where;
+			values = String.format("date=%d, cents=%d, paymentMethod=%d, description='%s', payTo=%d", 
+					inNewValue.getDate().toInteger(), inNewValue.getAmount().getTotalCents(), 
+					inNewValue.getPaymentMethod().ordinal(), inNewValue.getDescription(), 
+					inNewValue.getPayTo());
+			where = String.format("where expenseID=%d", inId);
+			cmdString = String.format("Update Expenses Set %s %s", values, where);
 			successful = statement.executeUpdate(cmdString);
 			result = checkWarning(statement, successful);
 			assert result == null;
+			
+			//Now add or update the labels to the ExpenseLabel table
+			successful = updateExpenseLabel(labels, inId);
 		}
 		catch(Exception ex)
 		{
@@ -257,7 +258,7 @@ public class Database implements IDatabase
 		try
 		{
 			deleteFromExpenseLabel(inId);
-			cmdString = "Delete from Expenses where expenseID=" + inId;
+			cmdString = String.format("Delete from Expenses where expenseID=%d", inId);
 			successful = statement.executeUpdate(cmdString);
 			result = checkWarning(statement, successful);
 			assert result == null;
@@ -273,13 +274,19 @@ public class Database implements IDatabase
 	private void deleteFromExpenseLabel(int inId)
 	{
 		assert inId > 0;
+		deleteFromExpenseLabelWhere(String.format("where expenseID=%d", inId));
+	}
+	
+	private void deleteFromExpenseLabelWhere(String whereClause)
+	{
+		assert whereClause != null;
 		
 		String result = null;
 		int successful = 0;
 		
 		try
 		{
-			cmdString = "Delete from ExpenseLabels where expenseID=" + inId;
+			cmdString = String.format("Delete from ExpenseLabels %s", whereClause);
 			successful = statement.executeUpdate(cmdString);
 			result = checkWarning(statement, successful);
 			assert result == null;
@@ -290,13 +297,17 @@ public class Database implements IDatabase
 		}
 	}
 	
-	private int addExpenseLabel(IDSet labels, int expenseId)
+	private int updateExpenseLabel(IDSet labels, int expenseId)
 	{
 		String values;
+		String whereClause;
 		String result = null;
 		int currentLabel = 0;
 		int insertedSuccessful = 0;
 		final int size = labels.getSize();
+		IDSet labelsPreviouslyInserted;
+		IDSet expenseLabelsToInsert;
+		IDSet expenseLabelsToDelete;
 		
 		try
 		{
@@ -306,10 +317,23 @@ public class Database implements IDatabase
 			}
 			else
 			{
-				while(labels.getSize() > currentLabel)
+				labelsPreviouslyInserted = getExpenseLabelsByExpenseID(expenseId);
+				expenseLabelsToInsert = labels.setDifference(labelsPreviouslyInserted);
+				expenseLabelsToDelete = labelsPreviouslyInserted.setDifference(labels);
+				
+				while(expenseLabelsToDelete.getSize() > currentLabel)
 				{
-					values = expenseId + ", " + labels.getValue(currentLabel);
-					cmdString = "Insert into ExpenseLabels " + " Values(" + values + ")";
+					whereClause = String.format("where expenseID=%d AND labelID=%d", expenseId, expenseLabelsToDelete.getValue(currentLabel));
+					deleteFromExpenseLabelWhere(whereClause);
+					currentLabel++;
+				}
+				
+				currentLabel = 0;
+				
+				while(expenseLabelsToInsert.getSize() > currentLabel)
+				{
+					values = String.format("%d, %d", expenseId, expenseLabelsToInsert.getValue(currentLabel));
+					cmdString = String.format("Insert into ExpenseLabels Values(%s)", values);
 					insertedSuccessful = statement.executeUpdate(cmdString);
 					result = checkWarning(statement, insertedSuccessful);
 					currentLabel++;
@@ -333,8 +357,8 @@ public class Database implements IDatabase
 		
 		try
 		{
-			where = "where expenseID=" + expenseId;
-			cmdString = "Select labelID from ExpenseLabels " + where;
+			where = String.format("where expenseID=%d", expenseId);
+			cmdString = String.format("Select labelID from ExpenseLabels %s", where);
 			resltSet = statement.executeQuery(cmdString);
 			
 			while(resltSet.next())
@@ -359,7 +383,7 @@ public class Database implements IDatabase
 		
 		try
 		{
-			cmdString = "Select * from Label where labelID="+inId;
+			cmdString = String.format("Select * from Label where labelID=%d", inId);
 			resltSet = statement.executeQuery(cmdString);
 			label = convertToLabel(resltSet);
 			resltSet.close();
@@ -428,8 +452,8 @@ public class Database implements IDatabase
 		
 		try
 		{
-			values = labelId + ", '"+inNewValue.getLabelName() + "'";
-			cmdString = "Insert into Label " + " Values(" + values + ")";
+			values = String.format("%d, '%s'", labelId, inNewValue.getLabelName());
+			cmdString = String.format("Insert into Label Values(%s)", values);
 			insertedSuccessful = statement.executeUpdate(cmdString);
 			result = checkWarning(statement, insertedSuccessful);
 			assert result == null;
@@ -457,9 +481,9 @@ public class Database implements IDatabase
 		
 		try
 		{
-			values = "name='" + inNewValue.getLabelName() + "'";
-			where = "where labelID=" + inId;
-			cmdString = "Update Label " + " Set " + values + " " + where;
+			values = String.format("name='%s'", inNewValue.getLabelName());
+			where = String.format("where labelID=%d", inId);
+			cmdString = String.format("Update Label Set %s %s", values, where);
 			successful = statement.executeUpdate(cmdString);
 			result = checkWarning(statement, successful);
 			assert result == null;
@@ -479,7 +503,7 @@ public class Database implements IDatabase
 		
 		try
 		{
-			cmdString = "Select * from PayTo where payToID="+inId;
+			cmdString = String.format("Select * from PayTo where payToID=%d", inId);
 			resltSet = statement.executeQuery(cmdString);
 			payTo = convertToPayTo(resltSet);
 			resltSet.close();
@@ -551,10 +575,8 @@ public class Database implements IDatabase
 		
 		try
 		{
-			values = payToId 
-					+ ", '" + inNewValue.getPayToName()
-					+ "', '"+ inNewValue.getPayToBranch() + "'";
-			cmdString = "Insert into PayTo " + " Values(" + values + ")";
+			values = String.format("%d, '%s', '%s'", payToId, inNewValue.getPayToName(), inNewValue.getPayToBranch());
+			cmdString = String.format("Insert into PayTo Values(%s)", values);
 			insertedSuccessful = statement.executeUpdate(cmdString);
 			result = checkWarning(statement, insertedSuccessful);
 			assert result == null;
@@ -582,10 +604,9 @@ public class Database implements IDatabase
 		
 		try
 		{
-			values = "location='" + inNewValue.getPayToName() 
-					+ "', branch='" + inNewValue.getPayToBranch() + "'";
-			where = "where payToID=" + inId;
-			cmdString = "Update PayTo " + " Set " + values + " " + where;
+			values = String.format("location='%s', branch='%s'", inNewValue.getPayToName(), inNewValue.getPayToBranch());
+			where = String.format("where payToID=%d", inId);
+			cmdString = String.format("Update PayTo Set %s %s", values, where);
 			successful = statement.executeUpdate(cmdString);
 			result = checkWarning(statement, successful);
 			assert result == null;
@@ -672,8 +693,6 @@ public class Database implements IDatabase
 		return ids;
 	}
 	
-	
-	
 	private String processSQLError(Exception e)
 	{
 		String result;
@@ -699,7 +718,7 @@ public class Database implements IDatabase
 		}
 		if (updateCount != 1)
 		{
-			result = "Tuple not inserted correctly.";
+			result = "Tuple not inserted or deleted correctly.";
 		}
 		return result;
 	}

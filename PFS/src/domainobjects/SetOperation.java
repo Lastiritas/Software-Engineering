@@ -3,5 +3,6 @@ package domainobjects;
 public enum SetOperation 
 {
 	UNION,
-	INTERSECTION
+	INTERSECTION,
+	SETDIFFERENCE
 }
