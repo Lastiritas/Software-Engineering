@@ -29,17 +29,13 @@ public class ExpenseManagement implements IIDReader, IDataReader, IDataModifer
 	
 	public IDSet getAllIDs(ExpenseFilter filter)
 	{
-		final String whereClause = filter.createSQLWhereClause();
+		String whereClause = filter.createSQLWhereClause();	
 		
-		// need to use the sql statement in the database query
-		
-		final int[] setData;
-		//setData = database.getAllExpenseIDsWhere(whereClause);
-		setData = database.getAllExpenseIDs();
+		int[] setData = database.getAllExpenseIDsWhere(whereClause);
 		
 		assert setData != null : "Database returned null array";
 	
-		final IDSet output = IDSet.createFromArray(setData);
+		IDSet output = IDSet.createFromArray(setData);
 		
 		return output;
 	}

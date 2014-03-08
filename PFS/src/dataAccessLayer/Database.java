@@ -13,6 +13,7 @@ import domainobjects.Label;
 import domainobjects.Money;
 import domainobjects.PayTo;
 import domainobjects.PaymentMethod;
+import domainobjects.PaymentMethodHelper;
 import domainobjects.SimpleDate;
 
 public class Database implements IDatabase
@@ -108,7 +109,7 @@ public class Database implements IDatabase
 			expenseId = resultSet.getInt("expenseId");
 			date = SimpleDate.parseDate(resultSet.getInt("date"));
 			cents = resultSet.getInt("cents");
-			paymentMethod = PaymentMethod.values()[resultSet.getInt("paymentMethod")];
+			paymentMethod = PaymentMethodHelper.toPaymentMethod(resultSet.getInt("paymentMethod"));
 			description = resultSet.getString("description");
 			payTo = resultSet.getInt("payTo");
 			labels = getExpenseLabelsByExpenseID(expenseId);
