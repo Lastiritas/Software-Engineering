@@ -142,7 +142,7 @@ public class MinedView implements IDialog
 			{
 				TableColumn column = new TableColumn(table, SWT.NONE);
 				column.setWidth(100);
-				column.setText("" + table.getColumnCount()); 	
+				column.setText("Item " + table.getColumnCount()); 	
 			}
 			
 			for(int i = 0; i < set.getSize(); i++)
