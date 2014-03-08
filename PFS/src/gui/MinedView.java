@@ -36,6 +36,7 @@ public class MinedView implements IDialog
 	private Collection<IDSet> frequentSets = null;
 	
 	private ExpenseFilter outputFilter = new ExpenseFilter();
+	private Composite composite;
 	
 	/**
 	 * Open the window.
@@ -67,16 +68,19 @@ public class MinedView implements IDialog
 	{
 		shell = new Shell(SWT.SYSTEM_MODAL | SWT.DIALOG_TRIM);
 		shell.setMinimumSize(new Point(800, 600));
-		shell.setSize(837, 492);
+		shell.setSize(811, 600);
 		shell.setText("Mined Data View");
 		shell.setLayout(null);
 		
-		Composite composite_1 = new Composite(shell, SWT.NONE);
-		composite_1.setBounds(10, 420, 795, 80);
+		composite = new Composite(shell, SWT.NONE);
+		composite.setBounds(0, 0, 805, 560);
+		
+		Composite composite_1 = new Composite(composite, SWT.NONE);
+		composite_1.setBounds(10, 419, 785, 80);
 		composite_1.setLayout(null);
 		
 		thresholdSlider = new Scale(composite_1, SWT.NONE);
-		thresholdSlider.setBounds(10, 10, 702, 54);
+		thresholdSlider.setBounds(10, 10, 687, 54);
 		thresholdSlider.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				tresholdLabel.setText(thresholdSlider.getSelection() + "%");
@@ -87,32 +91,32 @@ public class MinedView implements IDialog
 		thresholdSlider.setSelection(50);
 		
 		tresholdLabel = new Label(composite_1, SWT.NONE);
-		tresholdLabel.setBounds(718, 10, 67, 54);
+		tresholdLabel.setBounds(703, 10, 72, 54);
 		tresholdLabel.setAlignment(SWT.CENTER);
 		tresholdLabel.setText(thresholdSlider.getSelection() + "%");
 		
-		Button btnCancel = new Button(shell, SWT.NONE);
+		Button btnCancel = new Button(composite, SWT.NONE);
+		btnCancel.setBounds(10, 515, 63, 35);
 		btnCancel.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				closeWithReturn(null);
 			}
 		});
-		btnCancel.setBounds(10, 506, 94, 28);
 		btnCancel.setText("Cancel");
 		
-		Button btnView = new Button(shell, SWT.NONE);
+		Button btnView = new Button(composite, SWT.NONE);
+		btnView.setBounds(746, 515, 49, 35);
 		btnView.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				closeWithReturn(generateFilterFromGUI());
 			}
 		});
-		btnView.setBounds(711, 506, 94, 28);
 		btnView.setText("View");
 		
-		table = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
-		table.setBounds(10, 10, 795, 404);
+		table = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
+		table.setBounds(10, 10, 785, 404);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		

@@ -16,6 +16,7 @@ public class LabelCreation implements IDialog
 
 	private String allLabel[];
 	private String retLabel=null;
+	private Composite composite;
 	
 	/**
 	 * Open the window.
@@ -48,61 +49,37 @@ public class LabelCreation implements IDialog
 	protected void createContents()
 	{
 		shell = new Shell(SWT.SYSTEM_MODAL | SWT.DIALOG_TRIM);
-		shell.setSize(325, 334);
+		shell.setSize(316, 328);
 		shell.setText("Label Creation");
 		
-		textNewLabel = new Text(shell, SWT.BORDER);
-		textNewLabel.setBounds(10, 10, 300, 21);
+		composite = new Composite(shell, SWT.NONE);
+		composite.setBounds(0, 0, 310, 288);
 		
-		Button btnCancel = new Button(shell, SWT.NONE);
-		btnCancel.setBounds(10, 263, 75, 25);
+		textNewLabel = new Text(composite, SWT.BORDER);
+		textNewLabel.setBounds(10, 10, 290, 31);
+		
+		Button btnCancel = new Button(composite, SWT.NONE);
+		btnCancel.setBounds(10, 253, 75, 25);
 		btnCancel.setText("Cancel");
 		
-		Button btnDone = new Button(shell, SWT.NONE);
-		btnDone.setBounds(235, 263, 75, 25);
+		Button btnDone = new Button(composite, SWT.NONE);
+		btnDone.setBounds(225, 253, 75, 25);
 		btnDone.setText("Done");
 		
-		listExsistingLabel = new List(shell, SWT.BORDER);
-		listExsistingLabel.setBounds(10, 37, 298, 186);
+		listExsistingLabel = new List(composite, SWT.BORDER);
+		listExsistingLabel.setBounds(10, 47, 290, 200);
 		
-		//list population
-		loadList();
-		
-		
-		//listeners
-		textNewLabel.addKeyListener(new KeyAdapter() 
-		{
-			public void keyPressed(KeyEvent e)
-			{
-				String input = textNewLabel.getText();
-				if(!(input.length() ==0 && (e.character == 8 || e.character == 127)))
-				{
-					if((e.character >32 && e.character <127) ||e.character == 8 || e.character == 127)
-					{
-						if(e.character >32 && e.character <127)
-							input += e.character;
-						refreshList();
-						
-						for(int i=0; i<listExsistingLabel.getItemCount(); i++)
-						{
-							if(!StringMatch.match(listExsistingLabel.getItem(i),input))
-							{
-								listExsistingLabel.remove(listExsistingLabel.getItem(i));
-								i=-1;
-							}
-						}
-						
-					}
-				}
-			}
-		});
-
-		btnCancel.addSelectionListener(new SelectionAdapter() 
+		listExsistingLabel.addSelectionListener(new SelectionAdapter() 
 		{
 			@Override
-			public void widgetSelected(SelectionEvent e)
+			public void widgetSelected(SelectionEvent arg0)
 			{
-				shell.close();
+				if(listExsistingLabel.getSelectionCount() == 0)
+				{
+					return;
+				}
+				
+				textNewLabel.setText(listExsistingLabel.getSelection()[0]); 
 			}
 		});
 		
@@ -142,19 +119,46 @@ public class LabelCreation implements IDialog
 			}
 		});
 		
-		listExsistingLabel.addSelectionListener(new SelectionAdapter() 
-		{
-			@Override
-			public void widgetSelected(SelectionEvent arg0)
-			{
-				if(listExsistingLabel.getSelectionCount() == 0)
+				btnCancel.addSelectionListener(new SelectionAdapter() 
 				{
-					return;
+					@Override
+					public void widgetSelected(SelectionEvent e)
+					{
+						shell.close();
+					}
+				});
+		
+		
+		//listeners
+		textNewLabel.addKeyListener(new KeyAdapter() 
+		{
+			public void keyPressed(KeyEvent e)
+			{
+				String input = textNewLabel.getText();
+				if(!(input.length() ==0 && (e.character == 8 || e.character == 127)))
+				{
+					if((e.character >32 && e.character <127) ||e.character == 8 || e.character == 127)
+					{
+						if(e.character >32 && e.character <127)
+							input += e.character;
+						refreshList();
+						
+						for(int i=0; i<listExsistingLabel.getItemCount(); i++)
+						{
+							if(!StringMatch.match(listExsistingLabel.getItem(i),input))
+							{
+								listExsistingLabel.remove(listExsistingLabel.getItem(i));
+								i=-1;
+							}
+						}
+						
+					}
 				}
-				
-				textNewLabel.setText(listExsistingLabel.getSelection()[0]); 
 			}
 		});
+		
+		//list population
+		loadList();
 		
 	}
 	

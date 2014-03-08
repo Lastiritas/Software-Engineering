@@ -16,6 +16,7 @@ import domainobjects.IDSet;
 import domainobjects.PayTo;
 import system.PFSystem;
 import util.StringMatch;
+import org.eclipse.swt.widgets.Composite;
 
 public class PayToCreation implements IWindow 
 {
@@ -27,6 +28,7 @@ public class PayToCreation implements IWindow
 	private Text locationField;
 	private String allName[];
 	private String allBranch[];
+	private Composite composite;
 
 	/**
 	 * Open the window.
@@ -55,10 +57,14 @@ public class PayToCreation implements IWindow
 	protected void createContents() 
 	{
 		shell = new Shell(SWT.SYSTEM_MODAL | SWT.DIALOG_TRIM);
-		shell.setSize(450, 300);
+		shell.setSize(450, 345);
 		shell.setText("PayTo Creation");
 		
-		Button cancelButton = new Button(shell, SWT.NONE);
+		composite = new Composite(shell, SWT.NONE);
+		composite.setBounds(0, 0, 444, 305);
+		
+		Button cancelButton = new Button(composite, SWT.NONE);
+		cancelButton.setBounds(10, 260, 63, 35);
 		cancelButton.addSelectionListener(new SelectionAdapter() 
 		{
 			@Override
@@ -67,10 +73,10 @@ public class PayToCreation implements IWindow
 				shell.close();
 			}
 		});
-		cancelButton.setBounds(10, 227, 75, 25);
 		cancelButton.setText("Cancel");
 		
-		Button okayButton = new Button(shell, SWT.NONE);
+		Button okayButton = new Button(composite, SWT.NONE);
+		okayButton.setBounds(381, 260, 53, 35);
 		okayButton.addSelectionListener(new SelectionAdapter() 
 		{
 			@Override
@@ -109,10 +115,10 @@ public class PayToCreation implements IWindow
 				shell.close();
 			}
 		});
-		okayButton.setBounds(349, 227, 75, 25);
 		okayButton.setText("Okay");
 		
-		nameField = new Text(shell, SWT.BORDER);
+		nameField = new Text(composite, SWT.BORDER);
+		nameField.setBounds(10, 10, 199, 31);
 		nameField.addKeyListener(new KeyAdapter()
 		{
 			public void keyPressed(KeyEvent e)
@@ -140,9 +146,9 @@ public class PayToCreation implements IWindow
 			}
 		});
 		nameField.setMessage("Name");
-		nameField.setBounds(10, 10, 199, 21);
 		
-		locationField = new Text(shell, SWT.BORDER);
+		locationField = new Text(composite, SWT.BORDER);
+		locationField.setBounds(235, 10, 199, 31);
 		locationField.addKeyListener(new KeyAdapter()
 		{
 			public void keyPressed(KeyEvent e)
@@ -170,13 +176,12 @@ public class PayToCreation implements IWindow
 			}
 		});
 		locationField.setMessage("Location");
-		locationField.setBounds(225, 10, 199, 21);
 		
-		list = new List(shell, SWT.BORDER);
-		list.setBounds(10, 37, 199, 184);
+		list = new List(composite, SWT.BORDER);
+		list.setBounds(10, 47, 199, 207);
 		
-		list_1 = new List(shell, SWT.BORDER);
-		list_1.setBounds(225, 37, 199, 184);
+		list_1 = new List(composite, SWT.BORDER);
+		list_1.setBounds(235, 47, 199, 207);
 		
 		loadList();
 

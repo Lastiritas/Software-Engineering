@@ -19,6 +19,7 @@ import domainobjects.PayTo;
 
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.Composite;
 
 
 public class PaytoSelection implements IDialog
@@ -58,10 +59,14 @@ public class PaytoSelection implements IDialog
 		
 		//***Place contents inside a panel***//
 		shell = new Shell(SWT.SYSTEM_MODAL | SWT.DIALOG_TRIM);
-		shell.setSize(455, 331);
+		shell.setSize(487, 359);
 		shell.setText("PayTo Manager");
 		
-		table = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
+		Composite composite = new Composite(shell, SWT.NONE);
+		composite.setBounds(0, 0, 481, 319);
+		
+		table = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
+		table.setBounds(10, 10, 461, 258);
 		table.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -77,8 +82,6 @@ public class PaytoSelection implements IDialog
 				}
 			}
 		});
-		
-		table.setBounds(10, 10, 430, 249);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		
@@ -94,7 +97,10 @@ public class PaytoSelection implements IDialog
 		tblclmnLocation.setWidth(100);
 		tblclmnLocation.setText("Location");
 		
-		Button cancelButton = new Button(shell, SWT.NONE);
+			populateList(table);
+		
+		Button cancelButton = new Button(composite, SWT.NONE);
+		cancelButton.setBounds(10, 274, 63, 35);
 		cancelButton.addSelectionListener(new SelectionAdapter() 
 		{
 			@Override
@@ -104,10 +110,10 @@ public class PaytoSelection implements IDialog
 				shell.close();
 			}
 		});
-		cancelButton.setBounds(10, 265, 75, 25);
 		cancelButton.setText("Cancel");
 		
-		Button okayButton = new Button(shell, SWT.NONE);
+		Button okayButton = new Button(composite, SWT.NONE);
+		okayButton.setBounds(418, 274, 53, 35);
 		okayButton.addSelectionListener(new SelectionAdapter() 
 		{
 			@Override
@@ -116,10 +122,10 @@ public class PaytoSelection implements IDialog
 				shell.close();
 			}
 		});
-		okayButton.setBounds(365, 265, 75, 25);
 		okayButton.setText("Okay");
 		
-		Button addButton = new Button(shell, SWT.NONE);
+		Button addButton = new Button(composite, SWT.NONE);
+		addButton.setBounds(203, 274, 63, 35);
 		addButton.addSelectionListener(new SelectionAdapter() 
 		{
 			@Override
@@ -130,10 +136,7 @@ public class PaytoSelection implements IDialog
 				populateList(table);
 			}
 		});
-		addButton.setBounds(180, 265, 75, 25);
 		addButton.setText("+");
-	
-		populateList(table);
 	}
 	
 	private void populateList(Table table)

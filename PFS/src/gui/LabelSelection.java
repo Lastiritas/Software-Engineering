@@ -73,56 +73,37 @@ public class LabelSelection implements IDialog
 		shell.setSize(590, 465);
 		shell.setText("Label Management");
 		
-		textSearchLabel = new Text(shell, SWT.BORDER);
-		textSearchLabel.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent arg0) {
-				refreshList();
-				
-				final String text = textSearchLabel.getText();
-				if(text.length() > 0)
-				{
-					filterTable(choiceTable, text);
-				}
-			}
-		});
-		textSearchLabel.setBounds(20, 20, 200, 22);
+		Composite composite = new Composite(shell, SWT.NONE);
+		composite.setBounds(0, 0, 584, 425);
 		
-		textSearchPickLabel = new Text(shell, SWT.BORDER);
-		textSearchPickLabel.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent arg0) {
-				refreshPickList();
-				
-				final String text = textSearchPickLabel.getText();
-				if(text.length() > 0)
-				{
-					filterTable(pickedTable, text);
-				}
-			}
-		});
-		textSearchPickLabel.setBounds(355, 20, 200, 22);
+		textSearchLabel = new Text(composite, SWT.BORDER);
+		textSearchLabel.setBounds(10, 10, 200, 31);
 		
-		Button btnAdd = new Button(shell, SWT.PUSH);
+		textSearchPickLabel = new Text(composite, SWT.BORDER);
+		textSearchPickLabel.setBounds(374, 10, 200, 31);
+		
+		Button btnAdd = new Button(composite, SWT.PUSH);
+		btnAdd.setBounds(320, 155, 48, 35);
 		btnAdd.setText(">>>");
-		btnAdd.setBounds(250, 100, 75, 25);
 		
-		Button btnRemove = new Button(shell, SWT.PUSH);
+		Button btnRemove = new Button(composite, SWT.PUSH);
+		btnRemove.setBounds(216, 155, 48, 35);
 		btnRemove.setText("<<<");
-		btnRemove.setBounds(250, 130, 75, 25);
 		
-		Button btnNew = new Button(shell, SWT.PUSH);
+		Button btnNew = new Button(composite, SWT.PUSH);
+		btnNew.setBounds(10, 344, 108, 35);
 		btnNew.setText("Create Label");
-		btnNew.setBounds(65, 316, 110, 25);
 		
-		Button btnCancel = new Button(shell, SWT.PUSH);
+		Button btnCancel = new Button(composite, SWT.PUSH);
+		btnCancel.setBounds(10, 385, 63, 35);
 		btnCancel.setText("Cancel");
-		btnCancel.setBounds(20, 392, 75, 25);
 		
-		Button btnDone = new Button(shell, SWT.PUSH);
+		Button btnDone = new Button(composite, SWT.PUSH);
+		btnDone.setBounds(519, 380, 55, 35);
 		btnDone.setText("Done");
-		btnDone.setBounds(480,392, 75, 25);
 		
-		choiceTable = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
-		choiceTable.setBounds(20, 48, 200, 262);
+		choiceTable = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
+		choiceTable.setBounds(10, 47, 200, 291);
 		choiceTable.setHeaderVisible(true);
 		choiceTable.setLinesVisible(true);
 		
@@ -134,10 +115,10 @@ public class LabelSelection implements IDialog
 		tblclmnLabel.setWidth(100);
 		tblclmnLabel.setText("Label");
 		
-		pickedTable = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
+		pickedTable = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
+		pickedTable.setBounds(374, 47, 200, 291);
 		pickedTable.setLinesVisible(true);
 		pickedTable.setHeaderVisible(true);
-		pickedTable.setBounds(355, 48, 200, 262);
 		
 		TableColumn tableColumn = new TableColumn(pickedTable, SWT.NONE);
 		tableColumn.setWidth(100);
@@ -146,41 +127,30 @@ public class LabelSelection implements IDialog
 		TableColumn tableColumn_1 = new TableColumn(pickedTable, SWT.NONE);
 		tableColumn_1.setWidth(100);
 		tableColumn_1.setText("Label");
-						
-		refreshList();
-		refreshPickList();
 		
-		btnAdd.addSelectionListener(new SelectionAdapter() 
+		btnDone.addSelectionListener(new SelectionAdapter() 
 		{
 			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
-				final int selectedIndex = choiceTable.getSelectionIndex();
-				
-				if(selectedIndex >= 0)
-				{
-					final int id = Integer.parseInt(choiceTable.getItem(selectedIndex).getText(0));
-					selectedLabels.add(new Integer(id));
-					
-					moveLabelFromTableToTable(choiceTable, pickedTable, selectedIndex);
-				}
+				shell.close();
 			}
 		});
 		
-		btnRemove.addSelectionListener(new SelectionAdapter() 
+		btnCancel.addSelectionListener( new SelectionAdapter() 
 		{
-			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
-				final int selectedIndex = pickedTable.getSelectionIndex();
+				selectedLabels.clear();
 				
-				if(selectedIndex >= 0)
+				final int totalLabels = startingSet.getSize();
+				for(int i = 0; i < totalLabels; i++)
 				{
-					final int id = Integer.parseInt(pickedTable.getItem(selectedIndex).getText(0));
-					selectedLabels.remove(new Integer(id));
-					
-					moveLabelFromTableToTable(pickedTable, choiceTable, selectedIndex);
+					final int id = startingSet.getValue(i);
+					selectedLabels.add(new Integer(id));
 				}
+				
+				shell.close();
 			}
 		});
 		
@@ -206,31 +176,64 @@ public class LabelSelection implements IDialog
 			}
 		});
 		
-		btnCancel.addSelectionListener( new SelectionAdapter() 
-		{
-			public void widgetSelected(SelectionEvent e) 
-			{
-				selectedLabels.clear();
-				
-				final int totalLabels = startingSet.getSize();
-				for(int i = 0; i < totalLabels; i++)
-				{
-					final int id = startingSet.getValue(i);
-					selectedLabels.add(new Integer(id));
-				}
-				
-				shell.close();
-			}
-		});
-		
-		btnDone.addSelectionListener(new SelectionAdapter() 
+		btnRemove.addSelectionListener(new SelectionAdapter() 
 		{
 			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
-				shell.close();
+				final int selectedIndex = pickedTable.getSelectionIndex();
+				
+				if(selectedIndex >= 0)
+				{
+					final int id = Integer.parseInt(pickedTable.getItem(selectedIndex).getText(0));
+					selectedLabels.remove(new Integer(id));
+					
+					moveLabelFromTableToTable(pickedTable, choiceTable, selectedIndex);
+				}
 			}
 		});
+		
+		btnAdd.addSelectionListener(new SelectionAdapter() 
+		{
+			@Override
+			public void widgetSelected(SelectionEvent e) 
+			{
+				final int selectedIndex = choiceTable.getSelectionIndex();
+				
+				if(selectedIndex >= 0)
+				{
+					final int id = Integer.parseInt(choiceTable.getItem(selectedIndex).getText(0));
+					selectedLabels.add(new Integer(id));
+					
+					moveLabelFromTableToTable(choiceTable, pickedTable, selectedIndex);
+				}
+			}
+		});
+		textSearchPickLabel.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent arg0) {
+				refreshPickList();
+				
+				final String text = textSearchPickLabel.getText();
+				if(text.length() > 0)
+				{
+					filterTable(pickedTable, text);
+				}
+			}
+		});
+		textSearchLabel.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent arg0) {
+				refreshList();
+				
+				final String text = textSearchLabel.getText();
+				if(text.length() > 0)
+				{
+					filterTable(choiceTable, text);
+				}
+			}
+		});
+						
+		refreshList();
+		refreshPickList();
 	}
 	
 	private static void filterTable(Table inTable, String inFilterText)

@@ -72,7 +72,7 @@ public class EditExpense implements IWindow
 	protected void createContents() 
 	{
 		shell = new Shell(SWT.SYSTEM_MODAL | SWT.DIALOG_TRIM);
-		shell.setSize(715, 398);
+		shell.setSize(719, 410);
 		shell.setText("Expense Edit");
 		
 		final Expense expense = (Expense)PFSystem.getCurrent().getExpenseSystem().getDataByID(expenseID);

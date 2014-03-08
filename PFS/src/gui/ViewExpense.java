@@ -70,10 +70,10 @@ public class ViewExpense implements IWindow
 		shlExpenseView.setText("Expense View");
 		
 		Composite composite = new Composite(shlExpenseView, SWT.NONE);
-		composite.setBounds(10, 10, 873, 641);
+		composite.setBounds(0, 0, 883, 651);
 		
 		expenseTable = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
-		expenseTable.setBounds(10, 10, 853, 587);
+		expenseTable.setBounds(10, 10, 863, 597);
 		expenseTable.setHeaderVisible(true);
 		expenseTable.setLinesVisible(true);
 		
@@ -98,7 +98,7 @@ public class ViewExpense implements IWindow
 		tblclmnDescription.setText("Description");
 		
 		Button addButton = new Button(composite, SWT.NONE);
-		addButton.setBounds(210, 603, 94, 28);
+		addButton.setBounds(210, 613, 94, 28);
 		addButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -108,7 +108,7 @@ public class ViewExpense implements IWindow
 		addButton.setText("+");
 		
 		Button duplicateButton = new Button(composite, SWT.NONE);
-		duplicateButton.setBounds(110, 603, 94, 28);
+		duplicateButton.setBounds(110, 613, 94, 28);
 		duplicateButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -118,7 +118,7 @@ public class ViewExpense implements IWindow
 		duplicateButton.setText("Duplicate");
 		
 		Button deleteButton = new Button(composite, SWT.NONE);
-		deleteButton.setBounds(10, 603, 94, 28);
+		deleteButton.setBounds(10, 613, 94, 28);
 		deleteButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -128,7 +128,7 @@ public class ViewExpense implements IWindow
 		deleteButton.setText("-");
 		
 		Button btnOpen = new Button(composite, SWT.NONE);
-		btnOpen.setBounds(769, 603, 94, 28);
+		btnOpen.setBounds(779, 613, 94, 28);
 		btnOpen.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {

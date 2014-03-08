@@ -81,7 +81,7 @@ public class FilterCreation implements IDialog
 	protected void createContents()
 	{
 		shell = new Shell(SWT.SYSTEM_MODAL | SWT.DIALOG_TRIM);
-		shell.setSize(755, 681);
+		shell.setSize(759, 719);
 		shell.setText("Label Creation");
 		
 		composite_5 = new Composite(shell, SWT.NONE);
