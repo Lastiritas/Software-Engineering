@@ -45,9 +45,6 @@ public class DatabaseTests extends TestCase
 		int newId;
 		newId = database.addExpense(expectedExpense);
 		Expense actualExpense = database.getExpenseByID(newId);
-		System.out.println(newId);
-		System.out.println("ACTUAL: " + actualExpense);
-		System.out.println("EXPECTED: " + expectedExpense);
 		
 		assertEquals(actualExpense.getDate().getDay(), expectedExpense.getDate().getDay());
 		assertEquals(actualExpense.getDate().getMonth(), expectedExpense.getDate().getMonth());

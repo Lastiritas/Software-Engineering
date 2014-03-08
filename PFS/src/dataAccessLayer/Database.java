@@ -339,6 +339,10 @@ public class Database implements IDatabase
 					currentLabel++;
 					assert result == null;
 				}
+				
+				if(expenseLabelsToInsert.getSize() == 0){
+					insertedSuccessful = 1;
+				}
 			}
 		}
 		catch (Exception ex)
