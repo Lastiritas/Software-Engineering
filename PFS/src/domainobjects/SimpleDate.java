@@ -28,7 +28,7 @@ public class SimpleDate implements Comparable<SimpleDate>
 	
 	public int getMonth()
 	{
-		return date.get(Calendar.MONTH);
+		return date.get(Calendar.MONTH)+1;
 	}
 	
 	public int getDay()
@@ -43,7 +43,7 @@ public class SimpleDate implements Comparable<SimpleDate>
 	
 	public void setMonth(int inMonth)
 	{
-		date.set(Calendar.MONTH, inMonth);
+		date.set(Calendar.MONTH, inMonth-1);
 	}
 	
 	public void setDay(int inDay)

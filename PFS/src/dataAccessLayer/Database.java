@@ -192,7 +192,7 @@ public class Database implements IDatabase
 		{
 			values = String.format("%d, %d, %d, %d, '%s', %d", expenseId, 
 					inNewValue.getDate().toInteger(), inNewValue.getAmount().getTotalCents(), 
-					inNewValue.getPaymentMethod().ordinal(), inNewValue.getDescription(), 
+					PaymentMethodHelper.toInteger(inNewValue.getPaymentMethod()), inNewValue.getDescription(), 
 					inNewValue.getPayTo());
 			cmdString = String.format("Insert into Expenses Values(%s)", values);
 			insertedSuccessful = statement.executeUpdate(cmdString);
@@ -229,7 +229,7 @@ public class Database implements IDatabase
 		{
 			values = String.format("date=%d, cents=%d, paymentMethod=%d, description='%s', payTo=%d", 
 					inNewValue.getDate().toInteger(), inNewValue.getAmount().getTotalCents(), 
-					inNewValue.getPaymentMethod().ordinal(), inNewValue.getDescription(), 
+					PaymentMethodHelper.toInteger(inNewValue.getPaymentMethod()), inNewValue.getDescription(), 
 					inNewValue.getPayTo());
 			where = String.format("where expenseID=%d", inId);
 			cmdString = String.format("Update Expenses Set %s %s", values, where);
