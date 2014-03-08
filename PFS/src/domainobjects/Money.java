@@ -18,32 +18,24 @@ public class Money implements Comparable<Money>
 	}
 	
 	@Override
-	public int compareTo(Money money)
+	public int compareTo(Money inMoney)
 	{
-		assert money != null;
+		assert inMoney != null;
 		
-		if(dollars < money.dollars)
+		int currentTotalCents = (dollars * 100 + cents);
+		int totalCents = inMoney.getTotalCents();
+		
+		if(currentTotalCents < totalCents)
 		{
 			return -1;
 		}
-		else if(dollars > money.dollars)
+		else if(currentTotalCents > totalCents)
 		{
 			return 1;
 		}
 		else
 		{
-			if(cents < money.cents)
-			{
-				return -1;
-			}
-			else if(cents > money.cents)
-			{
-				return 1;
-			}
-			else
-			{
-				return 0;
-			}
+			return 0;
 		}
 	}
 
