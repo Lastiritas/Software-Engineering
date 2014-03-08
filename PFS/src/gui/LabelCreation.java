@@ -40,10 +40,15 @@ public class LabelCreation implements IDialog
 		return retLabel;
 	}
 	
+	
+	/**
+	 * Create contents of the window.
+	 * @wbp.parser.entryPoint
+	 */
 	protected void createContents()
 	{
 		shell = new Shell(SWT.SYSTEM_MODAL | SWT.DIALOG_TRIM);
-		shell.setSize(320, 300);
+		shell.setSize(325, 334);
 		shell.setText("Label Creation");
 		
 		textNewLabel = new Text(shell, SWT.BORDER);

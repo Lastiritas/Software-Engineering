@@ -58,7 +58,7 @@ public class PaytoSelection implements IDialog
 		
 		//***Place contents inside a panel***//
 		shell = new Shell(SWT.SYSTEM_MODAL | SWT.DIALOG_TRIM);
-		shell.setSize(450, 300);
+		shell.setSize(455, 331);
 		shell.setText("PayTo Manager");
 		
 		table = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
