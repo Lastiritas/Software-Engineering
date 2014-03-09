@@ -7,6 +7,22 @@ Big User Stories for Iteration 2 (priority):
   - View Spending Trends (Medium)
   - Filter and Find Expenses (High)
   
+  Iteration 2 Changes
+	  Work Flow
+		  This iteration we changed our approach to tasks assignments and 
+		  distribution. We went from team members chosing which tasks they 
+		  wanted to work on at the beginning of the iteration and went to a 
+		  system where when someone was wanting to do work, they grab any 
+		  unassigned task.
+
+  	Focus
+		  The focus of this iteration moved from adding more functionality to 
+		  refining GUI iterations and completing core functionality. We added 
+		  data mining of labels and filtering, the two features needed to make 
+		  our application pracitical, and refined the GUI.
+
+		With all core functionality in place, the plan for the next iteration is to go over the big user stories for what extra features the customer wants and to add implement them. We hope to add more unique features to set our system apart from existing systems. 
+  
 ===========
 Deveolper Tasks for Iteration 2 (expected datys):
 
