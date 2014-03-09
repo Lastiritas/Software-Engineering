@@ -93,16 +93,60 @@ public class IDSetTest extends TestCase
 		
 		int[] expectedData = { 1, 2};
 		IDSet expectedSet = IDSet.createFromArray(expectedData);
+				
+		IDSet actualSet = set0.setDifference(set1);
 		
-		int expectedSize = 2;
+		assertTrue(actualSet.equals(expectedSet));
+	}
+
+	public void testSetDifferenceWithFullAndEmptySet()
+	{
+		int[] data0 = { 1 };
+		IDSet set0 = IDSet.createFromArray(data0);
+		
+		int[] data1 = { };
+		IDSet set1 = IDSet.createFromArray(data1);
+		
+		int[] expectedData = { 1 };
+		IDSet expectedSet = IDSet.createFromArray(expectedData);
 		
 		IDSet actualSet = set0.setDifference(set1);
 		
-		assertEquals(actualSet.getSize(), expectedSize);
-		assertEquals(actualSet.getValue(0), expectedSet.getValue(0));
-		assertEquals(actualSet.getValue(1), expectedSet.getValue(1));
+		assertTrue(actualSet.equals(expectedSet));
 	}
-
+	
+	public void testSetDifferenceWithEmptyAndFullSet()
+	{
+		int[] data0 = { 1 };
+		IDSet set0 = IDSet.createFromArray(data0);
+		
+		int[] data1 = { };
+		IDSet set1 = IDSet.createFromArray(data1);
+		
+		int[] expectedData = { };
+		IDSet expectedSet = IDSet.createFromArray(expectedData);
+		
+		IDSet actualSet = set1.setDifference(set0);
+		
+		assertTrue(actualSet.equals(expectedSet));
+	}
+	
+	public void testSetDifferenceWithEmptyAndEmptySet()
+	{
+		int[] data0 = { };
+		IDSet set0 = IDSet.createFromArray(data0);
+		
+		int[] data1 = { };
+		IDSet set1 = IDSet.createFromArray(data1);
+		
+		int[] expectedData = { };
+		IDSet expectedSet = IDSet.createFromArray(expectedData);
+		
+		IDSet actualSet = set0.setDifference(set1);
+		
+		assertTrue(actualSet.equals(expectedSet));
+	}
+	
 	public void testEquals()
 	{
 		int[] data0 = { 1, 2, 3, 4 };
