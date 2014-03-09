@@ -40,6 +40,9 @@ Tasks Completed by Team Members:
     - Data mining for Labels (7 days)
     - Menu tweaks (2 day)
     - Creating specialized python scripts to help with creating and editing the database (1 day)
+    - Refactoring (1 day)
+      - ID Set
+      - General usage of IDs
     
   - Jeremy Vogt
     - 
