@@ -319,8 +319,8 @@ public class Database implements IDatabase
 			else
 			{
 				labelsPreviouslyInserted = getExpenseLabelsByExpenseID(expenseId);
-				expenseLabelsToInsert = labels.setDifference(labelsPreviouslyInserted);
-				expenseLabelsToDelete = labelsPreviouslyInserted.setDifference(labels);
+				expenseLabelsToInsert = labels.difference(labelsPreviouslyInserted);
+				expenseLabelsToDelete = labelsPreviouslyInserted.difference(labels);
 				
 				while(expenseLabelsToDelete.getSize() > currentLabel)
 				{

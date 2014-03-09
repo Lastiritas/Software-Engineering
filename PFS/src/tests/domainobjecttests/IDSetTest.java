@@ -94,7 +94,7 @@ public class IDSetTest extends TestCase
 		int[] expectedData = { 1, 2};
 		IDSet expectedSet = IDSet.createFromArray(expectedData);
 				
-		IDSet actualSet = set0.setDifference(set1);
+		IDSet actualSet = set0.difference(set1);
 		
 		assertTrue(actualSet.equals(expectedSet));
 	}
@@ -110,7 +110,7 @@ public class IDSetTest extends TestCase
 		int[] expectedData = { 1 };
 		IDSet expectedSet = IDSet.createFromArray(expectedData);
 		
-		IDSet actualSet = set0.setDifference(set1);
+		IDSet actualSet = set0.difference(set1);
 		
 		assertTrue(actualSet.equals(expectedSet));
 	}
@@ -126,7 +126,7 @@ public class IDSetTest extends TestCase
 		int[] expectedData = { };
 		IDSet expectedSet = IDSet.createFromArray(expectedData);
 		
-		IDSet actualSet = set1.setDifference(set0);
+		IDSet actualSet = set1.difference(set0);
 		
 		assertTrue(actualSet.equals(expectedSet));
 	}
@@ -142,7 +142,7 @@ public class IDSetTest extends TestCase
 		int[] expectedData = { };
 		IDSet expectedSet = IDSet.createFromArray(expectedData);
 		
-		IDSet actualSet = set0.setDifference(set1);
+		IDSet actualSet = set0.difference(set1);
 		
 		assertTrue(actualSet.equals(expectedSet));
 	}

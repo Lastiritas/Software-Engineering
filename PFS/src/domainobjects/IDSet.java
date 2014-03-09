@@ -30,11 +30,11 @@ public class IDSet
 		return createFromArray(newSet);
 	}
 	
-	public IDSet setDifference(IDSet inSet)
+	public IDSet difference(IDSet inSet)
 	{
 		assert inSet != null;
 		
-		int[] newSet = setDifference(values, inSet.values);
+		int[] newSet = difference(values, inSet.values);
 		return createFromArray(newSet);
 	}
 
@@ -232,7 +232,7 @@ public class IDSet
 		return output;
 	}
 	
-	private static int[] setDifference(int[] inSet0, int[] inSet1)
+	private static int[] difference(int[] inSet0, int[] inSet1)
 	{
 		//performs inSet0 - inSet1
 		assert inSet0 != null;
