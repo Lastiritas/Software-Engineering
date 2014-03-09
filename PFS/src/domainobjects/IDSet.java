@@ -1,3 +1,4 @@
+
 package domainobjects;
 
 import java.util.Arrays;
@@ -236,30 +237,40 @@ public class IDSet
 		//performs inSet0 - inSet1
 		assert inSet0 != null;
 		assert inSet1 != null;
-		boolean found;
-		int[] assertedValues = new int[inSet0.length];
-		int notFoundValues = 0;
+	
+		int[] intersection = intersect(inSet0, inSet1);	// we only want care about removing what is in both
 		
-		for(int set0 = 0; set0 < inSet0.length; set0++)
+		int totalCount = inSet0.length + intersection.length;
+		
+		int[] totalCollection = new int[totalCount];
+		System.arraycopy(inSet0, 0, totalCollection, 0, inSet0.length);
+		System.arraycopy(intersection, 0, totalCollection, inSet0.length, intersection.length);
+		
+		Arrays.sort(totalCollection);
+
+		int[] output = new int[inSet0.length - intersection.length];	// we know the output will be the size of the original set minus the number of common elements (i.e. the intersection)
+		int amountInOutput = 0;
+		
+		for(int i = 0; i < totalCount; i++)
 		{
-			found = false;
-			for(int set1 = 0; set1 < inSet1.length; set1++)
+			int currentIndex = i;
+			int current = totalCollection[i];
+			
+			while(i < totalCount && totalCollection[i] == current)	// find how long the run is
 			{
-				if(inSet0[set0] == inSet1[set1])
-				{
-					found = true; //they have elements in common do not added to the end result
-				}
+				i++;
 			}
-			if(!found)
+			
+			i--;	// undo that last step forward
+			
+			if(currentIndex == i)
 			{
-				assertedValues[notFoundValues] = inSet0[set0];
-				notFoundValues++;
+				output[amountInOutput] = current;
+				amountInOutput++;
 			}
 		}
-		
-		int[] output = new int[notFoundValues];
-		System.arraycopy(assertedValues, 0, output, 0, notFoundValues);
-		
+		assert(amountInOutput == output.length);
+			
 		return output;
 	}
 	
