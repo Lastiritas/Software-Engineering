@@ -29,7 +29,7 @@ javac -d bin\ -cp %classpath% src\domainobjects\*.java src\dataAccessLayer\*.jav
 
 javac -d bin\ -cp %classpath% src\tests\domainobjecttests\*.java
 javac -d bin\ -cp %classpath% src\tests\dataAccessLayerTests\*.java
-javac -d bin\ -cp %classpath% src\systemTests\*.java
+javac -d bin\ -cp %classpath% src\tests\systemTests\*.java
 javac -d bin\ -cp %classpath% src\tests\utiltests\*.java
 javac -d bin\ -cp %classpath% src\tests\*.java
 

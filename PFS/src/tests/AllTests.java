@@ -1,14 +1,14 @@
 package tests;
 
-import systemTests.ExpenseManagementTests;
-import systemTests.LabelManagementTests;
-import systemTests.PayToManagementTests;
 import tests.dataAccessLayerTests.DatabaseTests;
 import tests.dataAccessLayerTests.StubDatabaseTests;
 import tests.domainobjecttests.ExpenseTest;
 import tests.domainobjecttests.IDSetTest;
 import tests.domainobjecttests.LabelTest;
 import tests.domainobjecttests.PayToTest;
+import tests.systemTests.ExpenseManagementTests;
+import tests.systemTests.LabelManagementTests;
+import tests.systemTests.PayToManagementTests;
 import tests.utiltests.StringMatchTests;
 import junit.framework.Test;
 import junit.framework.TestSuite;

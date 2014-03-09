@@ -1,4 +1,4 @@
-package systemTests;
+package tests.systemTests;
 
 import org.jmock.integration.junit3.MockObjectTestCase;
 import org.jmock.Expectations;
