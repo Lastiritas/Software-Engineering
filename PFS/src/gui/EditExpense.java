@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.List;
 
 import domainobjects.Expense;
+import domainobjects.IDHelper;
 import domainobjects.IDSet;
 import domainobjects.Money;
 import domainobjects.PayTo;
@@ -199,7 +200,7 @@ public class EditExpense implements IWindow
 				
 				final int newPayToID = (int)window.open();
 				
-				if(newPayToID != PayToManagement.NULL_ID)
+				if(IDHelper.isIdValid(newPayToID))
 				{
 					updatePayToGUI(newPayToID);
 				}

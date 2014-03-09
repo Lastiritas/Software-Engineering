@@ -1,6 +1,7 @@
 package system;
 
 import dataAccessLayer.*;
+import domainobjects.IDHelper;
 import domainobjects.IDSet;
 import domainobjects.PayTo;
 
@@ -25,14 +26,12 @@ public class PayToManagement implements IIDReader, IDataReader, IDataModifer
 	
 	public Object getDataByID(int inId)
 	{
-		assert inId >= 0 || inId == NULL_ID: "Invalid id";
-
-		if(inId == NULL_ID)
+		if(IDHelper.isIdValid(inId))
 		{
-			return NULL_PAYTO;
+			return database.getPayToByID(inId);	
 		}
 		
-		return database.getPayToByID(inId);
+		return NULL_PAYTO;
 	}
 	
 	public int create()
@@ -44,7 +43,7 @@ public class PayToManagement implements IIDReader, IDataReader, IDataModifer
 	
 	public boolean update(int inId, Object inNewValue)
 	{
-		assert inId >= 0 : "Invalid ID";
+		assert IDHelper.isIdValid(inId) : "Invalid ID";
 		assert inNewValue != null : "Cannot update with null value";
 		assert inNewValue instanceof PayTo : "Can only update with PayTo objects";
 
@@ -60,6 +59,5 @@ public class PayToManagement implements IIDReader, IDataReader, IDataModifer
 
 	private IDatabase database;
 
-	public final static int NULL_ID = -1;
 	private final static PayTo NULL_PAYTO = new PayTo("None"); 
 }

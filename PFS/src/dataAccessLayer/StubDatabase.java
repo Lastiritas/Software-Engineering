@@ -79,9 +79,7 @@ public class StubDatabase implements IDatabase
 	
 	public int addExpense(Expense inNewValue)
 	{
-		int newId = 0;
-		
-		newId = getNextExpenseId();
+		int newId = getNextExpenseId();
 		expenseIds.add(newId);
 		expenses.add(inNewValue);
 		
@@ -91,9 +89,7 @@ public class StubDatabase implements IDatabase
 	public boolean updateExpense(int inId, Expense inNewValue)
 	{
 		boolean found = false;
-		int indexId = 0;
-		
-		indexId = expenseIds.indexOf(inId);
+		int indexId = expenseIds.indexOf(inId);
 		if(indexId >= 0)
 		{
 			expenses.setElementAt(inNewValue, indexId);
@@ -105,9 +101,7 @@ public class StubDatabase implements IDatabase
 	public boolean deleteExpense(int inId)
 	{
 		boolean deleted = false;
-		int indexId = 0;
-		
-		indexId = expenseIds.indexOf(inId);
+		int indexId = expenseIds.indexOf(inId);
 		if(indexId >= 0)
 		{
 			expenses.remove(indexId);
@@ -144,9 +138,7 @@ public class StubDatabase implements IDatabase
 	
 	public int addLabel(Label inNewValue)
 	{
-		int newId = 0;
-		
-		newId = getNextLabelId();
+		int newId = getNextLabelId();
 		labelIds.add(newId);
 		labels.add(inNewValue);
 		
@@ -156,9 +148,7 @@ public class StubDatabase implements IDatabase
 	public boolean updateLabel(int inId, Label inNewValue)
 	{
 		boolean found = false;
-		int indexId = 0;
-		
-		indexId = labelIds.indexOf(inId);
+		int indexId = labelIds.indexOf(inId);
 		if(indexId >= 0)
 		{
 			labels.setElementAt(inNewValue, indexId);
@@ -194,9 +184,7 @@ public class StubDatabase implements IDatabase
 	
 	public int addPayTo(PayTo inNewValue)
 	{
-		int newId = 0;
-		
-		newId = getNextPayToId();
+		int newId = getNextPayToId();
 		payToIds.add(newId);
 		payTos.add(inNewValue);
 		
@@ -206,9 +194,7 @@ public class StubDatabase implements IDatabase
 	public boolean updatePayTo(int inId, PayTo inNewValue)
 	{
 		boolean found = false;
-		int indexId = 0;
-		
-		indexId = payToIds.indexOf(inId);
+		int indexId = payToIds.indexOf(inId);
 		if(indexId >= 0)
 		{
 			payTos.setElementAt(inNewValue, indexId);

@@ -8,6 +8,7 @@ import java.sql.SQLWarning;
 import java.util.Vector;
 
 import domainobjects.Expense;
+import domainobjects.IDHelper;
 import domainobjects.IDSet;
 import domainobjects.Label;
 import domainobjects.Money;
@@ -66,7 +67,7 @@ public class Database implements IDatabase
 	
 	public Expense getExpenseByID(int inId)
 	{
-		assert inId > 0;
+		assert IDHelper.isIdValid(inId);
 		return getExpenseWhere(String.format("expenseID=%d",inId));
 	}
 	
@@ -186,7 +187,7 @@ public class Database implements IDatabase
 		int insertedSuccessful = 0;
 		IDSet labels = inNewValue.getLabels();
 		int expenseId = getNextExpenseId();
-		int newId = 0;
+		int newId = IDHelper.getInvalidId();
 		
 		try
 		{
@@ -216,7 +217,7 @@ public class Database implements IDatabase
 	
 	public boolean updateExpense(int inId, Expense inNewValue)
 	{
-		assert inId > 0;
+		assert IDHelper.isIdValid(inId);
 		assert inNewValue != null;
 		
 		String values;
@@ -250,7 +251,7 @@ public class Database implements IDatabase
 	
 	public boolean deleteExpense(int inId)
 	{
-		assert inId > 0;
+		assert IDHelper.isIdValid(inId);
 		
 		String result = null;
 		int successful = 0;
@@ -273,7 +274,7 @@ public class Database implements IDatabase
 	
 	private void deleteFromExpenseLabel(int inId)
 	{
-		assert inId > 0;
+		assert IDHelper.isIdValid(inId);
 		deleteFromExpenseLabelWhere(String.format("where expenseID=%d", inId));
 	}
 	
@@ -356,18 +357,16 @@ public class Database implements IDatabase
 	private IDSet getExpenseLabelsByExpenseID(int expenseId)
 	{
 		Vector<Integer> labelIds = new Vector<Integer>();
-		String where;
-		int currentId;
 		
 		try
 		{
-			where = String.format("where expenseID=%d", expenseId);
+			String where = String.format("where expenseID=%d", expenseId);
 			cmdString = String.format("Select labelID from ExpenseLabels %s", where);
 			resltSet = statement.executeQuery(cmdString);
 			
 			while(resltSet.next())
 			{
-				currentId = resltSet.getInt("labelID");
+				int currentId = resltSet.getInt("labelID");
 				labelIds.add(currentId);
 			}
 			resltSet.close();
@@ -382,7 +381,7 @@ public class Database implements IDatabase
 	
 	public Label getLabelByID(int inId)
 	{
-		assert inId > 0;
+		assert IDHelper.isIdValid(inId);
 		Label label = null;
 		
 		try
@@ -451,7 +450,7 @@ public class Database implements IDatabase
 		String values;
 		String result = null;
 		int insertedSuccessful = 0;
-		int newId = 0;
+		int newId = IDHelper.getInvalidId();
 		int labelId = getNextLabelId();
 		
 		try
@@ -475,7 +474,7 @@ public class Database implements IDatabase
 	
 	public boolean updateLabel(int inId, Label inNewValue)
 	{
-		assert inId > 0;
+		assert IDHelper.isIdValid(inId);
 		assert inNewValue != null;
 		
 		String values;
@@ -502,7 +501,7 @@ public class Database implements IDatabase
 	
 	public PayTo getPayToByID(int inId)
 	{
-		assert inId > 0;
+		assert IDHelper.isIdValid(inId);
 		PayTo payTo = null;
 		
 		try
@@ -574,7 +573,7 @@ public class Database implements IDatabase
 		String values;
 		String result = null;
 		int insertedSuccessful = 0;
-		int newId = 0;
+		int newId = IDHelper.getInvalidId();
 		int payToId = getNextPayToId();
 		
 		try
@@ -598,7 +597,7 @@ public class Database implements IDatabase
 	
 	public boolean updatePayTo(int inId, PayTo inNewValue)
 	{
-		assert inId > 0;
+		assert IDHelper.isIdValid(inId);
 		assert inNewValue != null;
 		
 		String values;
@@ -625,7 +624,7 @@ public class Database implements IDatabase
 	
 	private int getNextExpenseId()
 	{
-		int expenseId = 0;
+		int expenseId = IDHelper.getInvalidId();
 		try
 		{
 			cmdString = "Select MAX(expenseID) from Expenses";
@@ -645,7 +644,7 @@ public class Database implements IDatabase
 	
 	private int getNextLabelId()
 	{
-		int labelId = 0;
+		int labelId = IDHelper.getInvalidId();
 		try
 		{
 			cmdString = "Select MAX(labelID) from Label";
@@ -666,7 +665,7 @@ public class Database implements IDatabase
 	
 	private int getNextPayToId()
 	{
-		int payToId = 0;
+		int payToId = IDHelper.getInvalidId();
 		try
 		{
 			cmdString = "Select MAX(payToID) from PayTo";

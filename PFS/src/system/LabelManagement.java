@@ -1,6 +1,7 @@
 package system;
 
 import dataAccessLayer.*;
+import domainobjects.IDHelper;
 import domainobjects.IDSet;
 import domainobjects.Label;
 
@@ -25,7 +26,7 @@ public class LabelManagement implements IIDReader, IDataReader, IDataModifer
 	
 	public Object getDataByID(int inId)
 	{
-		assert inId >= 0 : "Invalid id";
+		assert IDHelper.isIdValid(inId) : "Invalid ID";
 
 		return database.getLabelByID(inId);
 	}
@@ -38,7 +39,7 @@ public class LabelManagement implements IIDReader, IDataReader, IDataModifer
 	
 	public boolean update(int inId, Object inNewValue)
 	{
-		assert inId >= 0 : "Invalid id";
+		assert IDHelper.isIdValid(inId) : "Invalid ID";
 		assert inNewValue != null : "Can not update with null value";
 		assert inNewValue instanceof Label : "Can only update with a label";
 
