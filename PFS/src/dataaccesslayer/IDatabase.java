@@ -1,4 +1,4 @@
-package dataAccessLayer;
+package dataaccesslayer;
 
 import domainobjects.Expense;
 import domainobjects.Label;

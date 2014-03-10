@@ -2,18 +2,10 @@ package tests.datamining;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 
 import org.jmock.integration.junit3.MockObjectTestCase;
-import org.jmock.Expectations;
 
-import dataAccessLayer.IDatabase;
-import domainobjects.Expense;
 import domainobjects.IDSet;
-import domainobjects.Money;
-import domainobjects.PaymentMethod;
-import domainobjects.SimpleDate;
-import system.ExpenseManagement;
 import system.datamining.DataMiner;
 
 public class DataMiningTests extends MockObjectTestCase
@@ -22,7 +14,7 @@ public class DataMiningTests extends MockObjectTestCase
 	
 	protected void setUp() throws Exception 
 	{
-		data = new LinkedList<IDSet>();
+		data = new ArrayList<IDSet>();
 		
 		data.add(IDSet.createFromArray(new int[]{1}));
 		data.add(IDSet.createFromArray(new int[]{1, 2}));

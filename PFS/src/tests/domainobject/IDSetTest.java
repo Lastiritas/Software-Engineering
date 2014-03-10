@@ -1,4 +1,4 @@
-package tests.domainobjecttests;
+package tests.domainobject;
 
 import domainobjects.IDSet;
 import junit.framework.TestCase;

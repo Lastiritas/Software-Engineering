@@ -4,9 +4,9 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import system.datamining.DataMiner;
-import dataAccessLayer.Database;
-import dataAccessLayer.IDatabase;
-import dataAccessLayer.StubDatabase;
+import dataaccesslayer.Database;
+import dataaccesslayer.IDatabase;
+import dataaccesslayer.StubDatabase;
 import domainobjects.Expense;
 import domainobjects.IDSet;
 

@@ -1,15 +1,15 @@
 package tests;
 
-import tests.dataAccessLayerTests.DatabaseTests;
-import tests.dataAccessLayerTests.StubDatabaseTests;
-import tests.domainobjecttests.ExpenseTest;
-import tests.domainobjecttests.IDSetTest;
-import tests.domainobjecttests.LabelTest;
-import tests.domainobjecttests.PayToTest;
-import tests.systemTests.ExpenseManagementTests;
-import tests.systemTests.LabelManagementTests;
-import tests.systemTests.PayToManagementTests;
-import tests.utiltests.StringMatchTests;
+import tests.dataaccesslayer.DatabaseTests;
+import tests.dataaccesslayer.StubDatabaseTests;
+import tests.domainobject.ExpenseTest;
+import tests.domainobject.IDSetTest;
+import tests.domainobject.LabelTest;
+import tests.domainobject.PayToTest;
+import tests.system.ExpenseManagementTests;
+import tests.system.LabelManagementTests;
+import tests.system.PayToManagementTests;
+import tests.util.StringMatchTests;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 

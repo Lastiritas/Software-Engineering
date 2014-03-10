@@ -1,6 +1,6 @@
-package tests.dataAccessLayerTests;
+package tests.dataaccesslayer;
 
-import dataAccessLayer.StubDatabase;
+import dataaccesslayer.StubDatabase;
 import domainobjects.Expense;
 import domainobjects.IDSet;
 import domainobjects.Label;

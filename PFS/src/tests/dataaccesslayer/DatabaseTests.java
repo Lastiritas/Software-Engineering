@@ -1,7 +1,7 @@
-package tests.dataAccessLayerTests;
+package tests.dataaccesslayer;
 
 import junit.framework.TestCase;
-import dataAccessLayer.Database;
+import dataaccesslayer.Database;
 import domainobjects.Expense;
 import domainobjects.IDSet;
 import domainobjects.Label;

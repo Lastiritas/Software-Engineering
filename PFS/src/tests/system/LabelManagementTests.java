@@ -1,10 +1,10 @@
-package tests.systemTests;
+package tests.system;
 
 import org.jmock.integration.junit3.MockObjectTestCase;
 import org.jmock.Expectations;
 
 import system.LabelManagement;
-import dataAccessLayer.IDatabase;
+import dataaccesslayer.IDatabase;
 import domainobjects.IDSet;
 import domainobjects.Label;
 

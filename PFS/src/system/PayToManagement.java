@@ -1,6 +1,6 @@
 package system;
 
-import dataAccessLayer.*;
+import dataaccesslayer.*;
 import domainobjects.IDHelper;
 import domainobjects.IDSet;
 import domainobjects.PayTo;

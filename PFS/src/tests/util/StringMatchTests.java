@@ -1,4 +1,4 @@
-package tests.utiltests;
+package tests.util;
 
 
 import util.StringMatch;

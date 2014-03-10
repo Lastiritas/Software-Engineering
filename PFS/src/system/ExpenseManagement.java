@@ -1,6 +1,6 @@
 package system;
 
-import dataAccessLayer.IDatabase;
+import dataaccesslayer.IDatabase;
 import domainobjects.Expense;
 import domainobjects.ExpenseFilter;
 import domainobjects.IDHelper;
