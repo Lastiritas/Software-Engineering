@@ -83,7 +83,14 @@ Tasks Completed by Team Members:
     - 
     
   - Rafael Lastiri
-    - 
+    - Implementing Database (4 days)
+    - Database Scripts (2 days)
+    - Unit Testing (2 days)
+    	- Database Tests
+    	- Date Range Domain Object
+    	- IDSet Domain Object
+    	- Money Range Domain Object
+    	- Money Domain Object
 
 =================================================================================
 ITERATION 1
