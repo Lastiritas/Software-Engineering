@@ -5,7 +5,6 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
-import sun.java2d.pipe.SpanShapeRenderer.Simple;
 import system.PFSystem;
 import domainobjects.DateRange;
 import domainobjects.ExpenseFilter;
