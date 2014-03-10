@@ -81,7 +81,10 @@ Tasks Completed by Team Members:
     - Aesthetics (1/2 day)
     
   -Madeline Lavergne
-    - Moved Edit Expense to new window
+    -Created Edit Expense (2 days)
+    -Added functionality to Edit Expense (2 days)
+    -Removed redundant edit features from View Expense (3 hours)
+    -Refined minor appearance issues such as the obstruction of labels from other gui objects (1 hour)
     
   - Rafael Lastiri
     - Implementing Database (4 days)
