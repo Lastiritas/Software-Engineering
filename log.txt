@@ -55,6 +55,7 @@ Deveolper Tasks for Iteration 2 (expected datys):
 ===========
 Meetings
 
+After or before every class we had standup meeting to know what other teammates were working on.
 
 ===========
 Tasks Completed by Team Members:
