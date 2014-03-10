@@ -80,7 +80,7 @@ Tasks Completed by Team Members:
     - Aesthetics (1/2 day)
     
   -Madeline Lavergne
-    - 
+    - Moved Edit Expense to new window
     
   - Rafael Lastiri
     - Implementing Database (4 days)
