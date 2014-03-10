@@ -26,6 +26,8 @@ Packages:
  	ViewExpense.java - The main gui used for the application.
 
  	PFSystem.java - The main access point to all systems from the system package.
+ 	
+ 	*EditExpense.java - The main window that handles the editing and viewing of expeenses.
 
  	ExpenseManagment.java - The system used to manage expenses.
 
@@ -38,8 +40,10 @@ Packages:
  	IDSet.java - The most used class that contains a set of ids used by the system to get expenses, labels, or paytos.
 
  Architecture:
- 	GUI <--> System <--> Stub Database
+ 	GUI <--> System <--> *HSQL Database
 
  	Domain Objects are used by the GUI, System, and Stub Database
  	
  	The system does not return collections of labels, paytos, or expenses. Instead it returns an ID set. The system can return a single expense, label, or payto based on a given id. This is to avoid accidently editing a value in the class and changing a value else where.
+ 	
+ 	*The systemTests using jmock are not included in the test scripts as the are not threadsafe, but when run using and IDE they compile and pass.
