@@ -72,6 +72,21 @@ public class LabelSelection implements IDialog
 		shell = new Shell(SWT.SYSTEM_MODAL | SWT.DIALOG_TRIM);
 		shell.setSize(590, 465);
 		shell.setText("Label Management");
+		shell.addListener(SWT.Close, new Listener()
+		{
+			@Override
+			public void handleEvent(Event event)
+			{
+				selectedLabels.clear();
+				
+				final int totalLabels = startingSet.getSize();
+				for(int i = 0; i < totalLabels; i++)
+				{
+					final int id = startingSet.getValue(i);
+					selectedLabels.add(new Integer(id));
+				}
+			}
+		});
 		
 		Composite composite = new Composite(shell, SWT.NONE);
 		composite.setBounds(0, 0, 584, 425);

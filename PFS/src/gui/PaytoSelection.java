@@ -1,22 +1,16 @@
 package gui;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeColumn;
-import org.eclipse.swt.widgets.TreeItem;
 
 import system.PFSystem;
 import domainobjects.IDSet;
-import domainobjects.PayTo;
 
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Composite;
@@ -36,6 +30,7 @@ public class PaytoSelection implements IDialog
 		Display display = Display.getDefault();
 		
 		createContents();
+		
 		shell.open();
 		shell.layout();
 		
@@ -61,6 +56,14 @@ public class PaytoSelection implements IDialog
 		shell = new Shell(SWT.SYSTEM_MODAL | SWT.DIALOG_TRIM);
 		shell.setSize(487, 359);
 		shell.setText("PayTo Manager");
+		shell.addListener(SWT.Close, new Listener()
+		{
+			@Override
+			public void handleEvent(Event event)
+			{
+				selectedID = -1;
+			}
+		});
 		
 		Composite composite = new Composite(shell, SWT.NONE);
 		composite.setBounds(0, 0, 481, 319);
