@@ -44,6 +44,14 @@ All Tests for the Personal Finanace system
     test_Add_and_get_a_payTo - Good
     test_Update_payTo - Good
   tests.utiltests.StringMatchTests
+    testSortStringDesc - Good
+    testSortIDDesc - Good
+    testSortDateDesc - Good
+    testSortMoneyDesc - Good
+    testSortIDAsc - Good
+    testSortMoneyAsc - Good
+    testSortStringAsc - Good
+    testSortDateAsc - Good
     testMatchString - Good
     testMatchFailChar - Good
     testMAtchFailString - Good
