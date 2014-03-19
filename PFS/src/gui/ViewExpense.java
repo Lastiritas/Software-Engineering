@@ -22,6 +22,9 @@ import domainobjects.SimpleDate;
 import system.ExpenseManagement;
 import system.PFSystem;
 import util.Sort;
+import util.SortDirection;
+import util.TableCols;
+
 import org.eclipse.swt.widgets.Composite;
 
 
@@ -137,7 +140,7 @@ public class ViewExpense implements IWindow
 		});
 		btnOpen.setText("Open");
 		
-		expenseTable.getColumn(0).addSelectionListener(new SelectionAdapter()
+		expenseTable.getColumn(TableCols.ID.ordinal()).addSelectionListener(new SelectionAdapter()
 		{
 			@Override
 			public void widgetSelected(SelectionEvent arg0)
@@ -147,9 +150,10 @@ public class ViewExpense implements IWindow
 					return;
 				}
 				
+				int sortedIDs[] = null;
 				if(sCountID == 0)
 				{
-					ascendSortID();
+					sortedIDs = Sort.sortCollection(TableCols.ID, SortDirection.ASCENDING, expenseTable.getItems());
 					sCountID=1;
 					sCountDate =0;
 					sCountMoney=0;
@@ -158,12 +162,13 @@ public class ViewExpense implements IWindow
 				}
 				else if(sCountID ==1)
 				{
-					descendSortID();
+					sortedIDs = Sort.sortCollection(TableCols.ID, SortDirection.DESCENDING, expenseTable.getItems());
 					sCountID=0;
 				}
+				refreshETable(sortedIDs);
 			}
 		});
-		expenseTable.getColumn(1).addSelectionListener(new SelectionAdapter()
+		expenseTable.getColumn(TableCols.DATE.ordinal()).addSelectionListener(new SelectionAdapter()
 		{
 			@Override
 			public void widgetSelected(SelectionEvent arg0)
@@ -173,9 +178,10 @@ public class ViewExpense implements IWindow
 					return;
 				}
 				
+				int sortedIDs[] = null;
 				if(sCountDate == 0)
 				{
-					ascendSortDate();
+					sortedIDs = Sort.sortCollection(TableCols.DATE, SortDirection.ASCENDING, expenseTable.getItems());
 					sCountDate =1;
 					sCountMoney=0;
 					sCountID=0;
@@ -184,12 +190,13 @@ public class ViewExpense implements IWindow
 				}
 				else if(sCountDate ==1)
 				{
-					descendSortDate();
+					sortedIDs = Sort.sortCollection(TableCols.DATE, SortDirection.DESCENDING, expenseTable.getItems());
 					sCountDate=0;
 				}
+				refreshETable(sortedIDs);
 			}
 		});
-		expenseTable.getColumn(2).addSelectionListener(new SelectionAdapter()
+		expenseTable.getColumn(TableCols.PAYTO.ordinal()).addSelectionListener(new SelectionAdapter()
 		{
 			@Override
 			public void widgetSelected(SelectionEvent arg0)
@@ -199,9 +206,10 @@ public class ViewExpense implements IWindow
 					return;
 				}
 				
+				int sortedIDs[] = null;
 				if(sCountPay == 0)
 				{
-					ascendSortPay();
+					sortedIDs = Sort.sortCollection(TableCols.PAYTO, SortDirection.ASCENDING, expenseTable.getItems());
 					sCountPay=1;
 					sCountDate =0;
 					sCountMoney=0;
@@ -210,12 +218,13 @@ public class ViewExpense implements IWindow
 				}
 				else if(sCountPay ==1)
 				{
-					descendSortPay();
+					sortedIDs = Sort.sortCollection(TableCols.PAYTO, SortDirection.DESCENDING, expenseTable.getItems());
 					sCountPay=0;
 				}
+				refreshETable(sortedIDs);
 			}
 		});
-		expenseTable.getColumn(3).addSelectionListener(new SelectionAdapter()
+		expenseTable.getColumn(TableCols.MONEY.ordinal()).addSelectionListener(new SelectionAdapter()
 		{
 			@Override
 			public void widgetSelected(SelectionEvent arg0)
@@ -225,9 +234,10 @@ public class ViewExpense implements IWindow
 					return;
 				}
 				
+				int sortedIDs[] = null;
 				if(sCountMoney == 0)
 				{
-					ascendSortMoney();
+					sortedIDs = Sort.sortCollection(TableCols.MONEY, SortDirection.ASCENDING, expenseTable.getItems());
 					sCountMoney =1;
 					sCountDate = 0;
 					sCountID=0;
@@ -236,12 +246,13 @@ public class ViewExpense implements IWindow
 				}
 				else if(sCountMoney ==1)
 				{
-					descendSortMoney();
+					sortedIDs = Sort.sortCollection(TableCols.MONEY, SortDirection.DESCENDING, expenseTable.getItems());
 					sCountMoney=0;
 				}
+				refreshETable(sortedIDs);
 			}
 		});
-		expenseTable.getColumn(4).addSelectionListener(new SelectionAdapter()
+		expenseTable.getColumn(TableCols.DESCRIPTION.ordinal()).addSelectionListener(new SelectionAdapter()
 		{
 			@Override
 			public void widgetSelected(SelectionEvent arg0)
@@ -251,9 +262,10 @@ public class ViewExpense implements IWindow
 					return;
 				}
 				
+				int sortedIDs[] = null;
 				if(sCountDesc == 0)
 				{
-					ascendSortDesc();
+					sortedIDs = Sort.sortCollection(TableCols.DESCRIPTION, SortDirection.ASCENDING, expenseTable.getItems());
 					sCountDesc =1;
 					sCountDate = 0;
 					sCountID=0;
@@ -262,9 +274,10 @@ public class ViewExpense implements IWindow
 				}
 				else if(sCountDesc ==1)
 				{
-					descendSortDesc();
+					sortedIDs = Sort.sortCollection(TableCols.DESCRIPTION, SortDirection.DESCENDING, expenseTable.getItems());
 					sCountDesc=0;
 				}
+				refreshETable(sortedIDs);
 			}
 		});
 		
@@ -370,72 +383,15 @@ public class ViewExpense implements IWindow
 		refreshWholeList(new ExpenseFilter());
 	}
 	
-	private void ascendSortDate() 
-	{
-		int sortedIDs[] = Sort.sortDate(expenseTable.getItems(), Sort.ASCEND);
-		refreshETable(sortedIDs);
-	}
-	
-	private void descendSortDate() 
-	{
-		int sortedIDs[] = Sort.sortDate(expenseTable.getItems(), Sort.DESCEND);
-		refreshETable(sortedIDs);
-	}
-	
-	private void ascendSortMoney()
-	{
-		int sortedIDs[] = Sort.sortMoney(expenseTable.getItems(), Sort.ASCEND);
-		refreshETable(sortedIDs);
-	}
-	
-	private void descendSortMoney() 
-	{
-		int sortedIDs[] = Sort.sortMoney(expenseTable.getItems(), Sort.DESCEND);
-		refreshETable(sortedIDs);
-	}
-	
-	private void ascendSortID() 
-	{
-		int sortedIDs[] = Sort.sortID(expenseTable.getItems(), Sort.ASCEND);
-		refreshETable(sortedIDs);
-	}
-	
-	private void descendSortID() 
-	{
-		int sortedIDs[] = Sort.sortID(expenseTable.getItems(), Sort.DESCEND);
-		refreshETable(sortedIDs);
-	}
-			
-	private void ascendSortPay() 
-	{
-		int sortedIDs[] = Sort.sortPay(expenseTable.getItems(), Sort.ASCEND);
-		refreshETable(sortedIDs);
-	}
-	
-	public void descendSortPay()
-	{
-		int sortedIDs[] = Sort.sortPay(expenseTable.getItems(), Sort.DESCEND);
-		refreshETable(sortedIDs);
-	}
-	
-	private void ascendSortDesc() 
-	{
-		int sortedIDs[] = Sort.sortDesc(expenseTable.getItems(), Sort.ASCEND);
-		refreshETable(sortedIDs);
-	}
-	
-	public void descendSortDesc()
-	{
-		int sortedIDs[] = Sort.sortDesc(expenseTable.getItems(), Sort.DESCEND);
-		refreshETable(sortedIDs);
-	}
-	
 	private void refreshETable(int arr[])
 	{
-		expenseTable.removeAll();
-		for(int i=0; i<arr.length; i++)
+		if(arr != null)
 		{
-			addExpenseToTable(arr[i]);
+			expenseTable.removeAll();
+			for(int i=0; i<arr.length; i++)
+			{
+				addExpenseToTable(arr[i]);
+			}
 		}
 	}
 	
@@ -557,7 +513,7 @@ public class ViewExpense implements IWindow
 		
 		final ExpenseManagement expenseSystem = PFSystem.getCurrent().getExpenseSystem();
 		
-		final IDSet expenseIDs = expenseSystem.getAllIDs(filter);
+		final IDSet expenseIDs = expenseSystem.getAllIDs(filter, TableCols.ID, SortDirection.ASCENDING);
 
 		final int totalExpenses = expenseIDs.getSize();
 		

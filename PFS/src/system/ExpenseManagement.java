@@ -1,5 +1,8 @@
 package system;
 
+import util.Sort;
+import util.SortDirection;
+import util.TableCols;
 import dataaccesslayer.IDatabase;
 import domainobjects.Expense;
 import domainobjects.ExpenseFilter;
@@ -28,9 +31,10 @@ public class ExpenseManagement implements IIDReader, IDataReader, IDataModifer
 		return output;
 	}
 	
-	public IDSet getAllIDs(ExpenseFilter filter)
+	public IDSet getAllIDs(ExpenseFilter filter, TableCols sortBy, SortDirection direction)
 	{
-		String whereClause = filter.createSQLWhereClause();	
+		String filterWhereClause = filter.createSQLWhereClause();	
+		String whereClause = Sort.createSQLWhereClause(filterWhereClause, sortBy, direction);
 		
 		int[] setData = database.getAllExpenseIDsWhere(whereClause);
 		
