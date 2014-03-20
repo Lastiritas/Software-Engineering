@@ -133,9 +133,7 @@ public class MinedView implements IDialog
 	private void updateList(double inFrequency)
 	{
 		PFSystem system = PFSystem.getCurrent();
-		
-		IDSet sourceData = system.getExpenseSystem().getAllIDs();
-		frequentSets = system.getAllFrequentLabelCombinations(sourceData, inFrequency);
+		frequentSets = system.getAllFrequentLabelCombinations(inFrequency);
 		
 		table.removeAll();
 		
