@@ -98,7 +98,7 @@ public class EditExpense implements IWindow
 			@Override
 			public void widgetSelected(SelectionEvent arg0) 
 			{	
-				final IDSet startingLabels = GUIHelper.getLabelIDSetFromTable(labelTable);
+				final IDSet startingLabels = GUIHelper.getIdsFromTable(labelTable);
 				
 				LabelSelection window = new LabelSelection();
 				window.setStartingSet(startingLabels);
@@ -269,7 +269,7 @@ public class EditExpense implements IWindow
 		
 		PaymentMethod method = getPaymentMethodFromGUI();
 
-		IDSet labelIds = GUIHelper.getLabelIDSetFromTable(labelTable);
+		IDSet labelIds = GUIHelper.getIdsFromTable(labelTable);
 				
 		return new Expense(date, Money.fromString(amountField.getText()), method, descriptionField.getText(), payToId, labelIds);
 	}

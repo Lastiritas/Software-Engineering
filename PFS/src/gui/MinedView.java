@@ -7,7 +7,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -133,7 +132,10 @@ public class MinedView implements IDialog
 	
 	private void updateList(double inFrequency)
 	{
-		frequentSets = PFSystem.getCurrent().getAllFrequentLabelCombinations(inFrequency);
+		PFSystem system = PFSystem.getCurrent();
+		
+		IDSet sourceData = system.getExpenseSystem().getAllIDs();
+		frequentSets = system.getAllFrequentLabelCombinations(sourceData, inFrequency);
 		
 		table.removeAll();
 		
@@ -152,7 +154,7 @@ public class MinedView implements IDialog
 			for(int i = 0; i < set.getSize(); i++)
 			{	
 				final int id = set.getValue(i);
-				final domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
+				final domainobjects.Label label = (domainobjects.Label)system.getLabelSystem().getDataByID(id);
 				
 				assert(label != null);
 			
