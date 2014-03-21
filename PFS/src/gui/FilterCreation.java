@@ -214,7 +214,7 @@ public class FilterCreation implements IDialog
 					// add each label to the list
 					TableItem labelItem = new TableItem(labelTable, SWT.NONE);
 					labelItem.setText(0, "" + id);
-					labelItem.setText(1, label.getLabelName());
+					labelItem.setText(1, label.getName());
 				}
 			}
 		});

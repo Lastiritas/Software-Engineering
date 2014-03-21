@@ -47,7 +47,7 @@ public class GroupedDataMiningTests extends MockObjectTestCase
 			for(int i = 0; i < items.getSize(); i++)
 			{
 				Label label = (Label)PFSystem.getCurrent().getLabelSystem().getDataByID(items.getValue(i));
-				System.out.format("\t%s\n", label.getLabelName());
+				System.out.format("\t%s\n", label.getName());
 			}
 			
 			System.out.println();

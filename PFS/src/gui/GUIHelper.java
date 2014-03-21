@@ -32,7 +32,7 @@ public class GUIHelper
 		
 		final TableItem newItem = new TableItem(inTable, SWT.NONE);
 		newItem.setText(0, "" + inLabelId);
-		newItem.setText(1, label.getLabelName());
+		newItem.setText(1, label.getName());
 	}
 
 	public static IDSet getIdsFromTable(Table inTable)

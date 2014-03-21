@@ -156,7 +156,7 @@ public class MinedView implements IDialog
 				
 				assert(label != null);
 			
-				tableItem.setText(i, label.getLabelName());
+				tableItem.setText(i, label.getName());
 			}
 		}
 	}

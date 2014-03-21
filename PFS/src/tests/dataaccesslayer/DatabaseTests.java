@@ -121,7 +121,7 @@ public class DatabaseTests extends TestCase
 		newId = database.addLabel(expectedLabel);
 		Label actualLabel = database.getLabelByID(newId);
 		
-		assertEquals(actualLabel.getLabelName(), expectedLabel.getLabelName());
+		assertEquals(actualLabel.getName(), expectedLabel.getName());
 	}
 	
 	public void test_Update_label()
@@ -138,7 +138,7 @@ public class DatabaseTests extends TestCase
 		Label actualLabel = database.getLabelByID(newId);
 		
 		assertTrue(updated);
-		assertEquals(actualLabel.getLabelName(), expectedLabel.getLabelName());
+		assertEquals(actualLabel.getName(), expectedLabel.getName());
 	}
 	
 	public void test_Getting_all_label_Ids_should_return_the_previously_added_id()

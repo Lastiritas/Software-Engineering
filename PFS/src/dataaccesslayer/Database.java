@@ -455,7 +455,7 @@ public class Database implements IDatabase
 		
 		try
 		{
-			values = String.format("%d, '%s'", labelId, inNewValue.getLabelName());
+			values = String.format("%d, '%s'", labelId, inNewValue.getName());
 			cmdString = String.format("Insert into Label Values(%s)", values);
 			insertedSuccessful = statement.executeUpdate(cmdString);
 			result = checkWarning(statement, insertedSuccessful);
@@ -484,7 +484,7 @@ public class Database implements IDatabase
 		
 		try
 		{
-			values = String.format("name='%s'", inNewValue.getLabelName());
+			values = String.format("name='%s'", inNewValue.getName());
 			where = String.format("where labelID=%d", inId);
 			cmdString = String.format("Update Label Set %s %s", values, where);
 			successful = statement.executeUpdate(cmdString);

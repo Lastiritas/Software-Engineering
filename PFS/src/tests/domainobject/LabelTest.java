@@ -17,6 +17,6 @@ public class LabelTest extends TestCase
 		
 		expected = new Label(actualLabelName);
 		
-		assertEquals("The label Name is incorrect.", expected.getLabelName(), actualLabelName);
+		assertEquals("The label Name is incorrect.", expected.getName(), actualLabelName);
 	}
 }

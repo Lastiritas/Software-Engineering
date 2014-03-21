@@ -7,7 +7,7 @@ public class Label
 		name = inName;
 	}
 	
-	public String getLabelName()
+	public String getName()
 	{
 		return name;
 	}

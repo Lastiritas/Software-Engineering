@@ -172,7 +172,7 @@ public class LabelCreation implements IDialog
 			final int id = labelIDs.getValue(i);
 			domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
 			
-			allLabel[i] = label.getLabelName();
+			allLabel[i] = label.getName();
 		}	
 		
 		refreshList();
