@@ -23,9 +23,7 @@ public class PayToCreation implements IWindow
 
 	protected Shell shell;
 	protected List list;
-	protected List list_1; 
 	private Text nameField;
-	private Text locationField;
 	private String allName[];
 	private Composite composite;
 
@@ -56,7 +54,7 @@ public class PayToCreation implements IWindow
 	protected void createContents() 
 	{
 		shell = new Shell(SWT.SYSTEM_MODAL | SWT.DIALOG_TRIM);
-		shell.setSize(450, 345);
+		shell.setSize(444, 327);
 		shell.setText("PayTo Creation");
 		
 		composite = new Composite(shell, SWT.NONE);
@@ -82,11 +80,9 @@ public class PayToCreation implements IWindow
 			public void widgetSelected(SelectionEvent arg0) 
 			{
 				String tempName = nameField.getText();
-				String tempBranch = locationField.getText();
 				boolean existName = false;
-				boolean existBranch = false;
 				
-				for(int i=0; i<allName.length && existName ==false;i++)
+				for(int i = 0; i < allName.length && !existName; i++)
 				{
 					if(allName[i].equalsIgnoreCase(tempName))
 					{
@@ -94,22 +90,19 @@ public class PayToCreation implements IWindow
 					}
 				}
 				
-				if( !existName || !existBranch)
+				if(!existName)
 				{
 					final int newLabelID = PFSystem.getCurrent().getPayToSystem().create();
 					PFSystem.getCurrent().getPayToSystem().update(newLabelID, new PayTo(nameField.getText()));
 				}
-				else
-				{
-					;//display some sort of error
-				}
+
 				shell.close();
 			}
 		});
 		okayButton.setText("Okay");
 		
 		nameField = new Text(composite, SWT.BORDER);
-		nameField.setBounds(10, 10, 199, 31);
+		nameField.setBounds(10, 10, 424, 31);
 		nameField.addKeyListener(new KeyAdapter()
 		{
 			public void keyPressed(KeyEvent e)
@@ -138,41 +131,8 @@ public class PayToCreation implements IWindow
 		});
 		nameField.setMessage("Name");
 		
-		locationField = new Text(composite, SWT.BORDER);
-		locationField.setBounds(235, 10, 199, 31);
-		locationField.addKeyListener(new KeyAdapter()
-		{
-			public void keyPressed(KeyEvent e)
-			{
-				String input = locationField.getText();
-				if(!(input.length() ==0 && (e.character == 8 || e.character == 127)))
-				{
-					if((e.character >32 && e.character <127) ||e.character == 8 || e.character == 127)
-					{
-						if(e.character >32 && e.character <127)
-							input += e.character;
-						refreshList_1();
-						
-						for(int i=0; i<list_1.getItemCount(); i++)
-						{
-							if(!StringMatch.match(list_1.getItem(i),input))
-							{
-								list_1.remove(list_1.getItem(i));
-								i=-1;
-							}
-						}
-						
-					}
-				}
-			}
-		});
-		locationField.setMessage("Location");
-		
 		list = new List(composite, SWT.BORDER);
-		list.setBounds(10, 47, 199, 207);
-		
-		list_1 = new List(composite, SWT.BORDER);
-		list_1.setBounds(235, 47, 199, 207);
+		list.setBounds(10, 47, 424, 207);
 		
 		loadList();
 
@@ -209,6 +169,5 @@ public class PayToCreation implements IWindow
 	
 	private void refreshList_1()
 	{
-		list_1.removeAll();
 	}
 }
