@@ -1,7 +1,6 @@
 package system;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -19,8 +18,28 @@ public class PFSystem
 {
 	public class GroupedCollection
 	{
-		public String group;
-		public IDSet collection = IDSet.empty();
+		public GroupedCollection(String inName)
+		{
+			name = inName;
+		}
+		
+		public String getName()
+		{
+			return name;
+		}
+		
+		public void expandToInclude(IDSet inSet)
+		{
+			items = items.union(inSet);
+		}
+		
+		public IDSet getAllItems()
+		{
+			return items;
+		}
+		
+		private String name;
+		private IDSet items = IDSet.empty();
 	}
 	
 	public PFSystem()
@@ -73,7 +92,7 @@ public class PFSystem
 			}
 			else
 			{
-				current = current.union(IDSet.createFromValue(-expense.getDate().getDayOfWeek()));
+				current = current.union(IDSet.createFromValue(-(expense.getDate().getDayOfWeek() + 1)));	// offset by one to ensure the max number it could be is -1
 				sets.add(current);
 				
 				current = payToSet;
@@ -86,29 +105,25 @@ public class PFSystem
 		Collection<IDSet> minedResults = DataMiner.mine(sets, minSup);
 		
 		GroupedCollection[] groups = new GroupedCollection[7];	// 7 days in the week
-		
-		for(int i = 0; i < groups.length; i++)
-		{
-			groups[i] = new GroupedCollection();
-		}
-		
-		groups[Calendar.MONDAY - 1].group 		= "Monday";
-		groups[Calendar.TUESDAY - 1].group 		= "Tuesday";
-		groups[Calendar.WEDNESDAY - 1].group	= "Wednesday";
-		groups[Calendar.THURSDAY - 1].group 	= "Thursday";
-		groups[Calendar.FRIDAY - 1].group 		= "Friday";
-		groups[Calendar.SATURDAY - 1].group 	= "Saturday";
-		groups[Calendar.SUNDAY - 1].group 		= "Sunday";
-		
+		groups[SimpleDate.SUNDAY] 		= new GroupedCollection("Sunday");
+		groups[SimpleDate.MONDAY] 		= new GroupedCollection("Monday");
+		groups[SimpleDate.TUESDAY] 		= new GroupedCollection("Tuesday");
+		groups[SimpleDate.WEDNESDAY] 	= new GroupedCollection("Wednesday");
+		groups[SimpleDate.THURSDAY] 	= new GroupedCollection("Thursday");
+		groups[SimpleDate.FRIDAY] 		= new GroupedCollection("Friday");
+		groups[SimpleDate.SATURDAY] 	= new GroupedCollection("Saturday");
+
 		for(IDSet set : minedResults)
 		{	
-			int day = set.getValue(0);	// first value will be day because it is negative and the set is sorted smallest to largest			
-			if(set.getSize() > 1 && day < 0)
+			int unnormalizedDay = set.getValue(0);	// first value will be day because it is negative and the set is sorted smallest to largest			
+			
+			if(set.getSize() > 1 && unnormalizedDay < 0)
 			{
-				IDSet paytos = set.difference(IDSet.createFromValue(day));
+				IDSet paytos = set.difference(IDSet.createFromValue(unnormalizedDay));
 				
-				day = Math.abs(day) - 1;
-				groups[day].collection = groups[day].collection.union(paytos);
+				int normalizedDay = Math.abs(unnormalizedDay) - 1;	// undo the one offset done earlier
+				
+				groups[normalizedDay].expandToInclude(paytos);
 			}
 		}
 		

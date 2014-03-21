@@ -2,6 +2,7 @@ package tests.datamining;
 
 import org.jmock.integration.junit3.MockObjectTestCase;
 
+import domainobjects.IDSet;
 import domainobjects.PayTo;
 import system.PFSystem;
 
@@ -15,11 +16,13 @@ public class GroupedDataMiningTests extends MockObjectTestCase
 		{
 			PFSystem.GroupedCollection collection = results[j];
 			
-			System.out.format("%s:\n", collection.group, collection.collection);
+			System.out.format("%s:\n", collection.getName());
 
-			for(int i = 0; i < collection.collection.getSize(); i++)
+			IDSet items = collection.getAllItems();
+			
+			for(int i = 0; i < items.getSize(); i++)
 			{
-				PayTo payTo = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(collection.collection.getValue(i));
+				PayTo payTo = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(items.getValue(i));
 				System.out.format("\t%s\n", payTo);
 			}
 			
