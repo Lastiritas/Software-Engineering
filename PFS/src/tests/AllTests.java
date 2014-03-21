@@ -9,6 +9,7 @@ import tests.domainobject.PayToTest;
 import tests.system.ExpenseManagementTests;
 import tests.system.LabelManagementTests;
 import tests.system.PayToManagementTests;
+import tests.util.SortTests;
 import tests.util.StringMatchTests;
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -54,5 +55,6 @@ public class AllTests
 	private static void testUtilities()
 	{
 		suite.addTestSuite(StringMatchTests.class);
+		suite.addTestSuite(SortTests.class);
 	}
 }

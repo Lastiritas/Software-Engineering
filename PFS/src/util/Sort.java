@@ -11,7 +11,7 @@ public class Sort
 	{
 		return sortByIntArrays(getIdsFromTableItem(items), getDatesFromTableItem(items), direction);
 	}
-	
+
  	private static int[] sortByMoney(TableItem[] items, SortDirection direction)
  	{
  		return sortByIntArrays(getIdsFromTableItem(items), getMoneyFromTableItem(items), direction);
@@ -20,12 +20,12 @@ public class Sort
 	public static int[] sortByIntArrays(int[] IDs, int[] elements, SortDirection direction)
 	{
 		int length = IDs.length;
-		
+
 		for(int i=1; i<length; i++)
 		{
 			int temp = elements[i];
 			int tempID = IDs[i];
-			
+
 			int j=0;
 			if(direction == SortDirection.ASCENDING)
 			{
@@ -47,27 +47,27 @@ public class Sort
 			{
 				//ERROR
 			}
-			
+
 			elements[j+1]=temp;
 			IDs[j+1] = tempID;
 		}
-		
+
 		return IDs;
 	}
-	
+
 	private static int[] sortByID(TableItem[] items, SortDirection direction)
 	{
 		return sortByID(getIdsFromTableItem(items), direction);
 	}
-	
+
 	public static int[] sortByID(int[] IDs, SortDirection direction)
 	{
 		int length = IDs.length;
-		
+
 		for(int i=1; i<length; i++)
 		{
 			int tempID = IDs[i];
-			
+
 			int j=0;
 			if(direction == SortDirection.ASCENDING)
 			{
@@ -87,21 +87,21 @@ public class Sort
 			{
 				//ERROR
 			}
-			
+
 			IDs[j+1] = tempID;
 		}
-		
+
 		return IDs;
 	}
-	
+
 	public static String[] sortByString(String[] inputArray, SortDirection direction)
 	{
 		int length = inputArray.length;
-		
+
 		for(int i=1; i<length; i++)
 		{
 			String temp = inputArray[i];
-			
+
 			int j=0;
 			if(direction == SortDirection.ASCENDING)
 			{
@@ -121,27 +121,27 @@ public class Sort
 			{
 				//ERROR
 			}
-			
+
 			inputArray[j+1] = temp;
 		}
-		
+
 		return inputArray;
 	}
-	
+
 	private static int[] sortByString(TableItem[] items, TableCols colName, SortDirection direction)
 	{
 		return sortByString(getIdsFromTableItem(items), getStringsFromTableItem(items, colName), direction);
 	}
-	
+
 	public static int[] sortByString(int[] IDs, String[] elements, SortDirection direction)
 	{
 		int length = IDs.length;
-		
+
 		for(int i=1; i<length; i++)
 		{
 			int tempID = IDs[i];
 			String temp = elements[i];
-			
+
 			int j=0;
 			if(direction == SortDirection.ASCENDING)
 			{
@@ -163,72 +163,72 @@ public class Sort
 			{
 				//ERROR
 			}
-			
+
 			IDs[j+1] = tempID;
 			elements[j+1] = temp;
 		}
-		
+
 		return IDs;
 	}
-	
+
 	private static int[] getIdsFromTableItem(TableItem[] items)
 	{
 		int length = items.length;
 		int IDs[] = new int[length];
-		
+
 		for(int i=0; i<length; i++)
 		{
 			IDs[i] = Integer.parseInt(items[i].getText(TableCols.ID.ordinal()));
 		}
-		
+
 		return IDs;
 	}
-	
+
 	private static String[] getStringsFromTableItem(TableItem[] items, TableCols colName)
 	{
 		int length = items.length;
 		String elements[] = new String[length];
-		
+
 		for(int i=0; i< length; i++)
 		{
 			elements[i] = items[i].getText(colName.ordinal());
 		}
-		
+
 		return elements;
 	}
-	
+
 	private static int[] getMoneyFromTableItem(TableItem[] items)
 	{
 		int length = items.length;
 		int elements[] = new int[length];
-		
+
 		for(int i=0; i< length; i++)
 		{
 			elements[i] = Money.fromString(items[i].getText(TableCols.MONEY.ordinal())).getTotalCents();
 		}
-		
+
 		return elements;
 	}
-	
+
 	private static int[] getDatesFromTableItem(TableItem[] items)
 	{
 		int length = items.length;
 		SimpleDate date = SimpleDate.Now();
 		int [] dates = new int[length];
-		
+
 		for(int i=0; i< length; i++)
 		{
 			date.setDate(items[i].getText(TableCols.DATE.ordinal()));
 			dates[i] = date.toInteger();
 		}
-		
+
 		return dates;
 	}
-	
+
 	public static int[] sortCollection(TableCols column, SortDirection direction, TableItem[] items)
 	{
 		int[] IDs = null;
-		
+
 		switch(column)
 		{
 			case ID:
@@ -245,7 +245,7 @@ public class Sort
 				return IDs;
 		}
 	}
-	
+
 	public static String createSQLWhereClause(String whereClause, TableCols column, SortDirection direction)
 	{
 		switch(column)
