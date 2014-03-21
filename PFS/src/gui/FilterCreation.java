@@ -50,7 +50,6 @@ public class FilterCreation implements IDialog
 	private TableColumn tblclmnLabel;
 	private TableColumn tblclmnId_1;
 	private TableColumn tblclmnName;
-	private TableColumn tblclmnBranch;
 	private Composite composite_5;
 	
 	/**
@@ -300,10 +299,6 @@ public class FilterCreation implements IDialog
 		tblclmnName = new TableColumn(payToTable, SWT.NONE);
 		tblclmnName.setWidth(100);
 		tblclmnName.setText("Name");
-		
-		tblclmnBranch = new TableColumn(payToTable, SWT.NONE);
-		tblclmnBranch.setWidth(100);
-		tblclmnBranch.setText("Branch");
 		
 		Button filterButton = new Button(composite_5, SWT.NONE);
 		filterButton.setBounds(649, 641, 94, 28);
