@@ -1,10 +1,6 @@
 package gui;
 
-import java.util.Arrays;
-import java.util.Vector;
-
 import domainobjects.Expense;
-import domainobjects.ExpenseFilter;
 import domainobjects.IDSet;
 import domainobjects.PayTo;
 import domainobjects.PaymentMethodHelper;
@@ -12,22 +8,24 @@ import system.ExpenseManagement;
 import system.PFSystem;
 import util.Sort;
 import util.SortDirection;
-import util.TableCols;
 import util.XAxis;
 
 public class ChartHelper 
 {
 	private IDSet expenseIds;
 	private int numberOfExpenses;
-	private int[] originalExpenseIds; //This array is already sorted
+	
+	private int[] originalExpenseIds;
 	private int[] originalExpenseAmounts;
 	private int[] originalPaymentMethod;
 	private int[] originalDates;
+	private String[] originalPayTosWithBranch;
 	private String[] originalPayTos;
 	
 	private int[] sortedExpenseAmounts;
 	private int[] sortedPaymentMethod;
 	private int[] sortedDates;
+	private String[] sortedPayTosWithBranch;
 	private String[] sortedPayTos;
 	//private String[] labels;
 	
@@ -39,9 +37,7 @@ public class ChartHelper
 	
 	private void retrieveLists()
 	{
-		//final ExpenseFilter filter = new ExpenseFilter();
 		final ExpenseManagement expenseSystem = PFSystem.getCurrent().getExpenseSystem();
-		//final IDSet expenseIDs = expenseSystem.getAllIDs(filter, TableCols.ID, SortDirection.ASCENDING);
 		numberOfExpenses = expenseIds.getSize();
 		
 		initializeArrays();
@@ -56,17 +52,24 @@ public class ChartHelper
 			originalExpenseAmounts[i] = expense.getAmount().getTotalCents();
 			originalPaymentMethod[i] = PaymentMethodHelper.toInteger(expense.getPaymentMethod());
 			originalDates[i] = expense.getDate().toInteger()/100;
-			originalPayTos[i] = getPayToName(expense.getPayTo());
+			originalPayTosWithBranch[i] = getPayToLocationBranch(expense.getPayTo());
+			originalPayTos[i] = getPayToLocation(expense.getPayTo());
 			//labels[i] = 
 		}
 		
 		sortArrays();
 	}
 	
-	private String getPayToName(int payToId)
+	private String getPayToLocationBranch(int payToId)
 	{
 		final PayTo payTo = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(payToId);
 		return payTo.toString();
+	}
+	
+	private String getPayToLocation(int payToId)
+	{
+		final PayTo payTo = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(payToId);
+		return payTo.getPayToName();
 	}
 	
 	private void initializeArrays()
@@ -75,6 +78,7 @@ public class ChartHelper
 		originalExpenseAmounts = new int[numberOfExpenses];
 		originalPaymentMethod = new int[numberOfExpenses];
 		originalDates = new int[numberOfExpenses];
+		originalPayTosWithBranch = new String[numberOfExpenses];
 		originalPayTos = new String[numberOfExpenses];
 		//labels = new String[numberOfExpenses];
 	}
@@ -84,14 +88,20 @@ public class ChartHelper
 		sortedExpenseAmounts = new int[numberOfExpenses];
 		sortedPaymentMethod = new int[numberOfExpenses];
 		sortedDates = new int[numberOfExpenses];
+		sortedPayTosWithBranch = new String[numberOfExpenses];
+		sortedPayTos = new String[numberOfExpenses];
 		
 		System.arraycopy(originalExpenseAmounts, 0, sortedExpenseAmounts, 0, numberOfExpenses);
 		System.arraycopy(originalPaymentMethod, 0, sortedPaymentMethod, 0, numberOfExpenses);
 		System.arraycopy(originalDates, 0, sortedDates, 0, numberOfExpenses);
+		System.arraycopy(originalPayTosWithBranch, 0, sortedPayTosWithBranch, 0, numberOfExpenses);
+		System.arraycopy(originalPayTos, 0, sortedPayTos, 0, numberOfExpenses);
 		
 		sortedExpenseAmounts = Sort.sortByID(sortedExpenseAmounts, SortDirection.ASCENDING);
 		sortedPaymentMethod = Sort.sortByID(sortedPaymentMethod, SortDirection.ASCENDING);
 		sortedDates = Sort.sortByID(sortedDates, SortDirection.ASCENDING);
+		sortedPayTosWithBranch = Sort.sortByString(sortedPayTosWithBranch, SortDirection.ASCENDING);
+		sortedPayTos = Sort.sortByString(sortedPayTos, SortDirection.ASCENDING);
 	}
 	
 	public int[] getDistinctIntArray(int[] array)
@@ -126,12 +136,13 @@ public class ChartHelper
 		
 		int sizeDistinct = 0;
 		String latestValue = array[sizeDistinct];
+		distinctArray[sizeDistinct] = latestValue;
 		sizeDistinct++;
 		
 		for(int i=1; i<size; i++)
 		{
 			String newValue = array[i];
-			if(newValue.compareTo(latestValue) == 0)
+			if(newValue.compareTo(latestValue) != 0)
 			{
 				distinctArray[sizeDistinct] = newValue;
 				latestValue = newValue;
@@ -145,7 +156,7 @@ public class ChartHelper
 		return output;
 	}
 	
-	public int[] getXAxisValues(XAxis axis)
+	public int[] getXAxisIntValues(XAxis axis)
 	{
 		switch(axis)
 		{
@@ -160,22 +171,68 @@ public class ChartHelper
 		}
 	}
 	
-	public double[] getYAxisValues(int[] xAxisValues, XAxis axis)
+	public String[] getXAxisStringValues(XAxis axis)
 	{
 		switch(axis)
 		{
-			case PAYMENT_METHOD:
-				return getYAxisValues(xAxisValues, originalPaymentMethod, sortedPaymentMethod);
-			case DATES:
-				return getYAxisValues(xAxisValues, originalDates, sortedDates);
+			case LOCATION_BRANCH:
+				return getDistinctStringArray(sortedPayTosWithBranch);
+			case LOCATION:
+				return getDistinctStringArray(sortedPayTos);
 			default:
 				return null;
 		}
 	}
 	
-	public double[] getYAxisValues(int[] xAxisValues, int[] originalInput, int[] sortedInput)
+	public double[] getYAxisIntValues(int[] xAxisValues, XAxis axis)
 	{
-		//Sort the Amounts by PaymentMethod
+		switch(axis)
+		{
+			case PAYMENT_METHOD:
+				return getYAxisIntValues(xAxisValues, originalPaymentMethod, sortedPaymentMethod);
+			case DATES:
+				return getYAxisIntValues(xAxisValues, originalDates, sortedDates);
+			default:
+				return null;
+		}
+	}
+	
+	public double[] getYAxisStringValues(String[] xAxisValues, XAxis axis)
+	{
+		switch(axis)
+		{
+			case LOCATION_BRANCH:
+				return getYAxisStringValues(xAxisValues, originalPayTosWithBranch, sortedPayTosWithBranch);
+			case LOCATION:
+				return getYAxisStringValues(xAxisValues, originalPayTos, sortedPayTos);
+			default:
+				return null;
+		}
+	}
+	
+	private double[] getYAxisStringValues(String[] xAxisValues, String[] originalInput, String[] sortedInput)
+	{
+		int[] sortedAmountsByFilter = Sort.sortByString(sortedExpenseAmounts, originalInput, SortDirection.ASCENDING);
+		double[] amountYAxis = new double[xAxisValues.length];
+		
+		int currentXAxisValue = 0;
+		for(int i=0; i<numberOfExpenses; i++)
+		{
+			while(xAxisValues[currentXAxisValue].compareTo(sortedInput[i]) != 0)
+			{
+				currentXAxisValue++;
+			}
+			int temp = sortedAmountsByFilter[i];
+			double tq = (double)temp;
+			double amount = tq/100;
+			amountYAxis[currentXAxisValue] += amount;
+		}
+		
+		return amountYAxis;
+	}
+	
+	private double[] getYAxisIntValues(int[] xAxisValues, int[] originalInput, int[] sortedInput)
+	{
 		int[] sortedAmountsByFilter = Sort.sortByIntArrays(originalExpenseAmounts, originalInput, SortDirection.ASCENDING);
 		double[] amountYAxis = new double[xAxisValues.length];
 		
@@ -223,17 +280,17 @@ public class ChartHelper
 	public enum MonthAbbreviation
 	{
 		INVALID,
-		JAN,
-		FEB,
-		MAR,
-		APR,
-		MAY,
-		JUNE,
-		JULY,
-		AUG,
-		SEPT,
-		OCT,
-		NOV,
-		DEC
+		Jan,
+		Feb,
+		Mar,
+		Apr,
+		May,
+		June,
+		July,
+		Aug,
+		Sept,
+		Oct,
+		Nov,
+		Dec
 	}
 }

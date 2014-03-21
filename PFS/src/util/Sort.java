@@ -94,6 +94,40 @@ public class Sort
 		return IDs;
 	}
 	
+	public static String[] sortByString(String[] inputArray, SortDirection direction)
+	{
+		int length = inputArray.length;
+		
+		for(int i=1; i<length; i++)
+		{
+			String temp = inputArray[i];
+			
+			int j=0;
+			if(direction == SortDirection.ASCENDING)
+			{
+				for(j=i-1; (j>=0) && (temp.compareTo(inputArray[j]) < 0); j--)
+				{
+					inputArray[j+1] = inputArray[j];
+				}
+			}
+			else if(direction == SortDirection.DESCENDING)
+			{
+				for(j=i-1; (j>=0) && (temp.compareTo(inputArray[j]) > 0); j--)
+				{
+					inputArray[j+1] = inputArray[j];
+				}
+			}
+			else
+			{
+				//ERROR
+			}
+			
+			inputArray[j+1] = temp;
+		}
+		
+		return inputArray;
+	}
+	
 	private static int[] sortByString(TableItem[] items, TableCols colName, SortDirection direction)
 	{
 		return sortByString(getIdsFromTableItem(items), getStringsFromTableItem(items, colName), direction);
