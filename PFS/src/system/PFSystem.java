@@ -43,8 +43,6 @@ public class PFSystem
 	
 	public GroupedCollection[] getFrequentPlacesForDayOfWeek(double inFrequencyPercent)
 	{
-		assert inFrequencyPercent >= 0.0 && inFrequencyPercent <= 1.0 : "Invalid percent value, should be 0.0 to 1.0";
-	
 		final IDSet expenseIds = expenseSystem.getAllIDs(new ExpenseFilter(), TableCols.DATE, SortDirection.ASCENDING);
 		
 		Collection<IDSet> sets = new ArrayList<IDSet>();
@@ -73,19 +71,12 @@ public class PFSystem
 			}
 		}
 		
-		int minSup = (int)(sets.size() * inFrequencyPercent);
+		int minSup = calculateMinSupForSet(sets, inFrequencyPercent);
 		
 		Collection<IDSet> minedResults = DataMiner.mine(sets, minSup);
 		
-		GroupedCollection[] groups = new GroupedCollection[7];	// 7 days in the week
-		groups[SimpleDate.SUNDAY] 		= new GroupedCollection("Sunday");
-		groups[SimpleDate.MONDAY] 		= new GroupedCollection("Monday");
-		groups[SimpleDate.TUESDAY] 		= new GroupedCollection("Tuesday");
-		groups[SimpleDate.WEDNESDAY] 	= new GroupedCollection("Wednesday");
-		groups[SimpleDate.THURSDAY] 	= new GroupedCollection("Thursday");
-		groups[SimpleDate.FRIDAY] 		= new GroupedCollection("Friday");
-		groups[SimpleDate.SATURDAY] 	= new GroupedCollection("Saturday");
-
+		GroupedCollection[] groups = createGroupsForDaysOfWeek();
+		
 		for(IDSet set : minedResults)
 		{	
 			int unnormalizedDay = set.getValue(0);	// first value will be day because it is negative and the set is sorted smallest to largest			
@@ -105,8 +96,6 @@ public class PFSystem
 	
 	public Collection<IDSet> getAllFrequentLabelCombinations(double inFrequencyPercent)
 	{
-		assert inFrequencyPercent >= 0.0 && inFrequencyPercent <= 1.0 : "Invalid percent value, should be 0.0 to 1.0";
-		
 		final IDSet expenseIDs = expenseSystem.getAllIDs();
 		
 		LinkedList<IDSet> sets = new LinkedList<IDSet>();
@@ -119,7 +108,7 @@ public class PFSystem
 			sets.add(expense.getLabels());
 		}
 		
-		final int minSup = (int)(sets.size() * inFrequencyPercent);
+		int minSup = calculateMinSupForSet(sets, inFrequencyPercent);
 		
 		return DataMiner.mine(sets, minSup);
 	}
@@ -133,6 +122,29 @@ public class PFSystem
 	public static PFSystem getCurrent()
 	{
 		return current;
+	}
+	
+	private static int calculateMinSupForSet(Collection<IDSet> inSet, double inFrequencyPercent)
+	{
+		assert inSet != null;
+		assert inFrequencyPercent >= 0.0 && inFrequencyPercent <= 1.0 : "Invalid percent value, should be 0.0 to 1.0";
+		
+		return (int)(inSet.size() * inFrequencyPercent);
+	}
+	
+	private static GroupedCollection[] createGroupsForDaysOfWeek()
+	{
+		GroupedCollection[] groups = new GroupedCollection[7];	// 7 days in the week
+		
+		groups[SimpleDate.SUNDAY] 		= new GroupedCollection("Sunday");
+		groups[SimpleDate.MONDAY] 		= new GroupedCollection("Monday");
+		groups[SimpleDate.TUESDAY] 		= new GroupedCollection("Tuesday");
+		groups[SimpleDate.WEDNESDAY] 	= new GroupedCollection("Wednesday");
+		groups[SimpleDate.THURSDAY] 	= new GroupedCollection("Thursday");
+		groups[SimpleDate.FRIDAY] 		= new GroupedCollection("Friday");
+		groups[SimpleDate.SATURDAY] 	= new GroupedCollection("Saturday");
+		
+		return groups;
 	}
 	
 	private static PFSystem current = new PFSystem();
