@@ -1,6 +1,6 @@
 package domainobjects;
 
-public class Label 
+public class Label implements INamed
 {	
 	public Label(String inName)
 	{

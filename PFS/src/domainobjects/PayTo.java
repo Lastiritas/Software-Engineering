@@ -1,6 +1,6 @@
 package domainobjects;
 
-public class PayTo 
+public class PayTo implements INamed
 {	
 	public PayTo(String inName)
 	{
