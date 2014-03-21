@@ -51,6 +51,11 @@ public class SimpleDate implements Comparable<SimpleDate>
 		date.set(Calendar.DAY_OF_MONTH, inDay);
 	}
 	
+	public int getDayOfWeek()
+	{
+		return date.get(Calendar.DAY_OF_WEEK) - 1;
+	}
+	
 	public int compareTo(SimpleDate inDate)
 	{
 		if(this.getYear() > inDate.getYear())
@@ -147,4 +152,12 @@ public class SimpleDate implements Comparable<SimpleDate>
 		NOVEMEBER,
 		DECEMBER
 	}
+	
+	public static final int SUNDAY = Calendar.SUNDAY - 1;
+	public static final int MONDAY = Calendar.MONDAY - 1;
+	public static final int TUESDAY = Calendar.TUESDAY - 1;
+	public static final int WEDNESDAY = Calendar.WEDNESDAY - 1;
+	public static final int THURSDAY = Calendar.THURSDAY - 1;
+	public static final int FRIDAY = Calendar.FRIDAY - 1;
+	public static final int SATURDAY = Calendar.SATURDAY - 1;
 }
