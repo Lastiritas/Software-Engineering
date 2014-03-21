@@ -576,7 +576,7 @@ public class Database implements IDatabase
 		
 		try
 		{
-			values = String.format("%d, '%s', '%s'", payToId, inNewValue.getName(), "No one needs me");
+			values = String.format("%d, '%s'", payToId, inNewValue.getName());
 			cmdString = String.format("Insert into PayTo Values(%s)", values);
 			insertedSuccessful = statement.executeUpdate(cmdString);
 			result = checkWarning(statement, insertedSuccessful);
@@ -605,7 +605,7 @@ public class Database implements IDatabase
 		
 		try
 		{
-			values = String.format("location='%s', branch='%s'", inNewValue.getName(), "no one needs me");
+			values = String.format("location='%s'", inNewValue.getName());
 			where = String.format("where payToID=%d", inId);
 			cmdString = String.format("Update PayTo Set %s %s", values, where);
 			successful = statement.executeUpdate(cmdString);
