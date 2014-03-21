@@ -69,7 +69,7 @@ public class ExpenseTrends
 		tabFolder.setBounds(0, 0, 736, 578);
 		
 		TabItem tbtmChartOne = new TabItem(tabFolder, SWT.NONE);
-		tbtmChartOne.setText("Chart One");
+		tbtmChartOne.setText("Expenses by Payment Method");
 		
 		Composite composite = new Composite(tabFolder, SWT.NONE);
 		composite.setLayout(new FillLayout());
@@ -78,13 +78,14 @@ public class ExpenseTrends
 		tbtmChartOne.setControl(composite);
 		
 		TabItem tbtmChartTwo = new TabItem(tabFolder, SWT.NONE);
-		tbtmChartTwo.setText("Chart Two");
+		tbtmChartTwo.setText("Expenses by Month");
 		
 		Composite composite2 = new Composite(tabFolder, SWT.NONE);
 		composite2.setLayout(new FillLayout());
-		createSecondChart(composite2);
+		chartByMonthAndYear(composite2);
 		
 		tbtmChartTwo.setControl(composite2);
+		
 	}
 	
 	public void chartByPaymentMethod(Composite parent)
@@ -92,9 +93,9 @@ public class ExpenseTrends
 		Chart chart = new Chart(parent, SWT.NONE);
 		
 		//set titles
-		chart.getTitle().setText("Expense Trends");
+		chart.getTitle().setText("Expense Trends by Payment Method");
 		chart.getAxisSet().getXAxis(0).getTitle().setText("Payment Method");
-		chart.getAxisSet().getYAxis(0).getTitle().setText("Amount");
+		chart.getAxisSet().getYAxis(0).getTitle().setText("Amount ($)");
 		
 		int[] xAxisValues = {0, 1, 2, 3};
 		double[] ySeries = chartHelper.getYAxisValues(xAxisValues, XAxis.PAYMENT_METHOD);
@@ -115,11 +116,36 @@ public class ExpenseTrends
 		chart.getAxisSet().adjustRange();
 	}
 	
-	//By month and year
 	public void chartByMonthAndYear(Composite parent)
 	{
+		Chart chart = new Chart(parent, SWT.NONE);
 		
+		//set titles
+		chart.getTitle().setText("Expense Trends by Month");
+		chart.getAxisSet().getXAxis(0).getTitle().setText("Months");
+		chart.getAxisSet().getYAxis(0).getTitle().setText("Amount ($)");
+		
+		int[] xAxisValues = chartHelper.getXAxisValues(XAxis.DATES);
+		double[] ySeries = chartHelper.getYAxisValues(xAxisValues, XAxis.DATES);
+		
+		//create bar series
+		IBarSeries barSeries = (IBarSeries) chart.getSeriesSet().createSeries(SeriesType.BAR,  "bar series");
+		barSeries.setYSeries(ySeries);
+		
+		//Set Categories
+		IAxis xAxis = chart.getAxisSet().getXAxis(0);
+		String[] xAxisStrings = chartHelper.createCategoriesForDates(xAxisValues);
+		xAxis.setCategorySeries(xAxisStrings);
+		xAxis.enableCategory(true);
+		
+		//Set the orientation of chart
+		chart.setOrientation(SWT.HORIZONTAL);
+		
+		//adjust the axis range
+		chart.getAxisSet().adjustRange();
 	}
+	
+	
 	
 	public void createSecondChart(Composite parent)
 	{

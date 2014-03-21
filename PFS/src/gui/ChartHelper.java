@@ -55,7 +55,7 @@ public class ChartHelper
 			
 			originalExpenseAmounts[i] = expense.getAmount().getTotalCents();
 			originalPaymentMethod[i] = PaymentMethodHelper.toInteger(expense.getPaymentMethod());
-			originalDates[i] = expense.getDate().toInteger();
+			originalDates[i] = expense.getDate().toInteger()/100;
 			originalPayTos[i] = getPayToName(expense.getPayTo());
 			//labels[i] = 
 		}
@@ -195,6 +195,20 @@ public class ChartHelper
 		return amountYAxis;
 	}
 	
+	public String[] createCategoriesForDates(int[] xAxisValues)
+	{
+		int length = xAxisValues.length;
+		String[] xAxis = new String[length];
+		
+		for(int i=0; i<length; i++)
+		{
+			int month = xAxisValues[i]%100;
+			int year = xAxisValues[i]/100;
+			xAxis[i] = MonthAbbreviation.values()[month] + " " + year;
+		}
+		return xAxis;
+	}
+	
 	public String[] convertToStringArray(int[] array)
 	{
 		int size = array.length;
@@ -204,5 +218,22 @@ public class ChartHelper
 			newArray[i] = Integer.toString(array[i]);
 		}
 		return newArray;
+	}
+	
+	public enum MonthAbbreviation
+	{
+		INVALID,
+		JAN,
+		FEB,
+		MAR,
+		APR,
+		MAY,
+		JUNE,
+		JULY,
+		AUG,
+		SEPT,
+		OCT,
+		NOV,
+		DEC
 	}
 }
