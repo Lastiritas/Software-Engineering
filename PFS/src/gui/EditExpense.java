@@ -97,7 +97,7 @@ public class EditExpense implements IWindow
 		{
 			@Override
 			public void widgetSelected(SelectionEvent arg0) 
-			{	
+			{
 				final IDSet startingLabels = GUIHelper.getIdsFromTable(labelTable);
 				
 				LabelSelection window = new LabelSelection();
