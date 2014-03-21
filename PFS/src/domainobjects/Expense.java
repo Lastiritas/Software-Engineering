@@ -66,6 +66,4 @@ public class Expense
 	private final String description;
 	private final int payTo;
 	private final IDSet labels;
-
-	private static final int CENTS_IN_DOLLAR = 100;
 }

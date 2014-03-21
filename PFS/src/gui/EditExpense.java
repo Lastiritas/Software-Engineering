@@ -10,7 +10,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.DateTime;
-import org.eclipse.swt.widgets.List;
 
 import domainobjects.Expense;
 import domainobjects.IDHelper;
@@ -20,7 +19,6 @@ import domainobjects.PayTo;
 import domainobjects.PaymentMethod;
 import domainobjects.SimpleDate;
 import system.PFSystem;
-import system.PayToManagement;
 
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
