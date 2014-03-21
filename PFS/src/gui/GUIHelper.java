@@ -68,7 +68,6 @@ public class GUIHelper
 		
 		final TableItem tableItem = new TableItem(inTable, SWT.NONE);
 		tableItem.setText(0, "" + inId);
-		tableItem.setText(1, payto.getPayToName());
-		tableItem.setText(2, payto.getPayToBranch());
+		tableItem.setText(1, payto.getName());
 	}
 }

@@ -282,8 +282,7 @@ public class FilterCreation implements IDialog
 				// set the payTo id
 				TableItem paytoItem = new TableItem(payToTable, SWT.NONE);
 				paytoItem.setText("" + payToID);
-				paytoItem.setText(1, payTo.getPayToName());
-				paytoItem.setText(2, payTo.getPayToBranch());
+				paytoItem.setText(1, payTo.getName());
 			}
 		});
 		selectPayToButton.setBounds(10, 189, 125, 28);

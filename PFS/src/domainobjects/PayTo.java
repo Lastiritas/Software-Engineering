@@ -2,33 +2,20 @@ package domainobjects;
 
 public class PayTo 
 {	
-	public PayTo(String inPayToName, String inBranch)
+	public PayTo(String inName)
 	{
-		payToName = inPayToName;
-		branch = inBranch;
+		name = inName;
 	}
 	
-	public PayTo(String inPayToName)
+	public String getName()
 	{
-		payToName = inPayToName;
-		branch = "";
-	}
-	
-	public String getPayToName()
-	{
-		return payToName;
-	}
-	
-	public String getPayToBranch()
-	{
-		return branch;
+		return name;
 	}
 	
 	public String toString()
 	{
-		return payToName + ", " + branch;
+		return name;
 	}
 	
-	private final String payToName;
-	private final String branch;
+	private final String name;
 }

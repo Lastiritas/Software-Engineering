@@ -22,7 +22,7 @@ public class StubDatabase implements IDatabase
 		payToIds = new Vector<Integer>();
 		payTos = new Vector<PayTo>();
 		payToIds.add(getNextPayToId());
-		payTos.add(new PayTo("McDonalds", "St. Vital"));
+		payTos.add(new PayTo("McDonalds"));
 		
 		int[] setData = new int[]{1};
 		IDSet set = IDSet.createFromArray(setData);

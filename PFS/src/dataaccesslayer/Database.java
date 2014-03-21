@@ -523,15 +523,13 @@ public class Database implements IDatabase
 	{
 		PayTo payTo = null;
 		String location;
-		String branch;
 		
 		try
 		{
 			resultSet.next();
 			location = resultSet.getString("location");
-			branch = resultSet.getString("branch");
 			
-			payTo = new PayTo(location, branch);
+			payTo = new PayTo(location);
 		}
 		catch(Exception ex)
 		{
@@ -578,7 +576,7 @@ public class Database implements IDatabase
 		
 		try
 		{
-			values = String.format("%d, '%s', '%s'", payToId, inNewValue.getPayToName(), inNewValue.getPayToBranch());
+			values = String.format("%d, '%s', '%s'", payToId, inNewValue.getName(), "No one needs me");
 			cmdString = String.format("Insert into PayTo Values(%s)", values);
 			insertedSuccessful = statement.executeUpdate(cmdString);
 			result = checkWarning(statement, insertedSuccessful);
@@ -607,7 +605,7 @@ public class Database implements IDatabase
 		
 		try
 		{
-			values = String.format("location='%s', branch='%s'", inNewValue.getPayToName(), inNewValue.getPayToBranch());
+			values = String.format("location='%s', branch='%s'", inNewValue.getName(), "no one needs me");
 			where = String.format("where payToID=%d", inId);
 			cmdString = String.format("Update PayTo Set %s %s", values, where);
 			successful = statement.executeUpdate(cmdString);

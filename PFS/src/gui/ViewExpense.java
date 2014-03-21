@@ -495,7 +495,7 @@ public class ViewExpense implements IWindow
 		dateBuilder.append(date.getYear());	
 				
 		String dateString = dateBuilder.toString();
-		String payToString = payto.getPayToName() + ", " + payto.getPayToBranch();
+		String payToString = payto.getName();
 		String descriptionString = description;
 		
 		TableItem item = expenseTable.getItem(inRowIndex);

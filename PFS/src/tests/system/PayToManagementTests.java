@@ -34,7 +34,7 @@ public class PayToManagementTests extends MockObjectTestCase
 	
 	public void test_Get_payTo_by_id()
 	{
-		final PayTo expectedPayTo = new PayTo("Indigo", "St. Vital");
+		final PayTo expectedPayTo = new PayTo("Indigo");
 		final int payToId = 10;
 		PayTo actualPayTo;
         
@@ -65,7 +65,7 @@ public class PayToManagementTests extends MockObjectTestCase
 	
 	public void test_Update_payTo_successfully()
 	{
-		final PayTo payTo = new PayTo("U of M", "Fort Garry");
+		final PayTo payTo = new PayTo("U of M");
 		final int payToId = 12;
 		final boolean expectedResult = true;
 		boolean actualResult;

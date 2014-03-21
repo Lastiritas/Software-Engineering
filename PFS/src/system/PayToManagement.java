@@ -36,7 +36,7 @@ public class PayToManagement implements IIDReader, IDataReader, IDataModifer
 	
 	public int create()
 	{
-		PayTo newPayTo = new PayTo("Somewhere New", "");
+		PayTo newPayTo = new PayTo("Somewhere New");
 
 		return database.addPayTo(newPayTo);
 	}

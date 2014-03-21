@@ -123,7 +123,7 @@ public class StubDatabaseTests extends TestCase
 	public void test_Add_and_get_a_payTo()
 	{
 		int newId = 0;
-		PayTo expectedPayTo = new PayTo("U of M", "Fort Garry");
+		PayTo expectedPayTo = new PayTo("U of M");
 		
 		newId = database.addPayTo(expectedPayTo);
 		PayTo actualPayTo = database.getPayToByID(newId);
@@ -135,12 +135,12 @@ public class StubDatabaseTests extends TestCase
 	{
 		int newId = 0;
 		boolean updated;
-		PayTo addedPayTo = new PayTo("McDonalds", "St. Vital");
+		PayTo addedPayTo = new PayTo("McDonalds");
 		
 		newId = database.addPayTo(addedPayTo);
 		
 		//Update the payTo by creating a new similar payTo
-		PayTo expectedPayTo = new PayTo("McDonalds", "Polo Park");
+		PayTo expectedPayTo = new PayTo("McDonalds");
 		updated = database.updatePayTo(newId, expectedPayTo);
 		PayTo actualPayTo = database.getPayToByID(newId);
 		
@@ -152,7 +152,7 @@ public class StubDatabaseTests extends TestCase
 	{
 		int expectedId = 0;
 		IDSet payToIds;
-		PayTo payTo = new PayTo("Tim Hortons", "EITC");
+		PayTo payTo = new PayTo("Tim Hortons");
 		
 		expectedId = database.addPayTo(payTo);
 		payToIds = IDSet.createFromArray(database.getAllPayToIDs());

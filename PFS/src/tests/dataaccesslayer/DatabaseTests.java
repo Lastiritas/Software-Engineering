@@ -155,39 +155,36 @@ public class DatabaseTests extends TestCase
 	
 	public void test_Add_and_get_a_payTo()
 	{
-		int newId = 0;
-		PayTo expectedPayTo = new PayTo("U of M", "Fort Garry");
-		
-		newId = database.addPayTo(expectedPayTo);
+		PayTo expectedPayTo = new PayTo("U of M");		
+		int newId = database.addPayTo(expectedPayTo);
+	
 		PayTo actualPayTo = database.getPayToByID(newId);
 		
-		assertEquals(actualPayTo.getPayToName(), expectedPayTo.getPayToName());
-		assertEquals(actualPayTo.getPayToBranch(), expectedPayTo.getPayToBranch());
+		assertEquals(actualPayTo.getName(), expectedPayTo.getName());
 	}
 	
 	public void test_Update_payTo()
 	{
 		int newId = 0;
 		boolean updated;
-		PayTo addedPayTo = new PayTo("McDonalds", "St. Vital");
+		PayTo addedPayTo = new PayTo("McDonalds");
 		
 		newId = database.addPayTo(addedPayTo);
 		
 		//Update the payTo by creating a new similar payTo
-		PayTo expectedPayTo = new PayTo("McDonalds", "Polo Park");
+		PayTo expectedPayTo = new PayTo("McDonalds");
 		updated = database.updatePayTo(newId, expectedPayTo);
 		PayTo actualPayTo = database.getPayToByID(newId);
 		
 		assertTrue(updated);
-		assertEquals(actualPayTo.getPayToName(), expectedPayTo.getPayToName());
-		assertEquals(actualPayTo.getPayToBranch(), expectedPayTo.getPayToBranch());
+		assertEquals(actualPayTo.getName(), expectedPayTo.getName());
 	}
 	
 	public void test_Getting_all_payTo_Ids_should_return_the_previously_added_id()
 	{
 		int expectedId = 0;
 		IDSet payToIds;
-		PayTo payTo = new PayTo("Tim Hortons", "EITC");
+		PayTo payTo = new PayTo("Tim Hortons");
 		
 		expectedId = database.addPayTo(payTo);
 		payToIds = IDSet.createFromArray(database.getAllPayToIDs());

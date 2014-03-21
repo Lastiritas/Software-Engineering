@@ -27,7 +27,6 @@ public class PayToCreation implements IWindow
 	private Text nameField;
 	private Text locationField;
 	private String allName[];
-	private String allBranch[];
 	private Composite composite;
 
 	/**
@@ -95,18 +94,10 @@ public class PayToCreation implements IWindow
 					}
 				}
 				
-				for(int i=0; i<allBranch.length && existBranch ==false;i++)
-				{
-					if(allBranch[i].equalsIgnoreCase(tempBranch))
-					{
-						existBranch = true;
-					}
-				}
-				
 				if( !existName || !existBranch)
 				{
 					final int newLabelID = PFSystem.getCurrent().getPayToSystem().create();
-					PFSystem.getCurrent().getPayToSystem().update(newLabelID, new PayTo(nameField.getText(), locationField.getText()));
+					PFSystem.getCurrent().getPayToSystem().update(newLabelID, new PayTo(nameField.getText()));
 				}
 				else
 				{
@@ -193,16 +184,13 @@ public class PayToCreation implements IWindow
 		
 		int length = payToIDs.getSize();
 		allName = new String[length];
-		allBranch = new String[length];
 		
 		for(int i=0; i<length; i++)
 		{
 			final int id = payToIDs.getValue(i);
 			final PayTo payto = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(id);
 			
-			allName[i] = payto.getPayToName();
-			allBranch[i] = payto.getPayToBranch();
-			
+			allName[i] = payto.getName();
 		}
 		
 		refreshList();
@@ -222,9 +210,5 @@ public class PayToCreation implements IWindow
 	private void refreshList_1()
 	{
 		list_1.removeAll();
-		for(int i=0; i< allBranch.length; i ++)
-		{
-			list_1.add(allBranch[i]);
-		}
 	}
 }
