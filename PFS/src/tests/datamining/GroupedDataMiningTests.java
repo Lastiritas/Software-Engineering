@@ -4,17 +4,18 @@ import org.jmock.integration.junit3.MockObjectTestCase;
 
 import domainobjects.IDSet;
 import domainobjects.PayTo;
+import system.GroupedCollection;
 import system.PFSystem;
 
 public class GroupedDataMiningTests extends MockObjectTestCase
 {
 	public void test_a()
 	{
-		PFSystem.GroupedCollection[] results = PFSystem.getCurrent().getFrequentPlacesForDayOfWeek(0.01);
+		GroupedCollection[] results = PFSystem.getCurrent().getFrequentPlacesForDayOfWeek(0.01);
 		
 		for(int j = 0; j < results.length; j++)
 		{
-			PFSystem.GroupedCollection collection = results[j];
+			GroupedCollection collection = results[j];
 			
 			System.out.format("%s:\n", collection.getName());
 
