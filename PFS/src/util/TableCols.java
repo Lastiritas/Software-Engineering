@@ -6,5 +6,6 @@ public enum TableCols
 	DATE,
 	PAYTO,
 	MONEY,
-	DESCRIPTION
+	DESCRIPTION,
+	PAYMENT_METHOD
 }

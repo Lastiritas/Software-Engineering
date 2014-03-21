@@ -404,7 +404,7 @@ public class FilterCreation implements IDialog
 	
 	private IDSet getLabelSet()
 	{
-		return GUIHelper.getLabelIDSetFromTable(labelTable);
+		return GUIHelper.getIDsFromTable(labelTable);
 	}
 	
 	private SetOperation getSetOperation()

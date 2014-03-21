@@ -35,7 +35,7 @@ public class GUIHelper
 		newItem.setText(1, label.getLabelName());
 	}
 
-	public static IDSet getLabelIDSetFromTable(Table inTable)
+	public static IDSet getIDsFromTable(Table inTable)
 	{
 		assert(inTable != null);
 		

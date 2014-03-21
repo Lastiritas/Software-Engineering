@@ -130,6 +130,23 @@ public class ViewExpense implements IWindow
 		});
 		deleteButton.setText("-");
 		
+		Button graphButton = new Button(composite, SWT.NONE);
+		graphButton.setBounds(679, 613, 94, 28);
+		graphButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				if(expenseTable.getItemCount() > 0)
+				{
+					final IDSet expenseIDs = GUIHelper.getIDsFromTable(expenseTable);
+					
+					ExpenseTrends window = new ExpenseTrends();
+					window.setExpenseIDs(expenseIDs);
+					window.open();
+				}
+			}
+		});
+		graphButton.setText("Graph");
+		
 		Button btnOpen = new Button(composite, SWT.NONE);
 		btnOpen.setBounds(779, 613, 94, 28);
 		btnOpen.addSelectionListener(new SelectionAdapter() {
