@@ -21,8 +21,7 @@ public class PFSystem
 		database.open("PFS");
 	}
 	
-	@Override
-	protected void finalize()
+	public void closePFSystem()
 	{
 		database.close();
 	}

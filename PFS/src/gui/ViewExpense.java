@@ -59,6 +59,7 @@ public class ViewExpense implements IWindow
 				display.sleep();
 			}
 		}
+		PFSystem.getCurrent().closePFSystem();
 	}
 
 	/**
