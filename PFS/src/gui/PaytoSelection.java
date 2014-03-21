@@ -96,11 +96,7 @@ public class PaytoSelection implements IDialog
 		tblclmnName.setWidth(100);
 		tblclmnName.setText("Name");
 		
-		TableColumn tblclmnLocation = new TableColumn(table, SWT.NONE);
-		tblclmnLocation.setWidth(100);
-		tblclmnLocation.setText("Location");
-		
-			populateList(table);
+		populateList(table);
 		
 		Button cancelButton = new Button(composite, SWT.NONE);
 		cancelButton.setBounds(10, 274, 63, 35);
