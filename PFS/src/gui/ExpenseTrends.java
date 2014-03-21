@@ -14,17 +14,36 @@ import org.swtchart.IAxis;
 import org.swtchart.IBarSeries;
 import org.swtchart.ISeries.SeriesType;
 
+import domainobjects.IDSet;
+import util.XAxis;
+
 public class ExpenseTrends 
 {
-	private static Shell shell;
-	private static Composite chartOne;
-	private static Composite chartTwo;
-	private static final double[] ySeries = {0.2, 1.1, 1.9, 2.3, 1.8, 1.5, 1.8, 2.6, 2.9, 3.2};
-	private static final double[] ySeriesTwo = {1.5, 1.8, 2.6, 2.9};
+	private IDSet expenseIDs;
 	
-	public static void main(String [] args)
+	private Shell shell;
+	private Composite chartOne;
+	private Composite chartTwo;
+	private ChartHelper chartHelper;
+	//private static final double[] ySeries = {0.2, 1.1, 1.9, 2.3, 1.8, 1.5, 1.8, 2.6, 2.9, 3.2};
+	private final double[] ySeriesTwo = {1.5, 1.8, 2.6, 2.9}; 
+	
+	//By payment method, By months and By year, by location, by labels, based on day
+	
+	public void setExpenseIDs(IDSet ids)
+	{
+		expenseIDs = ids;
+	}
+	
+	/**
+	 * Open the window.
+	 * @wbp.parser.entryPoint
+	 * 
+	 */
+	public void open()
 	{
 		Display display = Display.getDefault();
+		chartHelper = new ChartHelper(expenseIDs);
 		
 		createContents();
 		shell.open();
@@ -37,10 +56,9 @@ public class ExpenseTrends
 				display.sleep();
 			}
 		}
-		display.dispose();
 	}
 	
-	public static void createContents()
+	public void createContents()
 	{
 		shell = new Shell(SWT.SYSTEM_MODAL | SWT.DIALOG_TRIM);
 		shell.setText("Expenses");
@@ -55,7 +73,7 @@ public class ExpenseTrends
 		
 		Composite composite = new Composite(tabFolder, SWT.NONE);
 		composite.setLayout(new FillLayout());
-		createFirstChart(composite);
+		chartByPaymentMethod(composite);
 		
 		tbtmChartOne.setControl(composite);
 		
@@ -69,14 +87,17 @@ public class ExpenseTrends
 		tbtmChartTwo.setControl(composite2);
 	}
 	
-	public static void createFirstChart(Composite parent)
+	public void chartByPaymentMethod(Composite parent)
 	{
 		Chart chart = new Chart(parent, SWT.NONE);
 		
 		//set titles
 		chart.getTitle().setText("Expense Trends");
-		chart.getAxisSet().getXAxis(0).getTitle().setText("Data points");
-		chart.getAxisSet().getYAxis(0).getTitle().setText("Frequency");
+		chart.getAxisSet().getXAxis(0).getTitle().setText("Payment Method");
+		chart.getAxisSet().getYAxis(0).getTitle().setText("Amount");
+		
+		int[] xAxisValues = {0, 1, 2, 3};
+		double[] ySeries = chartHelper.getYAxisValues(xAxisValues, XAxis.PAYMENT_METHOD);
 		
 		//create bar series
 		IBarSeries barSeries = (IBarSeries) chart.getSeriesSet().createSeries(SeriesType.BAR,  "bar series");
@@ -84,7 +105,7 @@ public class ExpenseTrends
 		
 		//Set Categories
 		IAxis xAxis = chart.getAxisSet().getXAxis(0);
-		xAxis.setCategorySeries(new String[] {"Jan", "Feb", "Mar", "April", "May", "June", "July", "Aug", "Sept", "Oct"});
+		xAxis.setCategorySeries(new String[] {"Cash", "Debit", "Credit", "Other"});
 		xAxis.enableCategory(true);
 		
 		//Set the orientation of chart
@@ -94,7 +115,13 @@ public class ExpenseTrends
 		chart.getAxisSet().adjustRange();
 	}
 	
-	public static void createSecondChart(Composite parent)
+	//By month and year
+	public void chartByMonthAndYear(Composite parent)
+	{
+		
+	}
+	
+	public void createSecondChart(Composite parent)
 	{
 		Chart chart = new Chart(parent, SWT.NONE);
 		
