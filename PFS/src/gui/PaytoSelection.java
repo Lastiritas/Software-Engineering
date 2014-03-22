@@ -21,6 +21,7 @@ public class PaytoSelection implements IDialog
 	private Shell shell;
 	private Table table;
 	private int selectedID = -1;
+	private boolean madeSelection = false;
 	
 	/**
 	 * Open the window.
@@ -61,7 +62,10 @@ public class PaytoSelection implements IDialog
 			@Override
 			public void handleEvent(Event event)
 			{
-				selectedID = -1;
+				if(!madeSelection)
+				{
+					selectedID = -1;
+				}
 			}
 		});
 		
@@ -118,6 +122,7 @@ public class PaytoSelection implements IDialog
 			@Override
 			public void widgetSelected(SelectionEvent arg0) 
 			{
+				madeSelection = true;
 				shell.close();
 			}
 		});
