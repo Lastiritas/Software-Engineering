@@ -13,7 +13,7 @@ public class PayToManagement extends ManagementBase
 	@Override
 	protected int[] dbCallGetIds(IDatabase database)
 	{
-		return database.getAllPayToIDs();
+		return database.getPayToTable().getAllIds();
 	}
 	
 	@Override
@@ -27,7 +27,7 @@ public class PayToManagement extends ManagementBase
 	@Override
 	protected Object dbCallGetItem(IDatabase database, int inId)
 	{
-		return database.getPayToByID(inId);
+		return database.getPayToTable().getById(inId);
 	}
 	
 	@Override
@@ -35,7 +35,7 @@ public class PayToManagement extends ManagementBase
 	{
 		assert inNewValue instanceof PayTo : "Can only update with PayTo objects";
 
-		return database.updatePayTo(inId, (PayTo)inNewValue);
+		return database.getPayToTable().update(inId, (PayTo)inNewValue);
 	}
 	
 	@Override
@@ -51,7 +51,7 @@ public class PayToManagement extends ManagementBase
 	{
 		PayTo newPayTo = new PayTo("Somewhere New");
 
-		return database.addPayTo(newPayTo);
+		return database.getPayToTable().add(newPayTo);
 	}
 	
 	// the id to the no one entry in the database, if the database does 

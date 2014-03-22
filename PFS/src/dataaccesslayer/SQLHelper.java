@@ -48,12 +48,7 @@ public class SQLHelper
 		{
 			result = getError(e);
 		}
-		
-		if (updateCount != 1)
-		{
-			result = "Tuple not inserted or deleted correctly.";
-		}
-		
+				
 		return result;
 	}
 	

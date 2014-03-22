@@ -13,7 +13,7 @@ public class LabelManagement extends ManagementBase
 	@Override
 	protected int[] dbCallGetIds(IDatabase database)
 	{
-		return database.getAllLabelIDs();
+		return database.getLabelTable().getAllIds();
 	}
 	
 	@Override
@@ -27,7 +27,7 @@ public class LabelManagement extends ManagementBase
 	@Override
 	protected Object dbCallGetItem(IDatabase database, int inId)
 	{		
-		return database.getLabelByID(inId);
+		return database.getLabelTable().getById(inId);
 	}
 	
 	@Override
@@ -35,7 +35,7 @@ public class LabelManagement extends ManagementBase
 	{
 		assert inNewValue instanceof Label : "Can only update with a label";
 
-		return database.updateLabel(inId, (Label)inNewValue);
+		return database.getLabelTable().update(inId, (Label)inNewValue);
 	}
 	
 	@Override
@@ -50,6 +50,6 @@ public class LabelManagement extends ManagementBase
 	protected int dbCallAddNew(IDatabase database)
 	{
 		Label newLabel = new Label("New Label");
-		return database.addLabel(newLabel);
+		return database.getLabelTable().add(newLabel);
 	}
 }

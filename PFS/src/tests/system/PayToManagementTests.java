@@ -24,7 +24,7 @@ public class PayToManagementTests extends MockObjectTestCase
         
         //Expectations
         checking(new Expectations() {{
-            oneOf (mockDatabase).getAllPayToIDs(); will(returnValue(ids));
+            oneOf (mockDatabase).getPayToTable().getAllIds(); will(returnValue(ids));
         }});
         
         actualResult = payToMgmt.getAllIDs();
@@ -40,7 +40,7 @@ public class PayToManagementTests extends MockObjectTestCase
         
         //Expectations
         checking(new Expectations() {{
-            oneOf (mockDatabase).getPayToByID(payToId); will(returnValue(expectedPayTo));
+            oneOf (mockDatabase).getPayToTable().getById(payToId); will(returnValue(expectedPayTo));
         }});
         
         actualPayTo = (PayTo)payToMgmt.getDataByID(payToId);
@@ -55,7 +55,7 @@ public class PayToManagementTests extends MockObjectTestCase
         
         //Expectations
         checking(new Expectations() {{
-            allowing (mockDatabase).addPayTo(with(any(PayTo.class))); will(returnValue(expectedPayToId));
+            allowing (mockDatabase).getPayToTable().add(with(any(PayTo.class))); will(returnValue(expectedPayToId));
         }});
         
         actualPayToId = payToMgmt.create();
@@ -72,7 +72,7 @@ public class PayToManagementTests extends MockObjectTestCase
         
         //Expectations
         checking(new Expectations() {{
-            oneOf (mockDatabase).updatePayTo(payToId, payTo); will(returnValue(expectedResult));
+            oneOf (mockDatabase).getPayToTable().update(payToId, payTo); will(returnValue(expectedResult));
         }});
         
         actualResult = payToMgmt.update(payToId, payTo);

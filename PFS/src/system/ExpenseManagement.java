@@ -17,32 +17,32 @@ public class ExpenseManagement extends ManagementBase
 	@Override
 	protected int[] dbCallGetIds(IDatabase database)
 	{
-		return database.getAllExpenseIDs();
+		return database.getExpenseTable().getAllIds();
 	}
 	
 	@Override
 	protected int[] dbCallGetIds(IDatabase database, String whereClause)
 	{
-		return database.getAllExpenseIDsWhere(whereClause);
+		return database.getExpenseTable().getAllIdsWhere(whereClause);
 	}
 	
 	@Override
 	protected Object dbCallGetItem(IDatabase database, int inId)
 	{
-		return database.getExpenseByID(inId);
+		return database.getExpenseTable().getById(inId);
 	}
 	
 	@Override
 	protected boolean dbCallUpdateItem(IDatabase database, int inId, Object inNewValue)
 	{
 		assert inNewValue instanceof Expense : "Can only update with Expense objects";
-		return database.updateExpense(inId, (Expense)inNewValue);
+		return database.getExpenseTable().update(inId, inNewValue);
 	}
 	
 	@Override
 	protected boolean dbCallDeleteItem(IDatabase database, int inID)
 	{
-		return database.deleteExpense(inID);		
+		return database.getExpenseTable().delete(inID);		
 	}
 	
 	@Override
@@ -50,6 +50,6 @@ public class ExpenseManagement extends ManagementBase
 	{
 		Expense newExpense = new Expense(SimpleDate.Now(), new Money(), PaymentMethod.CASH, "", PayToManagement.NO_ONE_ID, IDSet.empty());
 		
-		return database.addExpense(newExpense);		
+		return database.getExpenseTable().add(newExpense);		
 	}
 }

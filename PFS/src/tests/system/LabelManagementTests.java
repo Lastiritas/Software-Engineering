@@ -24,7 +24,7 @@ public class LabelManagementTests extends MockObjectTestCase
         
         //Expectations
         checking(new Expectations() {{
-            oneOf (mockDatabase).getAllLabelIDs(); will(returnValue(intArray));
+            oneOf (mockDatabase).getLabelTable().getAllIds(); will(returnValue(intArray));
         }});
         
         actualResult = labelMgmt.getAllIDs();
@@ -40,7 +40,7 @@ public class LabelManagementTests extends MockObjectTestCase
         
         //Expectations
         checking(new Expectations() {{
-            oneOf (mockDatabase).getLabelByID(labelId); will(returnValue(expectedLabel));
+            oneOf (mockDatabase).getLabelTable().getById(labelId); will(returnValue(expectedLabel));
         }});
         
         actualLabel = (Label)labelMgmt.getDataByID(labelId);
@@ -55,7 +55,7 @@ public class LabelManagementTests extends MockObjectTestCase
         
         //Expectations
         checking(new Expectations() {{
-            allowing (mockDatabase).addLabel(with(any(Label.class))); will(returnValue(expectedLabelId));
+            allowing (mockDatabase).getLabelTable().add(with(any(Label.class))); will(returnValue(expectedLabelId));
         }});
         
         actualLabelId = labelMgmt.create();
@@ -72,7 +72,7 @@ public class LabelManagementTests extends MockObjectTestCase
         
         //Expectations
         checking(new Expectations() {{
-            oneOf (mockDatabase).updateLabel(labelId, label); will(returnValue(expectedResult));
+            oneOf (mockDatabase).getLabelTable().update(labelId, label); will(returnValue(expectedResult));
         }});
         
         actualResult = labelMgmt.update(labelId, label);

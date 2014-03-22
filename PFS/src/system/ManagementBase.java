@@ -4,7 +4,6 @@ import util.Sort;
 import util.SortDirection;
 import util.TableCols;
 import dataaccesslayer.IDatabase;
-import domainobjects.Expense;
 import domainobjects.ExpenseFilter;
 import domainobjects.IDHelper;
 import domainobjects.IDSet;
@@ -58,8 +57,6 @@ public abstract class ManagementBase implements IIDReader, IDataReader, IDataMod
 	{
 		assert IDHelper.isIdValid(inID) : "Invalid ID";
 		assert inNewValue != null : "Cannot update expense with null value";
-
-		assert inNewValue instanceof Expense : "Can only use expenses in expense system";
 		
 		if(dbCallUpdateItem(database, inID, inNewValue))
 		{

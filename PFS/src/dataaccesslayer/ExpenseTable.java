@@ -108,7 +108,7 @@ public class ExpenseTable implements IDatabaseTable
 		{
 			Expense expense = (Expense)inNewValue;
 			
-			int nextId = SQLHelper.getMaxIdForTable(statement, "expenseID", "Expense");
+			int nextId = SQLHelper.getMaxIdForTable(statement, "expenseID", "Expenses");
 			
 			String values = String.format("%d, %d, %d, %d, '%s', %d", 
 								nextId, 
@@ -179,7 +179,7 @@ public class ExpenseTable implements IDatabaseTable
 	{	
 		try
 		{		
-			deleteFromExpenseLabel(inId);
+			deleteFromExpenseLabelWhere(String.format("where expenseID=%d", inId));
 		
 			String cmdString = String.format("Delete from Expenses where expenseID=%d", inId);
 			int successful = statement.executeUpdate(cmdString);
@@ -194,21 +194,13 @@ public class ExpenseTable implements IDatabaseTable
 			return false;
 		}
 	}
-
-	private void deleteFromExpenseLabel(int inId)
-	{
-		assert IDHelper.isIdValid(inId);
-		deleteFromExpenseLabelWhere(String.format("where expenseID=%d", inId));
-	}
 	
 	private void deleteFromExpenseLabelWhere(String whereClause)
 	{		
 		try
 		{
 			String cmdString = String.format("Delete from ExpenseLabels %s", whereClause);
-			int successful = statement.executeUpdate(cmdString);
-			String result = SQLHelper.checkWarning(statement, successful);
-			assert result == null;
+			statement.executeUpdate(cmdString);
 		}
 		catch(Exception ex)
 		{

@@ -82,15 +82,15 @@ public class PayToTable implements IDatabaseTable
 	{
 		assert inNewValue != null;
 		assert inNewValue instanceof PayTo;
-		
-		PayTo payTo = (PayTo)inNewValue;
-			
+					
 		try
 		{
-			int nextId = SQLHelper.getMaxIdForTable(statement, "payToID", "PayTo");
+			PayTo payTo = (PayTo)inNewValue;
+			
+			int nextId = SQLHelper.getMaxIdForTable(statement, "PAYTOID", "PAYTO");
 			
 			String values = String.format("%d, '%s'", nextId, payTo.getName());
-			String cmdString = String.format("Insert into PayTo Values(%s)", values);
+			String cmdString = String.format("Insert into PAYTO (PAYTOID, LOCATION) Values(%s)", values);
 			
 			int insertedSuccessful = statement.executeUpdate(cmdString);
 			String result = SQLHelper.checkWarning(statement, insertedSuccessful);

@@ -27,7 +27,7 @@ public class ExpenseManagementTests extends MockObjectTestCase
         
         //Expectations
         checking(new Expectations() {{
-            oneOf (mockDatabase).getAllExpenseIDs(); will(returnValue(ids));
+            oneOf (mockDatabase).getExpenseTable().getAllIds(); will(returnValue(ids));
         }});
         
         actualResult = expenseMgmt.getAllIDs();
@@ -45,7 +45,7 @@ public class ExpenseManagementTests extends MockObjectTestCase
         
         //Expectations
         checking(new Expectations() {{
-            oneOf (mockDatabase).getExpenseByID(expenseId); will(returnValue(expectedExpense));
+            oneOf (mockDatabase).getExpenseTable().getById(expenseId); will(returnValue(expectedExpense));
         }});
         
         actualExpense = (Expense)expenseMgmt.getDataByID(expenseId);
@@ -60,7 +60,7 @@ public class ExpenseManagementTests extends MockObjectTestCase
         
         //Expectations
         checking(new Expectations() {{
-            allowing (mockDatabase).addExpense(with(any(Expense.class))); will(returnValue(expectedExpenseId));
+            allowing (mockDatabase).getExpenseTable().add(with(any(Expense.class))); will(returnValue(expectedExpenseId));
         }});
         
         actualExpenseId = expenseMgmt.create();
@@ -79,7 +79,7 @@ public class ExpenseManagementTests extends MockObjectTestCase
         
         //Expectations
         checking(new Expectations() {{
-            oneOf (mockDatabase).updateExpense(expenseId, expense); will(returnValue(expectedResult));
+            oneOf (mockDatabase).getExpenseTable().update(expenseId, expense); will(returnValue(expectedResult));
         }});
         
         actualResult = expenseMgmt.update(expenseId, expense);
