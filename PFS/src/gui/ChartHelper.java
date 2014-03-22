@@ -4,7 +4,6 @@ import domainobjects.Expense;
 import domainobjects.IDSet;
 import domainobjects.PayTo;
 import domainobjects.PaymentMethodHelper;
-import system.ExpenseManagement;
 import system.Manager;
 import system.PFSystem;
 import util.Sort;

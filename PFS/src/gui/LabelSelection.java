@@ -6,7 +6,6 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.*;
 import org.eclipse.swt.events.*;
 
-import system.LabelManagement;
 import system.Manager;
 import system.PFSystem;
 import util.StringMatch;
