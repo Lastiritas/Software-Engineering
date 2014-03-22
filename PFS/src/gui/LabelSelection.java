@@ -23,6 +23,7 @@ public class LabelSelection implements IDialog
 	
 	private IDSet startingSet = IDSet.empty();
 	private ArrayList<Integer> selectedLabels = new ArrayList<Integer>();
+	private boolean madeSelection = false;
 	
 	public void setStartingSet(IDSet inSet)
 	{
@@ -77,13 +78,16 @@ public class LabelSelection implements IDialog
 			@Override
 			public void handleEvent(Event event)
 			{
-				selectedLabels.clear();
-				
-				final int totalLabels = startingSet.getSize();
-				for(int i = 0; i < totalLabels; i++)
+				if(!madeSelection)
 				{
-					final int id = startingSet.getValue(i);
-					selectedLabels.add(new Integer(id));
+					selectedLabels.clear();
+					
+					final int totalLabels = startingSet.getSize();
+					for(int i = 0; i < totalLabels; i++)
+					{
+						final int id = startingSet.getValue(i);
+						selectedLabels.add(new Integer(id));
+					}
 				}
 			}
 		});
@@ -148,6 +152,7 @@ public class LabelSelection implements IDialog
 			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
+				madeSelection = true;
 				shell.close();
 			}
 		});
