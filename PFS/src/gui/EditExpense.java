@@ -202,10 +202,6 @@ public class EditExpense implements IWindow
 				{
 					updatePayToGUI(newPayToID);
 				}
-				else
-				{
-					payToButton.setText("None"); 
-				}
 			}
 		});
 		

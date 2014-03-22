@@ -20,7 +20,7 @@ public class PaytoSelection implements IDialog
 {
 	private Shell shell;
 	private Table table;
-	private int selectedID = -1;
+	private int selectedID = 1;
 	private boolean madeSelection = false;
 	
 	/**
@@ -64,7 +64,7 @@ public class PaytoSelection implements IDialog
 			{
 				if(!madeSelection)
 				{
-					selectedID = -1;
+					selectedID = 1;
 				}
 			}
 		});
@@ -85,7 +85,7 @@ public class PaytoSelection implements IDialog
 				}
 				else
 				{
-					selectedID = -1;
+					selectedID = 1;
 				}
 			}
 		});
@@ -110,6 +110,7 @@ public class PaytoSelection implements IDialog
 			public void widgetSelected(SelectionEvent e) 
 			{
 				selectedID = -1;
+				madeSelection = true;
 				shell.close();
 			}
 		});
