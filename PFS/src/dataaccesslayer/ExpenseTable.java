@@ -2,7 +2,6 @@ package dataaccesslayer;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Collection;
 import java.util.Vector;
 
 import domainobjects.Expense;

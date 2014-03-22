@@ -6,9 +6,7 @@ import java.sql.Statement;
 import java.util.Collection;
 import java.util.Vector;
 
-import domainobjects.Expense;
 import domainobjects.IDHelper;
-import domainobjects.PaymentMethodHelper;
 
 public class SQLHelper 
 {
