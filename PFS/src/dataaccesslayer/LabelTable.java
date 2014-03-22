@@ -18,26 +18,7 @@ public class LabelTable implements IDatabaseTable
 	@Override
 	public int[] getAllIds() 
 	{
-		Vector<Integer> labelIds = new Vector<Integer>();
-				
-		try
-		{
-			String cmdString = "Select labelID from Label";
-			ResultSet resultSet = statement.executeQuery(cmdString);
-			
-			while(resultSet.next())
-			{
-				int currentId = resultSet.getInt("labelID");
-				labelIds.add(currentId);
-			}
-			resultSet.close();
-		}
-		catch(Exception ex)
-		{
-			System.out.println(SQLHelper.getError(ex));
-		}
-		
-		return SQLHelper.parseIds(labelIds);
+		return SQLHelper.getAllIdsFrom(statement, "labelID", "Label");
 	}
 
 	@Override

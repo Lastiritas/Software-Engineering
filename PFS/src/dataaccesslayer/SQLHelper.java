@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.util.Collection;
+import java.util.Vector;
 
 import domainobjects.IDHelper;
 
@@ -14,6 +15,32 @@ public class SQLHelper
 		assert(e != null);
 		
 		return String.format("*** SQL Error: %s", e.getMessage());
+	}
+	
+	public static int[] getAllIdsFrom(Statement statement, String idName, String table)
+	{
+		try
+		{
+			Collection<Integer> output = new Vector<Integer>();
+						
+			String cmdString = String.format("Select %s from %s", idName, table);
+			ResultSet resultSet = statement.executeQuery(cmdString);
+			
+			while(resultSet.next())
+			{
+				int currentId = resultSet.getInt(idName);
+				output.add(currentId);
+			}
+			
+			resultSet.close();
+			
+			return SQLHelper.parseIds(output);
+		}
+		catch(Exception ex)
+		{
+			System.out.println(SQLHelper.getError(ex));
+			return null;
+		}
 	}
 	
 	public static int[] parseIds(Collection<Integer> inIds)

@@ -25,27 +25,7 @@ public class ExpenseTable implements IDatabaseTable
 	@Override
 	public int[] getAllIds() 
 	{
-		try
-		{
-			Collection<Integer> expenseIds = new Vector<Integer>();
-						
-			String cmdString = "Select expenseID from Expenses";
-			ResultSet resultSet = statement.executeQuery(cmdString);
-			
-			while(resultSet.next())
-			{
-				int currentId = resultSet.getInt("expenseID");
-				expenseIds.add(currentId);
-			}
-			resultSet.close();
-			
-			return SQLHelper.parseIds(expenseIds);
-		}
-		catch(Exception ex)
-		{
-			System.out.println(SQLHelper.getError(ex));
-			return null;
-		}
+		return SQLHelper.getAllIdsFrom(statement, "expenseID", "Expenses");
 	}
 
 	@Override

@@ -19,27 +19,7 @@ public class PayToTable implements IDatabaseTable
 	@Override
 	public int[] getAllIds() 
 	{
-		Vector<Integer> payToIds = new Vector<Integer>();
-				
-		try
-		{
-			String cmdString = "Select payToID from PayTo";
-			ResultSet resultSet = statement.executeQuery(cmdString);
-			
-			while(resultSet.next())
-			{
-				int currentId = resultSet.getInt("payToID");
-				payToIds.add(currentId);
-			}
-			
-			resultSet.close();
-		}
-		catch(Exception ex)
-		{
-			System.out.println(SQLHelper.getError(ex));
-		}
-		
-		return SQLHelper.parseIds(payToIds);
+		return SQLHelper.getAllIdsFrom(statement, "payToID", "PayTo");
 	}
 
 	@Override
