@@ -30,17 +30,17 @@ public class PFSystem
 		database.close();
 	}
 	
-	public ManagementBase getPayToSystem()
+	public Manager getPayToSystem()
 	{
 		return payToSystem;
 	}
 	
-	public ManagementBase getLabelSystem()
+	public Manager getLabelSystem()
 	{
 		return labelSystem;
 	}
 	
-	public ManagementBase getExpenseSystem()
+	public Manager getExpenseSystem()
 	{
 		return expenseSystem;
 	}
@@ -126,9 +126,9 @@ public class PFSystem
 	
 	private IDatabase database = new Database("PFS");
 	
-	private ManagementBase payToSystem;
-	private ManagementBase labelSystem;
-	private ManagementBase expenseSystem;
+	private Manager payToSystem;
+	private Manager labelSystem;
+	private Manager expenseSystem;
 	
 	public static PFSystem getCurrent()
 	{

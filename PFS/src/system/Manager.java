@@ -8,9 +8,9 @@ import domainobjects.ExpenseFilter;
 import domainobjects.IDHelper;
 import domainobjects.IDSet;
 
-public abstract class ManagementBase implements IIDReader, IDataReader, IDataModifer
+public abstract class Manager implements IIDReader, IDataReader, IDataModifer
 {
-	public ManagementBase(IDatabaseTable inTable)
+	public Manager(IDatabaseTable inTable)
 	{
 		assert inTable != null : "Must provide non-null table";
 		

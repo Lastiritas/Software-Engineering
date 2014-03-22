@@ -7,7 +7,7 @@ import domainobjects.Money;
 import domainobjects.PaymentMethod;
 import domainobjects.SimpleDate;
 
-public class ExpenseManagement extends ManagementBase
+public class ExpenseManagement extends Manager
 {
 	public ExpenseManagement(IDatabase inDatabase)
 	{

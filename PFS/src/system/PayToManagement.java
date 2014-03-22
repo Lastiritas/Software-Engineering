@@ -3,7 +3,7 @@ package system;
 import dataaccesslayer.IDatabase;
 import domainobjects.PayTo;
 
-public class PayToManagement extends ManagementBase
+public class PayToManagement extends Manager
 {
 	public PayToManagement(IDatabase inDatabase)
 	{

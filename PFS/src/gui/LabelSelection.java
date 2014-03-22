@@ -7,7 +7,7 @@ import org.eclipse.swt.*;
 import org.eclipse.swt.events.*;
 
 import system.LabelManagement;
-import system.ManagementBase;
+import system.Manager;
 import system.PFSystem;
 import util.StringMatch;
 import domainobjects.*;
@@ -185,7 +185,7 @@ public class LabelSelection implements IDialog
 				
 				if(labelName != null)
 				{
-					final ManagementBase labelManager = PFSystem.getCurrent().getLabelSystem();
+					final Manager labelManager = PFSystem.getCurrent().getLabelSystem();
 					
 					final int newID = labelManager.create();
 					

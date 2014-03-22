@@ -3,7 +3,7 @@ package system;
 import dataaccesslayer.IDatabase;
 import domainobjects.Label;
 
-public class LabelManagement extends ManagementBase
+public class LabelManagement extends Manager
 {
 	public LabelManagement(IDatabase inDatabase)
 	{
