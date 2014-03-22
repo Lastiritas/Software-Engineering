@@ -3,6 +3,7 @@ package dataaccesslayer;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Vector;
+
 import domainobjects.IDHelper;
 import domainobjects.Label;
 
@@ -24,29 +25,13 @@ public class LabelTable implements IDatabaseTable
 	@Override
 	public int[] getAllIdsWhere(String inWhereClause) 
 	{	
-		assert false : "Label table does not support get all ids where";
-		return null;
+		return SQLHelper.getAllIdsFromWhere(statement, "labelID", "Label", inWhereClause);
 	}
 
 	@Override
 	public Object getById(int inId) 
 	{
-		assert IDHelper.isIdValid(inId);
-				
-		try
-		{
-			String cmdString = String.format("Select * from Label where labelID=%d", inId);
-			ResultSet resultSet = statement.executeQuery(cmdString);
-			Label label = convertToLabel(resultSet);
-			resultSet.close();
-			
-			return label;
-		}
-		catch(Exception ex)
-		{
-			System.out.println(SQLHelper.getError(ex));
-			return null;
-		}
+		return getWhere(String.format("labelID=%d",inId));
 	}
 
 	@Override

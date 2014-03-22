@@ -6,7 +6,9 @@ import java.sql.Statement;
 import java.util.Collection;
 import java.util.Vector;
 
+import domainobjects.Expense;
 import domainobjects.IDHelper;
+import domainobjects.PaymentMethodHelper;
 
 public class SQLHelper 
 {
@@ -43,6 +45,31 @@ public class SQLHelper
 		}
 	}
 	
+	public static int[] getAllIdsFromWhere(Statement statement, String idName, String table, String inWhereClause)
+	{
+		try
+		{
+			Collection<Integer> output = new Vector<Integer>();
+					
+			String cmdString = String.format("Select %s from %s where %s", idName, table, inWhereClause);
+			ResultSet resultSet = statement.executeQuery(cmdString);
+			
+			while(resultSet.next())
+			{
+				int currentId = resultSet.getInt(idName);
+				output.add(currentId);
+			}
+			resultSet.close();
+		
+			return SQLHelper.parseIds(output);
+		}
+		catch(Exception ex)
+		{
+			System.out.println(SQLHelper.getError(ex));
+			return null;
+		}
+	}
+		
 	public static int[] parseIds(Collection<Integer> inIds)
 	{
 		assert(inIds != null);

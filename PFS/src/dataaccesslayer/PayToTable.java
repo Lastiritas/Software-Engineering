@@ -25,29 +25,13 @@ public class PayToTable implements IDatabaseTable
 	@Override
 	public int[] getAllIdsWhere(String inWhereClause) 
 	{
-		assert false : "Payto Table does not support get all ids where";
-		return null;
+		return SQLHelper.getAllIdsFromWhere(statement, "payToID", "PayTo", inWhereClause);
 	}
 
 	@Override
 	public Object getById(int inId) 
 	{
-		assert IDHelper.isIdValid(inId);
-		
-		try
-		{
-			String cmdString = String.format("Select * from PayTo where payToID=%d", inId);
-			ResultSet resultSet = statement.executeQuery(cmdString);
-			PayTo payTo = convertToPayTo(resultSet);
-			resultSet.close();
-			
-			return payTo;
-		}
-		catch(Exception ex)
-		{
-			System.out.println(SQLHelper.getError(ex));
-			return null;
-		}
+		return getWhere(String.format("payToID=%d",inId));
 	}
 
 	@Override

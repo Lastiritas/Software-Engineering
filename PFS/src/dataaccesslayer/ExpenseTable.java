@@ -31,27 +31,7 @@ public class ExpenseTable implements IDatabaseTable
 	@Override
 	public int[] getAllIdsWhere(String inWhereClause) 
 	{			
-		try
-		{
-			Collection<Integer> expenseIds = new Vector<Integer>();
-					
-			String cmdString = String.format("Select expenseID from Expenses where %s", inWhereClause);
-			ResultSet resultSet = statement.executeQuery(cmdString);
-			
-			while(resultSet.next())
-			{
-				int currentId = resultSet.getInt("expenseID");
-				expenseIds.add(currentId);
-			}
-			resultSet.close();
-		
-			return SQLHelper.parseIds(expenseIds);
-		}
-		catch(Exception ex)
-		{
-			System.out.println(SQLHelper.getError(ex));
-			return null;
-		}
+		return SQLHelper.getAllIdsFromWhere(statement, "expenseID", "Expenses", inWhereClause);
 	}
 
 	@Override
