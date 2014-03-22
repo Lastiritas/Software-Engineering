@@ -5,6 +5,7 @@ import domainobjects.IDSet;
 import domainobjects.PayTo;
 import domainobjects.PaymentMethodHelper;
 import system.ExpenseManagement;
+import system.ManagementBase;
 import system.PFSystem;
 import util.Sort;
 import util.SortDirection;
@@ -36,7 +37,7 @@ public class ChartHelper
 	
 	private void retrieveLists()
 	{
-		final ExpenseManagement expenseSystem = PFSystem.getCurrent().getExpenseSystem();
+		final ManagementBase expenseSystem = PFSystem.getCurrent().getExpenseSystem();
 		numberOfExpenses = expenseIds.getSize();
 		
 		initializeArrays();

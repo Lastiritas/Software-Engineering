@@ -20,6 +20,7 @@ import domainobjects.Money;
 import domainobjects.PayTo;
 import domainobjects.SimpleDate;
 import system.ExpenseManagement;
+import system.ManagementBase;
 import system.PFSystem;
 import util.Sort;
 import util.SortDirection;
@@ -523,7 +524,7 @@ public class ViewExpense implements IWindow
 	{
 		expenseTable.removeAll();
 		
-		final ExpenseManagement expenseSystem = PFSystem.getCurrent().getExpenseSystem();
+		final ManagementBase expenseSystem = PFSystem.getCurrent().getExpenseSystem();
 		
 		final IDSet expenseIDs = expenseSystem.getAllIDs(filter, TableCols.ID, SortDirection.ASCENDING);
 
