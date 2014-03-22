@@ -19,6 +19,7 @@ public class ExpenseManagement implements IIDReader, IDataReader, IDataModifer
 		assert inDatabase != null : "Must provide non-null database";
 
 		database = inDatabase;
+		cache = new Cache(CACHE_SIZE);
 	}
 
 	public IDSet getAllIDs()
@@ -49,7 +50,15 @@ public class ExpenseManagement implements IIDReader, IDataReader, IDataModifer
 	{
 		assert IDHelper.isIdValid(inID) : "Invalid ID";
 
-		return database.getExpenseByID(inID);
+		Object value = cache.tryGet(inID);
+		
+		if(value == null)
+		{
+			value = database.getExpenseByID(inID);
+			cache.set(inID, value);
+		}
+		
+		return value;
 	}
 
 	public boolean update(int inID, Object inNewValue)
@@ -58,7 +67,9 @@ public class ExpenseManagement implements IIDReader, IDataReader, IDataModifer
 		assert inNewValue != null : "Cannot update expense with null value";
 
 		assert inNewValue instanceof Expense : "Can only use expenses in expense system";
-
+		
+		cache.set(inID, inNewValue);
+		
 		return database.updateExpense(inID, (Expense)inNewValue);
 	}
 
@@ -79,4 +90,7 @@ public class ExpenseManagement implements IIDReader, IDataReader, IDataModifer
 	}
 	
 	private IDatabase database;
+	private Cache cache;
+	
+	private static final int CACHE_SIZE = 1000;
 }
