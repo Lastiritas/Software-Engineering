@@ -1,63 +1,60 @@
 package system;
 
-import dataaccesslayer.*;
-import domainobjects.IDHelper;
-import domainobjects.IDSet;
+import dataaccesslayer.IDatabase;
 import domainobjects.PayTo;
 
-public class PayToManagement implements IIDReader, IDataReader, IDataModifer
+public class PayToManagement extends ManagementBase
 {
 	public PayToManagement(IDatabase inDatabase)
 	{
-		assert inDatabase != null : "Must provide non-null database";
+		super(inDatabase);
+	}
 
-		database = inDatabase;
-	}
-	
-	public IDSet getAllIDs()
+	@Override
+	protected int[] dbCallGetIds(IDatabase database)
 	{
-		final int[] setData = database.getAllPayToIDs();
-		assert setData != null : "Database returned null array";
-		
-		final IDSet output = IDSet.createFromArray(setData);
-		
-		return output;
+		return database.getAllPayToIDs();
 	}
 	
-	public Object getDataByID(int inId)
+	@Override
+	protected int[] dbCallGetIds(IDatabase database, String whereClause)
 	{
-		if(IDHelper.isIdValid(inId))
-		{
-			return database.getPayToByID(inId);	
-		}
-		
-		return NULL_PAYTO;
+		assert false : "Getting paytos with a where statement is not supported";
+	
+		return null;
 	}
 	
-	public int create()
+	@Override
+	protected Object dbCallGetItem(IDatabase database, int inId)
+	{
+		return database.getPayToByID(inId);
+	}
+	
+	@Override
+	protected boolean dbCallUpdateItem(IDatabase database, int inId, Object inNewValue)
+	{
+		assert inNewValue instanceof PayTo : "Can only update with PayTo objects";
+
+		return database.updatePayTo(inId, (PayTo)inNewValue);
+	}
+	
+	@Override
+	protected boolean dbCallDeleteItem(IDatabase database, int inID)
+	{
+		assert false : "Cannot delete a payto location, do not call this function";
+
+		return false;
+	}
+	
+	@Override
+	protected int dbCallAddNew(IDatabase database)
 	{
 		PayTo newPayTo = new PayTo("Somewhere New");
 
 		return database.addPayTo(newPayTo);
 	}
 	
-	public boolean update(int inId, Object inNewValue)
-	{
-		assert IDHelper.isIdValid(inId) : "Invalid ID";
-		assert inNewValue != null : "Cannot update with null value";
-		assert inNewValue instanceof PayTo : "Can only update with PayTo objects";
-
-		return database.updatePayTo(inId, (PayTo)inNewValue);
-	}
-	
-	public boolean delete(int inID)
-	{
-		assert false : "Cannot delete a payto location, do not call this function";
-
-		return false;
-	}
-
-	private IDatabase database;
-
-	private final static PayTo NULL_PAYTO = new PayTo("None"); 
+	// the id to the no one entry in the database, if the database does 
+	// not have this value something is wrong with the database
+	public static final int NO_ONE_ID = 1;	
 }

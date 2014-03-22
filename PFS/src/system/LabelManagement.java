@@ -1,57 +1,55 @@
 package system;
 
-import dataaccesslayer.*;
-import domainobjects.IDHelper;
-import domainobjects.IDSet;
+import dataaccesslayer.IDatabase;
 import domainobjects.Label;
 
-public class LabelManagement implements IIDReader, IDataReader, IDataModifer
+public class LabelManagement extends ManagementBase
 {
 	public LabelManagement(IDatabase inDatabase)
 	{
-		assert inDatabase != null : "Must provide non-null database";
+		super(inDatabase);
+	}
 
-		database = inDatabase;
+	@Override
+	protected int[] dbCallGetIds(IDatabase database)
+	{
+		return database.getAllLabelIDs();
 	}
 	
-	public IDSet getAllIDs()
+	@Override
+	protected int[] dbCallGetIds(IDatabase database, String whereClause)
 	{
-		final int[] setData = database.getAllLabelIDs();
-		assert setData != null : "Database returned null array";
+		assert false : "Getting labels with a where statement is not supported";
 
-		final IDSet output = IDSet.createFromArray(setData);
-		
-		return output;
+		return null;
 	}
 	
-	public Object getDataByID(int inId)
-	{
-		assert IDHelper.isIdValid(inId) : "Invalid ID";
-
+	@Override
+	protected Object dbCallGetItem(IDatabase database, int inId)
+	{		
 		return database.getLabelByID(inId);
 	}
 	
-	public int create()
+	@Override
+	protected boolean dbCallUpdateItem(IDatabase database, int inId, Object inNewValue)
 	{
-		Label newLabel = new Label("New Label");
-		return database.addLabel(newLabel);
-	}
-	
-	public boolean update(int inId, Object inNewValue)
-	{
-		assert IDHelper.isIdValid(inId) : "Invalid ID";
-		assert inNewValue != null : "Can not update with null value";
 		assert inNewValue instanceof Label : "Can only update with a label";
 
 		return database.updateLabel(inId, (Label)inNewValue);
 	}
-
-	public boolean delete(int inID)
+	
+	@Override
+	protected boolean dbCallDeleteItem(IDatabase database, int inID)
 	{
 		assert false : "Labels can not be deleted, do not call this!";
 
 		return false;
 	}
-		
-	private IDatabase database;
+	
+	@Override
+	protected int dbCallAddNew(IDatabase database)
+	{
+		Label newLabel = new Label("New Label");
+		return database.addLabel(newLabel);
+	}
 }

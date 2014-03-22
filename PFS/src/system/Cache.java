@@ -35,6 +35,18 @@ public class Cache
 		item.data = value;
 	}
 	
+	public void markAsBad(int id)
+	{
+		int index = idToIndex(id);
+		CacheItem item = items[index];
+		
+		if(item.id == id)
+		{
+			item.id = -1;
+			item.data = null;
+		}
+	}
+	
 	private int idToIndex(int id)
 	{
 		// simple linear hash function because a lot of what we cache will be sequential
