@@ -6,40 +6,16 @@ import java.sql.Statement;
 import domainobjects.IDHelper;
 import domainobjects.PayTo;
 
-public class PayToTable implements IDatabaseTable
+public class PayToTable extends DatabaseTable
 {
 	private Statement statement = null;
 	
 	public PayToTable(Statement inStatement)
 	{
+		super(inStatement, "payToID", "PayTo");
 		statement = inStatement;
 	}
 	
-	@Override
-	public int[] getAllIds() 
-	{
-		return SQLHelper.getAllIdsFrom(statement, "payToID", "PayTo");
-	}
-
-	@Override
-	public int[] getAllIdsWhere(String inWhereClause) 
-	{
-		return SQLHelper.getAllIdsFromWhere(statement, "payToID", "PayTo", inWhereClause);
-	}
-
-	@Override
-	public Object getById(int inId) 
-	{
-		return getWhere(String.format("payToID=%d",inId));
-	}
-
-	@Override
-	public Object getWhere(String inWhereClause) 
-	{
-		assert false : "Payto table does not support get where";
-		return null;
-	}
-
 	@Override
 	public int add(Object inNewValue) 
 	{
@@ -50,13 +26,13 @@ public class PayToTable implements IDatabaseTable
 		{
 			PayTo payTo = (PayTo)inNewValue;
 			
-			int nextId = SQLHelper.getMaxIdForTable(statement, "PAYTOID", "PAYTO");
+			int nextId = getMaxIdForTable();
 			
 			String values = String.format("%d, '%s'", nextId, payTo.getName());
 			String cmdString = String.format("Insert into PAYTO (PAYTOID, LOCATION) Values(%s)", values);
 			
 			int insertedSuccessful = statement.executeUpdate(cmdString);
-			String result = SQLHelper.checkWarning(statement, insertedSuccessful);
+			String result = DatabaseTable.checkWarning(statement, insertedSuccessful);
 			
 			assert result == null;
 			
@@ -64,7 +40,7 @@ public class PayToTable implements IDatabaseTable
 		}
 		catch(Exception ex)
 		{
-			System.out.println(SQLHelper.getError(ex));
+			System.out.println(DatabaseTable.getError(ex));
 			return IDHelper.getInvalidId();
 		}
 	}
@@ -86,7 +62,7 @@ public class PayToTable implements IDatabaseTable
 			
 			int successful = statement.executeUpdate(cmdString);
 			
-			String result = SQLHelper.checkWarning(statement, successful);
+			String result = DatabaseTable.checkWarning(statement, successful);
 			
 			assert result == null;
 			
@@ -94,7 +70,7 @@ public class PayToTable implements IDatabaseTable
 		}
 		catch(Exception ex)
 		{
-			System.out.println(SQLHelper.getError(ex));
+			System.out.println(DatabaseTable.getError(ex));
 			return false;
 		}
 	}
@@ -106,18 +82,19 @@ public class PayToTable implements IDatabaseTable
 		return false;
 	}
 
-	private PayTo convertToPayTo(ResultSet resultSet)
+	@Override
+	protected Object convertToObject(ResultSet result) 
 	{
 		try
 		{
-			resultSet.next();
-			String location = resultSet.getString("location");
+			result.next();
+			String location = result.getString("location");
 			
 			return new PayTo(location);
 		}
 		catch(Exception ex)
 		{
-			System.out.println(SQLHelper.getError(ex));
+			System.out.println(DatabaseTable.getError(ex));
 			return null;
 		}
 	}	

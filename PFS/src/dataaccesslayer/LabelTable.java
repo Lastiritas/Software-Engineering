@@ -6,40 +6,16 @@ import java.sql.Statement;
 import domainobjects.IDHelper;
 import domainobjects.Label;
 
-public class LabelTable implements IDatabaseTable
+public class LabelTable extends DatabaseTable
 {
 	private Statement statement = null;
 	
 	public LabelTable(Statement inStatement)
 	{
+		super(inStatement, "labelID", "Label");
 		statement = inStatement;
 	}
 	
-	@Override
-	public int[] getAllIds() 
-	{
-		return SQLHelper.getAllIdsFrom(statement, "labelID", "Label");
-	}
-
-	@Override
-	public int[] getAllIdsWhere(String inWhereClause) 
-	{	
-		return SQLHelper.getAllIdsFromWhere(statement, "labelID", "Label", inWhereClause);
-	}
-
-	@Override
-	public Object getById(int inId) 
-	{
-		return getWhere(String.format("labelID=%d",inId));
-	}
-
-	@Override
-	public Object getWhere(String inWhereClause) 
-	{
-		assert false : "Label table does not support get where";
-		return null;
-	}
-
 	@Override
 	public int add(Object inNewValue) 
 	{
@@ -50,13 +26,13 @@ public class LabelTable implements IDatabaseTable
 		{
 			Label label = (Label)inNewValue;
 			
-			int nextId = SQLHelper.getMaxIdForTable(statement, "labelID", "Label");
+			int nextId = getMaxIdForTable();
 			
 			String values = String.format("%d, '%s'", nextId, label.getName());
 			String cmdString = String.format("Insert into Label Values(%s)", values);
 			
 			int insertedSuccessful = statement.executeUpdate(cmdString);
-			String result = SQLHelper.checkWarning(statement, insertedSuccessful);
+			String result = DatabaseTable.checkWarning(statement, insertedSuccessful);
 			
 			assert result == null;
 			
@@ -64,7 +40,7 @@ public class LabelTable implements IDatabaseTable
 		}
 		catch(Exception ex)
 		{
-			System.out.println(SQLHelper.getError(ex));
+			System.out.println(DatabaseTable.getError(ex));
 			return IDHelper.getInvalidId();
 		}
 	}
@@ -86,7 +62,7 @@ public class LabelTable implements IDatabaseTable
 	
 			int successful = statement.executeUpdate(cmdString);
 			
-			String result = SQLHelper.checkWarning(statement, successful);
+			String result = DatabaseTable.checkWarning(statement, successful);
 			
 			assert result == null;
 			
@@ -94,7 +70,7 @@ public class LabelTable implements IDatabaseTable
 		}
 		catch(Exception ex)
 		{
-			System.out.println(SQLHelper.getError(ex));
+			System.out.println(DatabaseTable.getError(ex));
 			return false;
 		}
 	}
@@ -106,22 +82,21 @@ public class LabelTable implements IDatabaseTable
 		return false;
 	}
 	
-	private Label convertToLabel(ResultSet resultSet)
-	{
-		Label label = null;
-		String name;
-		
+	@Override
+	protected Object convertToObject(ResultSet result) 
+	{	
 		try
 		{
-			resultSet.next();
-			name = resultSet.getString("name");
-			label = new Label(name);
+			result.next();
+	
+			String name = result.getString("name");
+						
+			return new Label(name);
 		}
 		catch(Exception ex)
 		{
-			System.out.println(SQLHelper.getError(ex));
+			System.out.println(DatabaseTable.getError(ex));
+			return null;
 		}
-		
-		return label;
 	}
 }

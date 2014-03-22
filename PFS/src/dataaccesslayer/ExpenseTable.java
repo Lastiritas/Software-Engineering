@@ -12,52 +12,16 @@ import domainobjects.PaymentMethod;
 import domainobjects.PaymentMethodHelper;
 import domainobjects.SimpleDate;
 
-public class ExpenseTable implements IDatabaseTable
+public class ExpenseTable extends DatabaseTable
 {
 	private Statement statement;
 
 	public ExpenseTable(Statement inStatement)
 	{
+		super(inStatement, "expenseID", "Expenses");
 		statement = inStatement;
 	}
 	
-	@Override
-	public int[] getAllIds() 
-	{
-		return SQLHelper.getAllIdsFrom(statement, "expenseID", "Expenses");
-	}
-
-	@Override
-	public int[] getAllIdsWhere(String inWhereClause) 
-	{			
-		return SQLHelper.getAllIdsFromWhere(statement, "expenseID", "Expenses", inWhereClause);
-	}
-
-	@Override
-	public Object getById(int inId) 
-	{
-		return getWhere(String.format("expenseID=%d",inId));
-	}
-
-	@Override
-	public Object getWhere(String inWhereClause) 
-	{
-		try
-		{
-			String cmdString = String.format("Select * from Expenses where %s", inWhereClause);
-			ResultSet resultSet = statement.executeQuery(cmdString);
-			Expense expense = convertToExpense(resultSet);
-			resultSet.close();
-		
-			return expense;
-		}
-		catch(Exception ex)
-		{
-			System.out.println(SQLHelper.getError(ex));
-			return null;
-		}
-	}
-
 	@Override
 	public int add(Object inNewValue) 
 	{
@@ -67,7 +31,7 @@ public class ExpenseTable implements IDatabaseTable
 		{
 			Expense expense = (Expense)inNewValue;
 			
-			int nextId = SQLHelper.getMaxIdForTable(statement, "expenseID", "Expenses");
+			int nextId = getMaxIdForTable();
 			
 			String values = String.format("%d, %d, %d, %d, '%s', %d", 
 								nextId, 
@@ -81,7 +45,7 @@ public class ExpenseTable implements IDatabaseTable
 			
 			int insertedSuccessful = statement.executeUpdate(cmdString);
 			
-			String result = SQLHelper.checkWarning(statement, insertedSuccessful);
+			String result = DatabaseTable.checkWarning(statement, insertedSuccessful);
 			
 			assert result == null;
 			
@@ -92,7 +56,7 @@ public class ExpenseTable implements IDatabaseTable
 		}
 		catch(Exception ex)
 		{
-			System.out.println(SQLHelper.getError(ex));
+			System.out.println(DatabaseTable.getError(ex));
 			return IDHelper.getInvalidId();
 		}
 	}
@@ -118,7 +82,7 @@ public class ExpenseTable implements IDatabaseTable
 			String where = String.format("where expenseID=%d", inId);
 			String cmdString = String.format("Update Expenses Set %s %s", values, where);
 			int successful = statement.executeUpdate(cmdString);
-			String result = SQLHelper.checkWarning(statement, successful);
+			String result = DatabaseTable.checkWarning(statement, successful);
 			assert result == null;
 			
 			//Now add or update the labels to the ExpenseLabel table
@@ -128,7 +92,7 @@ public class ExpenseTable implements IDatabaseTable
 		}
 		catch(Exception ex)
 		{
-			System.out.println(SQLHelper.getError(ex));
+			System.out.println(DatabaseTable.getError(ex));
 			return false;
 		}
 	}
@@ -142,14 +106,14 @@ public class ExpenseTable implements IDatabaseTable
 		
 			String cmdString = String.format("Delete from Expenses where expenseID=%d", inId);
 			int successful = statement.executeUpdate(cmdString);
-			String result = SQLHelper.checkWarning(statement, successful);
+			String result = DatabaseTable.checkWarning(statement, successful);
 			assert result == null;
 			
 			return successful == 1;
 		}
 		catch(Exception ex)
 		{
-			System.out.println(SQLHelper.getError(ex));
+			System.out.println(DatabaseTable.getError(ex));
 			return false;
 		}
 	}
@@ -163,7 +127,7 @@ public class ExpenseTable implements IDatabaseTable
 		}
 		catch(Exception ex)
 		{
-			System.out.println(SQLHelper.getError(ex));
+			System.out.println(DatabaseTable.getError(ex));
 		}
 	}
 	
@@ -205,7 +169,7 @@ public class ExpenseTable implements IDatabaseTable
 					values = String.format("%d, %d", expenseId, expenseLabelsToInsert.getValue(currentLabel));
 					String cmdString = String.format("Insert into ExpenseLabels Values(%s)", values);
 					insertedSuccessful = statement.executeUpdate(cmdString);
-					result = SQLHelper.checkWarning(statement, insertedSuccessful);
+					result = DatabaseTable.checkWarning(statement, insertedSuccessful);
 					currentLabel++;
 					assert result == null;
 				}
@@ -217,7 +181,7 @@ public class ExpenseTable implements IDatabaseTable
 		}
 		catch (Exception ex)
 		{
-			System.out.println(SQLHelper.getError(ex));
+			System.out.println(DatabaseTable.getError(ex));
 		}
 		
 		return insertedSuccessful;//returns one if it was successful
@@ -242,13 +206,14 @@ public class ExpenseTable implements IDatabaseTable
 		}
 		catch(Exception ex)
 		{
-			System.out.println(SQLHelper.getError(ex));
+			System.out.println(DatabaseTable.getError(ex));
 		}
 		
-		return IDSet.createFromArray(SQLHelper.parseIds(labelIds));
+		return IDSet.createFromArray(DatabaseTable.parseIds(labelIds));
 	}
 	
-	private Expense convertToExpense(ResultSet resultSet)
+	@Override
+	protected Object convertToObject(ResultSet result) 
 	{
 		int expenseId;
 		SimpleDate date;
@@ -263,13 +228,13 @@ public class ExpenseTable implements IDatabaseTable
 		
 		try
 		{
-			resultSet.next();
-			expenseId = resultSet.getInt("expenseId");
-			date = SimpleDate.parseDate(resultSet.getInt("date"));
-			cents = resultSet.getInt("cents");
-			paymentMethod = PaymentMethodHelper.toPaymentMethod(resultSet.getInt("paymentMethod"));
-			description = resultSet.getString("description");
-			payTo = resultSet.getInt("payTo");
+			result.next();
+			expenseId = result.getInt("expenseId");
+			date = SimpleDate.parseDate(result.getInt("date"));
+			cents = result.getInt("cents");
+			paymentMethod = PaymentMethodHelper.toPaymentMethod(result.getInt("paymentMethod"));
+			description = result.getString("description");
+			payTo = result.getInt("payTo");
 			labels = getExpenseLabelsByExpenseID(expenseId);
 			
 			money = new Money(cents/100, cents%100);
@@ -278,7 +243,7 @@ public class ExpenseTable implements IDatabaseTable
 		}
 		catch(Exception ex)
 		{
-			System.out.println(SQLHelper.getError(ex));
+			System.out.println(DatabaseTable.getError(ex));
 		}
 		
 		return expense;

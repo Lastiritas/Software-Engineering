@@ -38,7 +38,7 @@ public class Database implements IDatabase
 		}
 		catch (Exception ex)
 		{
-			System.out.println(SQLHelper.getError(ex));
+			System.out.println(DatabaseTable.getError(ex));
 		}
 		System.out.println("Opened " +dbType +" database " +dbName);
 	}
@@ -53,7 +53,7 @@ public class Database implements IDatabase
 		}
 		catch (Exception ex)
 		{
-			System.out.println(SQLHelper.getError(ex));
+			System.out.println(DatabaseTable.getError(ex));
 		}
 		
 		System.out.println("Closed " +dbType +" database " +dbName);
