@@ -3,10 +3,13 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
 import system.PFSystem;
+import util.StringMatch;
 import domainobjects.IDSet;
 
 import org.eclipse.swt.widgets.Event;
@@ -14,11 +17,13 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 
 
 public class PaytoSelection implements IDialog
 {
 	private Shell shell;
+	private Text textSearchPayTo;
 	private Table table;
 	private int selectedID = 1;
 	private boolean madeSelection = false;
@@ -72,8 +77,11 @@ public class PaytoSelection implements IDialog
 		Composite composite = new Composite(shell, SWT.NONE);
 		composite.setBounds(0, 0, 481, 319);
 		
+		textSearchPayTo = new Text(composite, SWT.BORDER);
+		textSearchPayTo.setBounds(10, 10, 461, 21);
+		
 		table = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
-		table.setBounds(10, 10, 461, 258);
+		table.setBounds(10, 37, 461, 231);
 		table.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -99,8 +107,6 @@ public class PaytoSelection implements IDialog
 		TableColumn tblclmnName = new TableColumn(table, SWT.NONE);
 		tblclmnName.setWidth(100);
 		tblclmnName.setText("Name");
-		
-		populateList(table);
 		
 		Button cancelButton = new Button(composite, SWT.NONE);
 		cancelButton.setBounds(10, 274, 63, 35);
@@ -138,16 +144,49 @@ public class PaytoSelection implements IDialog
 			{
 				IWindow window = new PayToCreation();
 				window.open();
-				populateList(table);
+				refreshList();
 			}
 		});
 		addButton.setText("+");
+		
+		textSearchPayTo.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent arg0) {
+				refreshList();
+				
+				final String text = textSearchPayTo.getText();
+				if(text.length() > 0)
+				{
+					filterTable(table, text);
+				}
+			}
+		});
+		
+		refreshList();
 	}
 	
-	private void populateList(Table table)
+	private static void filterTable(Table inTable, String inFilterText)
+	{					
+		assert(inTable != null);
+		assert(inFilterText != null);
+		assert(inFilterText.length() > 0);
+		
+		final int originalTableSize = inTable.getItemCount();
+			
+		for(int i = originalTableSize - 1; i >= 0; i--)
+		{
+			final String payTo = inTable.getItem(i).getText(1);
+					
+			if(!StringMatch.match(payTo, inFilterText))
+			{
+				inTable.remove(i);	
+			}
+		}
+	}
+	
+	private void refreshList()
 	{
 		final IDSet payToIDs = PFSystem.getCurrent().getPayToSystem().getAllIDs();
-				
+		
 		table.removeAll();
 		
 		GUIHelper.addPayTosToTable(table, payToIDs);
