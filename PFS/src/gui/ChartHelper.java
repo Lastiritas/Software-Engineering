@@ -1,7 +1,10 @@
 package gui;
 
+import java.util.Vector;
+
 import domainobjects.Expense;
 import domainobjects.IDSet;
+import domainobjects.Label;
 import domainobjects.PayTo;
 import domainobjects.PaymentMethodHelper;
 import system.Manager;
@@ -25,6 +28,14 @@ public class ChartHelper
 	private int[] sortedPaymentMethod;
 	private int[] sortedDates;
 	private String[] sortedPayTos;
+	
+	private Vector<Integer> labelRecord;
+	private Vector<Integer> amountRecord;
+	private int vectorSize;
+	
+	private int[] sortedLabelIds;
+	private int[] sortedLabelAmounts;
+	private int[] labelIds;
 	
 	public ChartHelper(IDSet ids)
 	{
@@ -50,9 +61,12 @@ public class ChartHelper
 			originalPaymentMethod[i] = PaymentMethodHelper.toInteger(expense.getPaymentMethod());
 			originalDates[i] = expense.getDate().toInteger()/100;
 			originalPayTos[i] = getPayToName(expense.getPayTo());
+			
+			retrieveLabels(expense);
 		}
 		
 		sortArrays();
+		extractLabelLists();
 	}
 	
 	private String getPayToName(int payToId)
@@ -68,6 +82,10 @@ public class ChartHelper
 		originalPaymentMethod = new int[numberOfExpenses];
 		originalDates = new int[numberOfExpenses];
 		originalPayTos = new String[numberOfExpenses];
+		
+		labelRecord = new Vector<Integer>();
+		amountRecord = new Vector<Integer>();
+		vectorSize = 0;
 	}
 	
 	private void sortArrays()
@@ -161,6 +179,8 @@ public class ChartHelper
 		{
 			case LOCATION:
 				return getDistinctStringArray(sortedPayTos);
+			case LABELS:
+				return getLabelNames();
 			default:
 				return null;
 		}
@@ -185,11 +205,16 @@ public class ChartHelper
 		{
 			case LOCATION:
 				return getYAxisStringValues(xAxisValues, originalPayTos, sortedPayTos);
+			case LABELS:
+				return getYAxisInt(labelIds, sortedLabelIds, sortedLabelAmounts, vectorSize);
 			default:
 				return null;
 		}
 	}
 	
+	//xAxisValues - labelIds {1,2,3,4,5,6,7,8,9...}
+		//sortedInput - sortedLabelIds {1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,...}
+		//sortedAmountsByFilter - sortedLabelAmounts
 	private double[] getYAxisStringValues(String[] xAxisValues, String[] originalInput, String[] sortedInput)
 	{
 		int[] sortedAmountsByFilter = new int[numberOfExpenses];
@@ -218,10 +243,16 @@ public class ChartHelper
 		int[] sortedAmountsByFilter = new int[numberOfExpenses];
 		System.arraycopy(originalExpenseAmounts, 0, sortedAmountsByFilter, 0, numberOfExpenses);
 		sortedAmountsByFilter = Sort.sortByIntArrays(sortedAmountsByFilter, originalInput, SortDirection.ASCENDING);
+		
+		return getYAxisInt(xAxisValues, sortedInput, sortedAmountsByFilter, numberOfExpenses);
+	}
+	
+	private double[] getYAxisInt(int[] xAxisValues, int[] sortedInput, int[] sortedAmountsByFilter, int size)
+	{
 		double[] amountYAxis = new double[xAxisValues.length];
 		
 		int currentXAxisValue = 0;
-		for(int i=0; i<numberOfExpenses; i++)
+		for(int i=0; i<size; i++)
 		{
 			while(xAxisValues[currentXAxisValue] != sortedInput[i])
 			{
@@ -234,7 +265,7 @@ public class ChartHelper
 		}
 		
 		return amountYAxis;
-	}
+	}	
 	
 	public String[] createCategoriesForDates(int[] xAxisValues)
 	{
@@ -259,6 +290,54 @@ public class ChartHelper
 			newArray[i] = Integer.toString(array[i]);
 		}
 		return newArray;
+	}
+	
+	private void retrieveLabels(Expense expense)
+	{
+		int amount = expense.getAmount().getTotalCents();
+		IDSet labelIds = expense.getLabels();
+		int numberOfLabels = labelIds.getSize();
+		
+		for(int i=0; i<numberOfLabels; i++)
+		{
+			labelRecord.add(labelIds.getValue(i));
+			amountRecord.add(amount);
+			vectorSize++;
+		}
+	}
+	
+	private void extractLabelLists()
+	{
+		sortedLabelIds = new int[vectorSize];
+		sortedLabelAmounts = new int[vectorSize];
+		
+		for(int i=0; i<vectorSize; i++)
+		{
+			sortedLabelIds[i] = labelRecord.elementAt(i);
+			sortedLabelAmounts[i] = amountRecord.elementAt(i);
+		}
+		
+		sortedLabelAmounts = Sort.sortByIntArrays(sortedLabelAmounts, sortedLabelIds, SortDirection.ASCENDING);
+	}
+	
+	private String[] getLabelNames()
+	{
+		final Manager labelMgmt = PFSystem.getCurrent().getLabelSystem();
+		final IDSet labelIdSet = labelMgmt.getAllIDs();
+		
+		int size = labelIdSet.getSize();
+		String[] labelNames = new String[size];
+		labelIds = new int[size];
+		
+		for(int i=0; i<size; i++)
+		{
+			int id = labelIdSet.getValue(i);
+			labelIds[i] = id;
+			Label label = (Label)labelMgmt.getDataByID(id);
+			labelNames[i] = label.getName();
+		}
+		
+		return labelNames;
 	}
 	
 	public enum MonthAbbreviation

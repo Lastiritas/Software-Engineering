@@ -37,7 +37,7 @@ public class ExpenseTrends
 	private Font fontAxis;
 	private Font fontAxisValues;
 	private Font fontForLocations;
-	
+	private Font fontForLabels;
 	
 	public void setExpenseIDs(IDSet ids)
 	{
@@ -87,6 +87,7 @@ public class ExpenseTrends
 		fontAxis = new Font(Display.getDefault(), "Times New Romans", 10, SWT.BOLD);
 		fontAxisValues = new Font(Display.getDefault(), "Times New Romans", 8, SWT.NORMAL);
 		fontForLocations = new Font(Display.getDefault(), "Times New Romans", 6, SWT.NORMAL);
+		fontForLabels = new Font(Display.getDefault(), "Times New Romans", 8, SWT.NORMAL);
 		
 		createTabs(tabFolder);
 	}
@@ -123,15 +124,15 @@ public class ExpenseTrends
 		
 		tbtmChartThree.setControl(composite3);
 		
-		//Location Branch tab
-		/*TabItem tbtmChartFour = new TabItem(tabFolder, SWT.NONE);
-		tbtmChartFour.setText("Expenses by Location/Branch");
+		//Labels tab
+		TabItem tbtmChartFour = new TabItem(tabFolder, SWT.NONE);
+		tbtmChartFour.setText("Expenses by Labels");
 		
 		Composite composite4 = new Composite(tabFolder, SWT.NONE);
 		composite4.setLayout(new FillLayout());
-		chartByLocation(composite4, XAxis.LOCATION_BRANCH);
+		chartByLabels(composite4);
 		
-		tbtmChartFour.setControl(composite4);*/
+		tbtmChartFour.setControl(composite4);
 	}
 	
 	public void chartByPaymentMethod(Composite parent)
@@ -249,7 +250,55 @@ public class ExpenseTrends
 		seriesLabel.setFont(font2);
 		seriesLabel.setVisible(true);
 		
+		//This line will create an exception if a payTo has no associated amount ($0)
 		yAxis.enableLogScale(true);
+		
+		//Set Categories
+		xAxis.setCategorySeries(xAxisValues);
+		xAxis.enableCategory(true);
+		
+		//Set legend
+		ILegend legend = chart.getLegend();
+		legend.setVisible(false);
+		
+		//Set the orientation of chart
+		chart.setOrientation(SWT.VERTICAL);
+		
+		//Adjust the axis range
+		chart.getAxisSet().adjustRange();
+	}
+	
+	public void chartByLabels(Composite parent)
+	{
+		Chart chart = setChartProperties(parent);
+		IAxis xAxis = chart.getAxisSet().getXAxis(0);
+		IAxis yAxis = chart.getAxisSet().getYAxis(0);
+		IAxisTick xTick = xAxis.getTick();
+		
+		//Set titles
+		chart.getTitle().setText("Expense Trends by Labels");
+		xAxis.getTitle().setText("Labels");
+		yAxis.getTitle().setText("Amount");
+		
+		//Override the font for labels
+		xTick.setFont(fontForLabels);
+		
+		String[] xAxisValues= chartHelper.getXAxisStringValues(XAxis.LABELS);
+		double[] ySeries = chartHelper.getYAxisStringValues(xAxisValues, XAxis.LABELS);
+		
+		//Create bar series
+		IBarSeries barSeries = (IBarSeries) chart.getSeriesSet().createSeries(SeriesType.BAR,  "bar series");
+		barSeries.setYSeries(ySeries);
+		
+		//Set color
+		barSeries.setBarColor(colorBars);
+		
+		//Set labels
+		ISeriesLabel seriesLabel = barSeries.getLabel();
+		seriesLabel.setFormat("$#,###,###.##");
+		Font font2 = new Font(Display.getDefault(), "Times New Romans", 8, SWT.NORMAL);
+		seriesLabel.setFont(font2);
+		seriesLabel.setVisible(true);
 		
 		//Set Categories
 		xAxis.setCategorySeries(xAxisValues);
