@@ -137,7 +137,11 @@ public class ViewExpense implements IWindow
 		graphButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				PerDayWindow window = new PerDayWindow();
+				//PerDayWindow window = new PerDayWindow();
+				final IDSet expenseIDs = GUIHelper.getIdsFromTable(expenseTable);
+				
+				ExpenseTrends window = new ExpenseTrends();
+				window.setExpenseIDs(expenseIDs);
 				window.open();
 			}
 		});

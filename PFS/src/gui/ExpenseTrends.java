@@ -119,19 +119,19 @@ public class ExpenseTrends
 		
 		Composite composite3 = new Composite(tabFolder, SWT.NONE);
 		composite3.setLayout(new FillLayout());
-		chartByLocation(composite3, XAxis.LOCATION);
+		chartByLocation(composite3);
 		
 		tbtmChartThree.setControl(composite3);
 		
 		//Location Branch tab
-		TabItem tbtmChartFour = new TabItem(tabFolder, SWT.NONE);
+		/*TabItem tbtmChartFour = new TabItem(tabFolder, SWT.NONE);
 		tbtmChartFour.setText("Expenses by Location/Branch");
 		
 		Composite composite4 = new Composite(tabFolder, SWT.NONE);
 		composite4.setLayout(new FillLayout());
 		chartByLocation(composite4, XAxis.LOCATION_BRANCH);
 		
-		tbtmChartFour.setControl(composite4);
+		tbtmChartFour.setControl(composite4);*/
 	}
 	
 	public void chartByPaymentMethod(Composite parent)
@@ -217,7 +217,7 @@ public class ExpenseTrends
 		chart.getAxisSet().adjustRange();
 	}
 	
-	public void chartByLocation(Composite parent, XAxis axisType)
+	public void chartByLocation(Composite parent)
 	{
 		Chart chart = setChartProperties(parent);
 		IAxis xAxis = chart.getAxisSet().getXAxis(0);
@@ -232,19 +232,9 @@ public class ExpenseTrends
 		//Override the font for locations
 		xTick.setFont(fontForLocations);
 		
-		String[] xAxisValues;
-		double[] ySeries;
+		String[] xAxisValues= chartHelper.getXAxisStringValues(XAxis.LOCATION);
+		double[] ySeries = chartHelper.getYAxisStringValues(xAxisValues, XAxis.LOCATION);
 		
-		if(axisType == XAxis.LOCATION)
-		{
-			xAxisValues= chartHelper.getXAxisStringValues(XAxis.LOCATION);
-			ySeries = chartHelper.getYAxisStringValues(xAxisValues, XAxis.LOCATION);
-		}
-		else
-		{
-			xAxisValues= chartHelper.getXAxisStringValues(XAxis.LOCATION_BRANCH);
-			ySeries = chartHelper.getYAxisStringValues(xAxisValues, XAxis.LOCATION_BRANCH);
-		}
 		//Create bar series
 		IBarSeries barSeries = (IBarSeries) chart.getSeriesSet().createSeries(SeriesType.BAR,  "bar series");
 		barSeries.setYSeries(ySeries);

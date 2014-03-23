@@ -19,13 +19,11 @@ public class ChartHelper
 	private int[] originalExpenseAmounts;
 	private int[] originalPaymentMethod;
 	private int[] originalDates;
-	private String[] originalPayTosWithBranch;
 	private String[] originalPayTos;
 	
 	private int[] sortedExpenseAmounts;
 	private int[] sortedPaymentMethod;
 	private int[] sortedDates;
-	private String[] sortedPayTosWithBranch;
 	private String[] sortedPayTos;
 	
 	public ChartHelper(IDSet ids)
@@ -51,20 +49,13 @@ public class ChartHelper
 			originalExpenseAmounts[i] = expense.getAmount().getTotalCents();
 			originalPaymentMethod[i] = PaymentMethodHelper.toInteger(expense.getPaymentMethod());
 			originalDates[i] = expense.getDate().toInteger()/100;
-			originalPayTosWithBranch[i] = getPayToLocationBranch(expense.getPayTo());
-			originalPayTos[i] = getPayToLocation(expense.getPayTo());
+			originalPayTos[i] = getPayToName(expense.getPayTo());
 		}
 		
 		sortArrays();
 	}
 	
-	private String getPayToLocationBranch(int payToId)
-	{
-		final PayTo payTo = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(payToId);
-		return payTo.toString();
-	}
-	
-	private String getPayToLocation(int payToId)
+	private String getPayToName(int payToId)
 	{
 		final PayTo payTo = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(payToId);
 		return payTo.getName();
@@ -76,7 +67,6 @@ public class ChartHelper
 		originalExpenseAmounts = new int[numberOfExpenses];
 		originalPaymentMethod = new int[numberOfExpenses];
 		originalDates = new int[numberOfExpenses];
-		originalPayTosWithBranch = new String[numberOfExpenses];
 		originalPayTos = new String[numberOfExpenses];
 	}
 	
@@ -85,19 +75,16 @@ public class ChartHelper
 		sortedExpenseAmounts = new int[numberOfExpenses];
 		sortedPaymentMethod = new int[numberOfExpenses];
 		sortedDates = new int[numberOfExpenses];
-		sortedPayTosWithBranch = new String[numberOfExpenses];
 		sortedPayTos = new String[numberOfExpenses];
 		
 		System.arraycopy(originalExpenseAmounts, 0, sortedExpenseAmounts, 0, numberOfExpenses);
 		System.arraycopy(originalPaymentMethod, 0, sortedPaymentMethod, 0, numberOfExpenses);
 		System.arraycopy(originalDates, 0, sortedDates, 0, numberOfExpenses);
-		System.arraycopy(originalPayTosWithBranch, 0, sortedPayTosWithBranch, 0, numberOfExpenses);
 		System.arraycopy(originalPayTos, 0, sortedPayTos, 0, numberOfExpenses);
 		
 		sortedExpenseAmounts = Sort.sortByID(sortedExpenseAmounts, SortDirection.ASCENDING);
 		sortedPaymentMethod = Sort.sortByID(sortedPaymentMethod, SortDirection.ASCENDING);
 		sortedDates = Sort.sortByID(sortedDates, SortDirection.ASCENDING);
-		sortedPayTosWithBranch = Sort.sortByString(sortedPayTosWithBranch, SortDirection.ASCENDING);
 		sortedPayTos = Sort.sortByString(sortedPayTos, SortDirection.ASCENDING);
 	}
 	
@@ -172,8 +159,6 @@ public class ChartHelper
 	{
 		switch(axis)
 		{
-			case LOCATION_BRANCH:
-				return getDistinctStringArray(sortedPayTosWithBranch);
 			case LOCATION:
 				return getDistinctStringArray(sortedPayTos);
 			default:
@@ -198,8 +183,6 @@ public class ChartHelper
 	{
 		switch(axis)
 		{
-			case LOCATION_BRANCH:
-				return getYAxisStringValues(xAxisValues, originalPayTosWithBranch, sortedPayTosWithBranch);
 			case LOCATION:
 				return getYAxisStringValues(xAxisValues, originalPayTos, sortedPayTos);
 			default:
@@ -209,7 +192,9 @@ public class ChartHelper
 	
 	private double[] getYAxisStringValues(String[] xAxisValues, String[] originalInput, String[] sortedInput)
 	{
-		int[] sortedAmountsByFilter = Sort.sortByString(sortedExpenseAmounts, originalInput, SortDirection.ASCENDING);
+		int[] sortedAmountsByFilter = new int[numberOfExpenses];
+		System.arraycopy(originalExpenseAmounts, 0, sortedAmountsByFilter, 0, numberOfExpenses);
+		sortedAmountsByFilter = Sort.sortByString(sortedAmountsByFilter, originalInput, SortDirection.ASCENDING);
 		double[] amountYAxis = new double[xAxisValues.length];
 		
 		int currentXAxisValue = 0;
@@ -230,7 +215,9 @@ public class ChartHelper
 	
 	private double[] getYAxisIntValues(int[] xAxisValues, int[] originalInput, int[] sortedInput)
 	{
-		int[] sortedAmountsByFilter = Sort.sortByIntArrays(originalExpenseAmounts, originalInput, SortDirection.ASCENDING);
+		int[] sortedAmountsByFilter = new int[numberOfExpenses];
+		System.arraycopy(originalExpenseAmounts, 0, sortedAmountsByFilter, 0, numberOfExpenses);
+		sortedAmountsByFilter = Sort.sortByIntArrays(sortedAmountsByFilter, originalInput, SortDirection.ASCENDING);
 		double[] amountYAxis = new double[xAxisValues.length];
 		
 		int currentXAxisValue = 0;
