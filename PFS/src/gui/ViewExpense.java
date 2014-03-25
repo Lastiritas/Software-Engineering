@@ -19,7 +19,6 @@ import domainobjects.IDSet;
 import domainobjects.Money;
 import domainobjects.PayTo;
 import domainobjects.SimpleDate;
-import system.ExpenseManagement;
 import system.Manager;
 import system.PFSystem;
 import util.Sort;

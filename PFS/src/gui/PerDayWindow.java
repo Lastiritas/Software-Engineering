@@ -1,5 +1,7 @@
 package gui;
 
+import java.util.Collection;
+
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.SWT;
@@ -184,30 +186,53 @@ public class PerDayWindow implements IDialog
 			dataSource = system.getLabelSystem();
 		}
 		
+		int requiredRows = 0;
+		
 		// generate all the needed rows
-		for(int i = 0; i < collections.length; i++)
+		for(GroupedCollection collection : collections)
 		{
-			while(table.getItemCount() < collections[i].getAllItems().getSize())
+			Collection<IDSet> sets = collection.getAll();
+			
+			int myRequirement = 0;
+			
+			for(IDSet set : sets)
 			{
-				new TableItem(table, SWT.NONE);
+				myRequirement += set.getSize();
 			}
+			
+			requiredRows = Math.max(myRequirement, requiredRows);
 		}
 				
+		while(table.getItemCount() < requiredRows)
+		{
+			new TableItem(table, SWT.NONE);
+		}
+		
+		while(table.getItemCount() > requiredRows)
+		{
+			table.remove(0);
+		}
+		
 		// fill in the table (all the needed items should have already been created)
 		for(int collectionIndex = 0; collectionIndex < collections.length; collectionIndex++)
 		{			
-			IDSet set = collections[collectionIndex].getAllItems();
+			Collection<IDSet> sets = collections[collectionIndex].getAll();
 			
-			for(int itemIndex = 0; itemIndex < set.getSize(); itemIndex++)
-			{	
-				int id = set.getValue(itemIndex);
-				INamed item = (INamed)dataSource.getDataByID(id);
+			assert sets.size() == 1;
+			
+			for(IDSet set : sets)
+			{
+				for(int itemIndex = 0; itemIndex < set.getSize(); itemIndex++)
+				{
+					int id = set.getValue(itemIndex);
+					INamed item = (INamed)dataSource.getDataByID(id);
 				
-				assert(item != null);
-
-				// the collection index maps to the column index
-				table.getItem(itemIndex).setText(collectionIndex, item.getName());
-			}			
+					assert(item != null);
+				
+					// the collection index maps to the column index
+					table.getItem(itemIndex).setText(collectionIndex, item.getName());				
+				}
+			}
 		}
 	}
 }

@@ -1,16 +1,12 @@
 package system;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 
 import system.datamining.DataMiner;
-import util.SortDirection;
-import util.TableCols;
 import dataaccesslayer.Database;
 import dataaccesslayer.IDatabase;
 import domainobjects.Expense;
-import domainobjects.ExpenseFilter;
 import domainobjects.IDSet;
 import domainobjects.SimpleDate;
 
@@ -45,64 +41,92 @@ public class PFSystem
 		return expenseSystem;
 	}
 	
-	public GroupedCollection[] getFrequentLabelsForDayOfWeek(double inFrequencyPercent)
+	private GroupedCollection[] groupLabels()
 	{
-		IDSet expenseIds = expenseSystem.getAllIDs();
-		Collection<IDSet> sets = new ArrayList<IDSet>();
+		GroupedCollection[] days = createGroupsForDaysOfWeek();
 		
+		IDSet expenseIds = expenseSystem.getAllIDs();
+	
 		for(int i = 0; i < expenseIds.getSize(); i++)
 		{
 			int expenseId = expenseIds.getValue(i);
 			Expense expense = (Expense)expenseSystem.getDataByID(expenseId);
 			
-			IDSet labels = expense.getLabels();
-			IDSet daySet = getSetFromDay(expense.getDate().getDayOfWeek());
+			int dayOfWeek = expense.getDate().getDayOfWeek();
 			
-			sets.add(labels.union(daySet));
+			days[dayOfWeek].include(expense.getLabels());
 		}
 		
-		int minSup = calculateMinSupForSet(sets, inFrequencyPercent);
-		Collection<IDSet> minedResults = DataMiner.mine(sets, minSup);
+		return days;
+	}
+	
+	private GroupedCollection[] groupPayTos()
+	{
+		GroupedCollection[] days = createGroupsForDaysOfWeek();
 		
-		return groupResults(minedResults);
+		IDSet expenseIds = expenseSystem.getAllIDs();
+	
+		for(int i = 0; i < expenseIds.getSize(); i++)
+		{
+			int expenseId = expenseIds.getValue(i);
+			Expense expense = (Expense)expenseSystem.getDataByID(expenseId);
+			
+			int dayOfWeek = expense.getDate().getDayOfWeek();
+			
+			days[dayOfWeek].include(IDSet.createFromValue(expense.getPayTo()));
+		}
+		
+		return days;
+	}
+	
+	public GroupedCollection[] getFrequentLabelsForDayOfWeek(double inFrequencyPercent)
+	{
+		GroupedCollection[] groups = groupLabels();
+		GroupedCollection[] output = createGroupsForDaysOfWeek();
+		
+		for(int i = 0; i < groups.length; i++)
+		{
+			IDSet sets = IDSet.empty();
+			
+			Collection<IDSet> source = groups[i].getAll();
+			
+			int minSup = calculateMinSupForSet(source, inFrequencyPercent);
+			Collection<IDSet> minedResults = DataMiner.mine(source, minSup);
+			
+			for(IDSet set : minedResults)
+			{
+				sets = sets.union(set);
+			}
+			
+			output[i].include(sets);
+		}
+		
+		return output;
 	}
 	
 	public GroupedCollection[] getFrequentPlacesForDayOfWeek(double inFrequencyPercent)
 	{
-		final IDSet expenseIds = expenseSystem.getAllIDs(new ExpenseFilter(), TableCols.DATE, SortDirection.ASCENDING);
+		GroupedCollection[] groups = groupPayTos();
+		GroupedCollection[] output = createGroupsForDaysOfWeek();
 		
-		Collection<IDSet> sets = new ArrayList<IDSet>();
-		
-		SimpleDate currentDate = ((Expense)expenseSystem.getDataByID(expenseIds.getValue(0))).getDate();
-		IDSet current = IDSet.empty();
-		
-		for(int i = 0; i < expenseIds.getSize(); i++)
+		for(int i = 0; i < groups.length; i++)
 		{
-			int expenseId = expenseIds.getValue(i);
-			Expense expense = (Expense)expenseSystem.getDataByID(expenseId);
+			IDSet sets = IDSet.empty();
 			
-			IDSet payToSet = IDSet.createFromValue(expense.getPayTo());
+			Collection<IDSet> source = groups[i].getAll();
 			
-			if(currentDate.compareTo(expense.getDate()) == 0)
-			{			
-				current = current.union(payToSet);
-			}
-			else
+			int minSup = calculateMinSupForSet(source, inFrequencyPercent);
+			Collection<IDSet> minedResults = DataMiner.mine(source, minSup);
+			
+			for(IDSet set : minedResults)
 			{
-				IDSet daySet = getSetFromDay(expense.getDate().getDayOfWeek());
-				current = current.union(daySet);
-				sets.add(current);
-				
-				current = payToSet;
-				currentDate = expense.getDate();
+				sets = sets.union(set);
 			}
+			
+			output[i].include(sets);
 		}
 		
-		int minSup = calculateMinSupForSet(sets, inFrequencyPercent);
-		
-		Collection<IDSet> minedResults = DataMiner.mine(sets, minSup);
-		
-		return groupResults(minedResults);
+		return output;
 	}
 	
 	public Collection<IDSet> getAllFrequentLabelCombinations(double inFrequencyPercent)
@@ -154,45 +178,6 @@ public class PFSystem
 		groups[SimpleDate.THURSDAY] 	= new GroupedCollection("Thursday");
 		groups[SimpleDate.FRIDAY] 		= new GroupedCollection("Friday");
 		groups[SimpleDate.SATURDAY] 	= new GroupedCollection("Saturday");
-		
-		return groups;
-	}
-	
-	private static IDSet getSetFromDay(int inDay)
-	{
-		assert inDay >= SimpleDate.SUNDAY && inDay <= SimpleDate.SATURDAY;
-		
-		return IDSet.createFromValue(-(inDay + 1));
-	}
-	
-	private static int getDayFromSet(IDSet inSet)
-	{
-		assert inSet.getSize() == 1;
-		assert inSet.getValue(0) < 0;
-		
-		int unnormalizedDay = inSet.getValue(0);	// first value will be day because it is negative and the set is sorted smallest to largest			
-	
-		return Math.abs(unnormalizedDay) - 1;	// undo the one offset done earlier
-	}
-	
-	private static GroupedCollection[] groupResults(Collection<IDSet> results)
-	{
-		GroupedCollection[] groups = createGroupsForDaysOfWeek();
-		
-		for(IDSet set : results)
-		{	
-			int firstValue = set.getValue(0);	// first value will be day because it is negative and the set is sorted smallest to largest			
-			
-			if(set.getSize() > 1 && firstValue < 0)	// must have size greater than one to avoid returning just the day
-			{
-				IDSet daySet = IDSet.createFromValue(set.getValue(0));
-				IDSet paytos = set.difference(daySet);
-				
-				int day = getDayFromSet(daySet);
-				
-				groups[day].expandToInclude(paytos);
-			}
-		}
 		
 		return groups;
 	}

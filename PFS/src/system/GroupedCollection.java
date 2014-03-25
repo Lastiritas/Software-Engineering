@@ -1,5 +1,8 @@
 package system;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import domainobjects.IDSet;
 
 public class GroupedCollection
@@ -7,6 +10,7 @@ public class GroupedCollection
 	public GroupedCollection(String inName)
 	{
 		name = inName;
+		sets = new ArrayList<IDSet>();
 	}
 	
 	public String getName()
@@ -14,16 +18,21 @@ public class GroupedCollection
 		return name;
 	}
 	
-	public void expandToInclude(IDSet inSet)
+	public void include(IDSet inSet)
 	{
-		items = items.union(inSet);
+		sets.add(inSet);
 	}
 	
-	public IDSet getAllItems()
+	public void include(Collection<IDSet> inSets)
 	{
-		return items;
+		sets.addAll(inSets);
+	}
+	
+	public Collection<IDSet> getAll()
+	{
+		return sets;
 	}
 	
 	private String name;
-	private IDSet items = IDSet.empty();
+	private Collection<IDSet> sets;
 }
