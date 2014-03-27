@@ -6,6 +6,8 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.*;
 import org.eclipse.swt.events.*;
 
+import acceptanceTests.EventLoop;
+import acceptanceTests.Register;
 import system.Manager;
 import system.PFSystem;
 import util.StringMatch;
@@ -37,6 +39,11 @@ public class LabelSelection implements IDialog
 		}
 	}
 	
+	public LabelSelection()
+	{
+		Register.newWindow(this);
+	}
+	
 	/**
 	 * @wbp.parser.entryPoint
 	 */
@@ -48,11 +55,14 @@ public class LabelSelection implements IDialog
 		shell.open();
 		shell.layout();
 		
-		while (!shell.isDisposed()) 
+		if(EventLoop.isEnabled())
 		{
-			if (!display.readAndDispatch()) 
+			while (!shell.isDisposed()) 
 			{
-				display.sleep();
+				if (!display.readAndDispatch()) 
+				{
+					display.sleep();
+				}
 			}
 		}
 		

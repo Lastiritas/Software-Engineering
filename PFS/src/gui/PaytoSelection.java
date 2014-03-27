@@ -19,6 +19,9 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
+import acceptanceTests.EventLoop;
+import acceptanceTests.Register;
+
 
 public class PaytoSelection implements IDialog
 {
@@ -27,6 +30,11 @@ public class PaytoSelection implements IDialog
 	private Table table;
 	private int selectedID = 1;
 	private boolean madeSelection = false;
+	
+	public PaytoSelection()
+	{
+		Register.newWindow(this);
+	}
 	
 	/**
 	 * Open the window.
@@ -40,11 +48,14 @@ public class PaytoSelection implements IDialog
 		shell.open();
 		shell.layout();
 		
-		while (!shell.isDisposed()) 
+		if(EventLoop.isEnabled())
 		{
-			if (!display.readAndDispatch()) 
+			while (!shell.isDisposed()) 
 			{
-				display.sleep();
+				if (!display.readAndDispatch()) 
+				{
+					display.sleep();
+				}
 			}
 		}
 		

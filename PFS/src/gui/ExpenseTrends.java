@@ -22,6 +22,9 @@ import org.swtchart.ISeriesLabel;
 import domainobjects.IDSet;
 import util.XAxis;
 
+import acceptanceTests.Register;
+import acceptanceTests.EventLoop;
+
 public class ExpenseTrends 
 {
 	private IDSet expenseIDs;
@@ -44,6 +47,10 @@ public class ExpenseTrends
 		expenseIDs = ids;
 	}
 	
+	public ExpenseTrends()
+	{
+		Register.newWindow(this);
+	}
 	/**
 	 * Open the window.
 	 * @wbp.parser.entryPoint
@@ -58,11 +65,14 @@ public class ExpenseTrends
 		shell.open();
 		shell.layout();
 		
-		while (!shell.isDisposed()) 
+		if(EventLoop.isEnabled())
 		{
-			if (!display.readAndDispatch()) 
+			while (!shell.isDisposed()) 
 			{
-				display.sleep();
+				if (!display.readAndDispatch()) 
+				{
+					display.sleep();
+				}
 			}
 		}
 	}

@@ -26,6 +26,9 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
+import acceptanceTests.EventLoop;
+import acceptanceTests.Register;
+
 public class PerDayWindow implements IDialog 
 {
 	private Shell shlDayView;
@@ -46,6 +49,11 @@ public class PerDayWindow implements IDialog
 	private Button lablesPerDayRadio;
 	private Button locationsPerDayRadio;
 	
+	public PerDayWindow()
+	{
+		Register.newWindow(this);
+	}
+	
 	/**
 	 * Open the window.
 	 */
@@ -57,11 +65,14 @@ public class PerDayWindow implements IDialog
 		shlDayView.open();
 		shlDayView.layout();
 		
-		while (!shlDayView.isDisposed()) 
+		if(EventLoop.isEnabled())
 		{
-			if (!display.readAndDispatch()) 
+			while (!shlDayView.isDisposed()) 
 			{
-				display.sleep();
+				if (!display.readAndDispatch()) 
+				{
+					display.sleep();
+				}
 			}
 		}
 		

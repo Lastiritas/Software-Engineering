@@ -14,7 +14,11 @@ import domainobjects.IDSet;
 import domainobjects.PayTo;
 import system.PFSystem;
 import util.StringMatch;
+
 import org.eclipse.swt.widgets.Composite;
+
+import acceptanceTests.EventLoop;
+import acceptanceTests.Register;
 
 public class PayToCreation implements IWindow 
 {
@@ -25,6 +29,11 @@ public class PayToCreation implements IWindow
 	private String allName[];
 	private Composite composite;
 
+	public PayToCreation()
+	{
+		Register.newWindow(this);
+	}
+	
 	/**
 	 * Open the window.
 	 * @wbp.parser.entryPoint
@@ -37,11 +46,14 @@ public class PayToCreation implements IWindow
 		shell.open();
 		shell.layout();
 		
-		while (!shell.isDisposed()) 
+		if(EventLoop.isEnabled())
 		{
-			if (!display.readAndDispatch()) 
+			while (!shell.isDisposed()) 
 			{
-				display.sleep();
+				if (!display.readAndDispatch()) 
+				{
+					display.sleep();
+				}
 			}
 		}
 	}

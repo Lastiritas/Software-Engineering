@@ -10,6 +10,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.DateTime;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.Composite;
 
 import domainobjects.Expense;
 import domainobjects.IDHelper;
@@ -20,9 +23,9 @@ import domainobjects.PaymentMethod;
 import domainobjects.SimpleDate;
 import system.PFSystem;
 
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.Composite;
+import acceptanceTests.Register;
+import acceptanceTests.EventLoop;
+
 
 public class EditExpense implements IWindow
 {
@@ -43,6 +46,11 @@ public class EditExpense implements IWindow
 	private Table labelTable;
 	private Composite composite;
 
+	public EditExpense()
+	{
+		Register.newWindow(this);
+	}
+	
 	/**
 	 * Open the window.
 	 */
@@ -52,9 +60,15 @@ public class EditExpense implements IWindow
 		createContents();
 		shell.open();
 		shell.layout();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) {
-				display.sleep();
+		
+		if(EventLoop.isEnabled())
+		{
+			while (!shell.isDisposed())
+			{
+				if (!display.readAndDispatch())
+				{
+					display.sleep();
+				}
 			}
 		}
 	}

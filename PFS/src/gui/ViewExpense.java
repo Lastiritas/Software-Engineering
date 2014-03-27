@@ -27,10 +27,13 @@ import util.TableCols;
 
 import org.eclipse.swt.widgets.Composite;
 
+import acceptanceTests.EventLoop;
+import acceptanceTests.Register;
+
 
 public class ViewExpense implements IWindow 
 {
-	private Shell shlExpenseView;
+	private Shell shell;
 	private Table expenseTable;
 	
 	protected int currID;
@@ -41,6 +44,11 @@ public class ViewExpense implements IWindow
 	private int sCountPay=0;
 	private int sCountDesc=0;
 	
+	public ViewExpense()
+	{
+		Register.newWindow(this);
+	}
+	
 	/**
 	 * Open the window.
 	 */
@@ -49,16 +57,20 @@ public class ViewExpense implements IWindow
 		Display display = Display.getDefault();
 	
 		createContents();
-		shlExpenseView.open();
-		shlExpenseView.layout();
+		shell.open();
+		shell.layout();
 		
-		while (!shlExpenseView.isDisposed()) 
+		if(EventLoop.isEnabled())
 		{
-			if (!display.readAndDispatch()) 
+			while (!shell.isDisposed()) 
 			{
-				display.sleep();
+				if (!display.readAndDispatch()) 
+				{
+					display.sleep();
+				}
 			}
 		}
+		
 		PFSystem.getCurrent().closePFSystem();
 	}
 
@@ -68,12 +80,12 @@ public class ViewExpense implements IWindow
 	 */
 	protected void createContents() 
 	{
-		shlExpenseView = new Shell();
-		shlExpenseView.setMinimumSize(new Point(800, 600));
-		shlExpenseView.setSize(905, 737);
-		shlExpenseView.setText("Expense View");
+		shell = new Shell();
+		shell.setMinimumSize(new Point(800, 600));
+		shell.setSize(905, 737);
+		shell.setText("Expense View");
 		
-		Composite composite = new Composite(shlExpenseView, SWT.NONE);
+		Composite composite = new Composite(shell, SWT.NONE);
 		composite.setBounds(0, 0, 883, 651);
 		
 		expenseTable = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
@@ -282,9 +294,9 @@ public class ViewExpense implements IWindow
 			}
 		});
 		
-		Menu menu = new Menu(shlExpenseView, SWT.BAR);
+		Menu menu = new Menu(shell, SWT.BAR);
 		menu.setLocation(new Point(0, 0));
-		shlExpenseView.setMenuBar(menu);
+		shell.setMenuBar(menu);
 		
 		MenuItem mntmNewSubmenu = new MenuItem(menu, SWT.CASCADE);
 		mntmNewSubmenu.setText("File");
@@ -296,7 +308,7 @@ public class ViewExpense implements IWindow
 		mntmExit.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				shlExpenseView.close();
+				shell.close();
 			}
 		});
 		mntmExit.setText("Exit");

@@ -24,6 +24,9 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 
+import acceptanceTests.EventLoop;
+import acceptanceTests.Register;
+
 public class MinedView implements IDialog 
 {
 	private Shell shell;
@@ -37,6 +40,11 @@ public class MinedView implements IDialog
 	private ExpenseFilter outputFilter = null;
 	private Composite composite;
 	
+	public MinedView()
+	{
+		Register.newWindow(this);
+	}
+	
 	/**
 	 * Open the window.
 	 */
@@ -48,11 +56,14 @@ public class MinedView implements IDialog
 		shell.open();
 		shell.layout();
 		
-		while (!shell.isDisposed()) 
+		if(EventLoop.isEnabled())
 		{
-			if (!display.readAndDispatch()) 
+			while (!shell.isDisposed()) 
 			{
-				display.sleep();
+				if (!display.readAndDispatch()) 
+				{
+					display.sleep();
+				}
 			}
 		}
 		

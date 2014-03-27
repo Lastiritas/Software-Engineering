@@ -5,6 +5,8 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
+import acceptanceTests.EventLoop;
+import acceptanceTests.Register;
 import system.PFSystem;
 import domainobjects.DateRange;
 import domainobjects.ExpenseFilter;
@@ -52,6 +54,11 @@ public class FilterCreation implements IDialog
 	private TableColumn tblclmnName;
 	private Composite composite_5;
 	
+	public FilterCreation()
+	{
+		Register.newWindow(this);
+	}
+	
 	/**
 	 * Open the window.
 	 * @wbp.parser.entryPoint
@@ -65,11 +72,14 @@ public class FilterCreation implements IDialog
 		shell.open();
 		shell.layout();
 		
-		while (!shell.isDisposed())
+		if(EventLoop.isEnabled())
 		{
-			if (!display.readAndDispatch()) 
+			while (!shell.isDisposed())
 			{
-				display.sleep();
+				if (!display.readAndDispatch()) 
+				{
+					display.sleep();
+				}
 			}
 		}
 		

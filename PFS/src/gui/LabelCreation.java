@@ -4,6 +4,8 @@ import org.eclipse.swt.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.events.*;
 
+import acceptanceTests.EventLoop;
+import acceptanceTests.Register;
 import system.PFSystem;
 import util.StringMatch;
 import domainobjects.*;
@@ -18,6 +20,10 @@ public class LabelCreation implements IDialog
 	private String retLabel=null;
 	private Composite composite;
 	
+	public LabelCreation()
+	{
+		Register.newWindow(this);
+	}
 	/**
 	 * Open the window.
 	 * 
@@ -31,13 +37,17 @@ public class LabelCreation implements IDialog
 		shell.open();
 		shell.layout();
 		
-		while (!shell.isDisposed())
+		if(EventLoop.isEnabled())
 		{
-			if (!display.readAndDispatch()) 
+			while (!shell.isDisposed())
 			{
-				display.sleep();
+				if (!display.readAndDispatch()) 
+				{
+					display.sleep();
+				}
 			}
 		}
+		
 		return retLabel;
 	}
 	
