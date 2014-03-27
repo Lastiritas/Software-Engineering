@@ -170,11 +170,8 @@ public class ViewExpense implements IWindow
 				if(sCountID == 0)
 				{
 					sortedIDs = Sort.sortCollection(TableCols.ID, SortDirection.ASCENDING, expenseTable.getItems());
+					setAllCountZero();
 					sCountID=1;
-					sCountDate =0;
-					sCountMoney=0;
-					sCountPay=0;
-					sCountDesc=0;
 				}
 				else if(sCountID ==1)
 				{
@@ -198,11 +195,8 @@ public class ViewExpense implements IWindow
 				if(sCountDate == 0)
 				{
 					sortedIDs = Sort.sortCollection(TableCols.DATE, SortDirection.ASCENDING, expenseTable.getItems());
+					setAllCountZero();
 					sCountDate =1;
-					sCountMoney=0;
-					sCountID=0;
-					sCountPay=0;
-					sCountDesc=0;
 				}
 				else if(sCountDate ==1)
 				{
@@ -226,11 +220,8 @@ public class ViewExpense implements IWindow
 				if(sCountPay == 0)
 				{
 					sortedIDs = Sort.sortCollection(TableCols.PAYTO, SortDirection.ASCENDING, expenseTable.getItems());
+					setAllCountZero();
 					sCountPay=1;
-					sCountDate =0;
-					sCountMoney=0;
-					sCountID=0;
-					sCountDesc=0;
 				}
 				else if(sCountPay ==1)
 				{
@@ -254,11 +245,8 @@ public class ViewExpense implements IWindow
 				if(sCountMoney == 0)
 				{
 					sortedIDs = Sort.sortCollection(TableCols.MONEY, SortDirection.ASCENDING, expenseTable.getItems());
+					setAllCountZero();
 					sCountMoney =1;
-					sCountDate = 0;
-					sCountID=0;
-					sCountPay=0;
-					sCountDesc=0;
 				}
 				else if(sCountMoney ==1)
 				{
@@ -282,11 +270,8 @@ public class ViewExpense implements IWindow
 				if(sCountDesc == 0)
 				{
 					sortedIDs = Sort.sortCollection(TableCols.DESCRIPTION, SortDirection.ASCENDING, expenseTable.getItems());
+					setAllCountZero();
 					sCountDesc =1;
-					sCountDate = 0;
-					sCountID=0;
-					sCountPay=0;
-					sCountMoney=0;
 				}
 				else if(sCountDesc ==1)
 				{
@@ -397,6 +382,15 @@ public class ViewExpense implements IWindow
 		mntmDeleteSelected.setText("Delete Selected");
 		
 		refreshWholeList(new ExpenseFilter());
+	}
+	
+	private void setAllCountZero()
+	{
+		sCountDesc =0;
+		sCountDate = 0;
+		sCountID=0;
+		sCountPay=0;
+		sCountMoney=0;
 	}
 	
 	private void refreshETable(int arr[])
