@@ -29,10 +29,6 @@ public class PayToCreation implements IWindow
 	private String allName[];
 	private Composite composite;
 
-	public PayToCreation()
-	{
-		Register.newWindow(this);
-	}
 	
 	/**
 	 * Open the window.
@@ -41,7 +37,7 @@ public class PayToCreation implements IWindow
 	public void open() 
 	{
 		Display display = Display.getDefault();
-	
+		Register.newWindow(this);
 		createContents();
 		shell.open();
 		shell.layout();

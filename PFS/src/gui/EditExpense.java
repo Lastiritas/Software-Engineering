@@ -48,7 +48,7 @@ public class EditExpense implements IWindow
 
 	public EditExpense()
 	{
-		Register.newWindow(this);
+		
 	}
 	
 	/**
@@ -57,6 +57,7 @@ public class EditExpense implements IWindow
 	public void open() 
 	{
 		Display display = Display.getDefault();
+		Register.newWindow(this);
 		createContents();
 		shell.open();
 		shell.layout();

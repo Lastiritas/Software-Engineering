@@ -43,19 +43,14 @@ public class ViewExpense implements IWindow
 	private int sCountMoney=0;
 	private int sCountPay=0;
 	private int sCountDesc=0;
-	
-	public ViewExpense()
-	{
-		Register.newWindow(this);
-	}
-	
+		
 	/**
 	 * Open the window.
 	 */
 	public void open() 
 	{
 		Display display = Display.getDefault();
-	
+		Register.newWindow(this);
 		createContents();
 		shell.open();
 		shell.layout();

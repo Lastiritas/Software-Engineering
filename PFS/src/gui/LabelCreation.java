@@ -20,10 +20,6 @@ public class LabelCreation implements IDialog
 	private String retLabel=null;
 	private Composite composite;
 	
-	public LabelCreation()
-	{
-		Register.newWindow(this);
-	}
 	/**
 	 * Open the window.
 	 * 
@@ -32,7 +28,7 @@ public class LabelCreation implements IDialog
 	public String open()
 	{
 		Display display =Display.getDefault();
-		
+		Register.newWindow(this);
 		createContents();
 		shell.open();
 		shell.layout();

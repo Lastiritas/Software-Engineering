@@ -49,18 +49,13 @@ public class PerDayWindow implements IDialog
 	private Button lablesPerDayRadio;
 	private Button locationsPerDayRadio;
 	
-	public PerDayWindow()
-	{
-		Register.newWindow(this);
-	}
-	
 	/**
 	 * Open the window.
 	 */
 	public Object open() 
 	{
 		Display display = Display.getDefault();
-		
+		Register.newWindow(this);
 		createContents();
 		shlDayView.open();
 		shlDayView.layout();

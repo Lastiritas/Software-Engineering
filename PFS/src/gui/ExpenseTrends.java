@@ -47,10 +47,6 @@ public class ExpenseTrends
 		expenseIDs = ids;
 	}
 	
-	public ExpenseTrends()
-	{
-		Register.newWindow(this);
-	}
 	/**
 	 * Open the window.
 	 * @wbp.parser.entryPoint
@@ -59,6 +55,7 @@ public class ExpenseTrends
 	public void open()
 	{
 		Display display = Display.getDefault();
+		Register.newWindow(this);
 		chartHelper = new ChartHelper(expenseIDs);
 		
 		createContents();

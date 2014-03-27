@@ -39,18 +39,13 @@ public class LabelSelection implements IDialog
 		}
 	}
 	
-	public LabelSelection()
-	{
-		Register.newWindow(this);
-	}
-	
 	/**
 	 * @wbp.parser.entryPoint
 	 */
 	public Object open()
 	{
 		Display display = Display.getDefault();
-		
+		Register.newWindow(this);
 		createContents();
 		shell.open();
 		shell.layout();

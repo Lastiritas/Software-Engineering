@@ -53,11 +53,7 @@ public class FilterCreation implements IDialog
 	private TableColumn tblclmnId_1;
 	private TableColumn tblclmnName;
 	private Composite composite_5;
-	
-	public FilterCreation()
-	{
-		Register.newWindow(this);
-	}
+
 	
 	/**
 	 * Open the window.
@@ -67,7 +63,7 @@ public class FilterCreation implements IDialog
 	public Object open()
 	{
 		Display display =Display.getDefault();
-		
+		Register.newWindow(this);
 		createContents();
 		shell.open();
 		shell.layout();

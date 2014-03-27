@@ -31,10 +31,6 @@ public class PaytoSelection implements IDialog
 	private int selectedID = 1;
 	private boolean madeSelection = false;
 	
-	public PaytoSelection()
-	{
-		Register.newWindow(this);
-	}
 	
 	/**
 	 * Open the window.
@@ -42,7 +38,7 @@ public class PaytoSelection implements IDialog
 	public Object open() 
 	{
 		Display display = Display.getDefault();
-		
+		Register.newWindow(this);
 		createContents();
 		
 		shell.open();

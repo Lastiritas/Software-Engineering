@@ -40,10 +40,6 @@ public class MinedView implements IDialog
 	private ExpenseFilter outputFilter = null;
 	private Composite composite;
 	
-	public MinedView()
-	{
-		Register.newWindow(this);
-	}
 	
 	/**
 	 * Open the window.
@@ -51,7 +47,7 @@ public class MinedView implements IDialog
 	public Object open() 
 	{
 		Display display = Display.getDefault();
-		
+		Register.newWindow(this);
 		createContents();
 		shell.open();
 		shell.layout();
