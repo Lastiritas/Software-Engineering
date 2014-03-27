@@ -28,7 +28,7 @@ Click					EditExpense							btnEditLabels
 
 Click					LabelSelectiom						btnNew
 
-Set						LabelCreation						testNewLabel		"Entertainment"
+Set						LabelCreation						textNewLabel		"Entertainment"
 
 Click					LabelCreation						btnDone
 
