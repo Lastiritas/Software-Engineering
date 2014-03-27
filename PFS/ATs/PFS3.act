@@ -1,0 +1,37 @@
+//Create empty expense, duplicate then delete 
+
+Package                 gui
+
+Click					ViewExpense							addButton
+
+Click					EditExpense							btnCancel
+
+SelectTableByRowIndex	ViewExpense							expenseTable		0
+
+Click					ViewExpense							duplicateButton
+
+SelectTableByRowIndex   ViewExpense                         expenseTable		1
+
+TestTableByColumnIndex  ViewExpense                         expenseTable        0               2
+
+TestTableByColumnIndex  ViewExpense                         expenseTable        1               "27/3/2014"
+
+TestTableByColumnIndex  ViewExpense                         expenseTable        2               Walmart
+
+TestTableByColumnIndex  ViewExpense                         expenseTable        3               "$0.00"
+
+TestTableByColumnIndex  ViewExpense                         expenseTable        4               ""
+
+TestTableByColumnLabel  ViewExpense                         expenseTable        ID            2
+
+TestTableByColumnLabel  ViewExpense                         expenseTable        Date          "27/3/2014"
+
+TestTableByColumnLabel  ViewExpense                         expenseTable        "Pay To"        Walmart
+
+TestTableByColumnLabel  ViewExpense                         expenseTable        Amount        "$0.00"
+
+TestTableByColumnLabel  ViewExpense                         expenseTable        Description   ""
+
+Click					ViewExpense							mntmDeleteSelected
+
+Click					ViewExpense							mntmExit

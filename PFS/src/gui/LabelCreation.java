@@ -20,6 +20,9 @@ public class LabelCreation implements IDialog
 	private String retLabel=null;
 	private Composite composite;
 	
+	private Button btnDone;
+	private Button btnCancel;
+	
 	/**
 	 * Open the window.
 	 * 
@@ -64,11 +67,11 @@ public class LabelCreation implements IDialog
 		textNewLabel = new Text(composite, SWT.BORDER);
 		textNewLabel.setBounds(10, 10, 290, 31);
 		
-		Button btnCancel = new Button(composite, SWT.NONE);
+		btnCancel = new Button(composite, SWT.NONE);
 		btnCancel.setBounds(10, 253, 75, 25);
 		btnCancel.setText("Cancel");
 		
-		Button btnDone = new Button(composite, SWT.NONE);
+		btnDone = new Button(composite, SWT.NONE);
 		btnDone.setBounds(225, 253, 75, 25);
 		btnDone.setText("Done");
 		
@@ -111,29 +114,18 @@ public class LabelCreation implements IDialog
 				else
 					;//notify user of exsisting choice
 				
-				/* AARON CODE
-				final String labelString = textNewLabel.getText(); 
-				
-				IDataModifer dataModifer = PFSystem.getCurrent().getLabelSystem();
-				
-				final int labelID = dataModifer.create();
-				dataModifer.update(labelID, new domainobjects.Label(labelString));
-				
-				 */
-				
 				shell.close();
 			}
 		});
 		
-				btnCancel.addSelectionListener(new SelectionAdapter() 
-				{
-					@Override
-					public void widgetSelected(SelectionEvent e)
-					{
-						shell.close();
-					}
-				});
-		
+		btnCancel.addSelectionListener(new SelectionAdapter() 
+		{
+			@Override
+			public void widgetSelected(SelectionEvent e)
+			{
+				shell.close();
+			}
+		});
 		
 		//listeners
 		textNewLabel.addKeyListener(new KeyAdapter() 

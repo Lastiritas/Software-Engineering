@@ -28,7 +28,7 @@ public class PayToCreation implements IWindow
 	private Text nameField;
 	private String allName[];
 	private Composite composite;
-
+	private Button okayButton;
 	
 	/**
 	 * Open the window.
@@ -78,7 +78,7 @@ public class PayToCreation implements IWindow
 		});
 		cancelButton.setText("Cancel");
 		
-		Button okayButton = new Button(composite, SWT.NONE);
+		okayButton = new Button(composite, SWT.NONE);
 		okayButton.setBounds(381, 260, 53, 35);
 		okayButton.addSelectionListener(new SelectionAdapter() 
 		{

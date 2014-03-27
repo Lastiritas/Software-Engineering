@@ -30,7 +30,8 @@ public class PaytoSelection implements IDialog
 	private Table table;
 	private int selectedID = 1;
 	private boolean madeSelection = false;
-	
+	private Button addButton;
+	private Button okayButton;
 	
 	/**
 	 * Open the window.
@@ -129,7 +130,7 @@ public class PaytoSelection implements IDialog
 		});
 		cancelButton.setText("Cancel");
 		
-		Button okayButton = new Button(composite, SWT.NONE);
+		okayButton = new Button(composite, SWT.NONE);
 		okayButton.setBounds(418, 274, 53, 35);
 		okayButton.addSelectionListener(new SelectionAdapter() 
 		{
@@ -142,7 +143,7 @@ public class PaytoSelection implements IDialog
 		});
 		okayButton.setText("Okay");
 		
-		Button addButton = new Button(composite, SWT.NONE);
+		addButton = new Button(composite, SWT.NONE);
 		addButton.setBounds(203, 274, 63, 35);
 		addButton.addSelectionListener(new SelectionAdapter() 
 		{

@@ -1,3 +1,5 @@
+REM Not all .act scripts are active 
+
 REM @echo off
 
 IF "%1" NEQ "" (SET SLEEP=%1) ELSE (SET SLEEP=1)

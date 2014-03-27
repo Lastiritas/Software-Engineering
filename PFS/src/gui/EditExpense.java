@@ -39,17 +39,16 @@ public class EditExpense implements IWindow
 	private Button debitRadio;
 	private Button otherRadio;
 	
+	private Button btnSave;
+	private Button btnCancel;
+	private Button btnEditLabels;
+	
 	private int payToId;
 	private Button payToButton;
 	
 	private int expenseID;
 	private Table labelTable;
 	private Composite composite;
-
-	public EditExpense()
-	{
-		
-	}
 	
 	/**
 	 * Open the window.
@@ -104,7 +103,7 @@ public class EditExpense implements IWindow
 		lblDescription.setBounds(10, 124, 90, 25);
 		lblDescription.setText("Description");
 		
-		Button btnEditLabels = new Button(composite, SWT.NONE);
+		btnEditLabels = new Button(composite, SWT.NONE);
 		btnEditLabels.setBounds(598, 298, 105, 28);
 		btnEditLabels.addSelectionListener(new SelectionAdapter() 
 		{
@@ -165,11 +164,11 @@ public class EditExpense implements IWindow
 		payToButton.setBounds(10, 15, 285, 35);
 		payToButton.setAlignment(SWT.LEFT);
 		
-		Button btnSave = new Button(composite, SWT.NONE);
+		btnSave = new Button(composite, SWT.NONE);
 		btnSave.setBounds(598, 332, 105, 28);
 		btnSave.setText("Save");
 		
-		Button btnCancel = new Button(composite, SWT.NONE);
+		btnCancel = new Button(composite, SWT.NONE);
 		btnCancel.setBounds(10, 332, 94, 28);
 		btnCancel.setText("Cancel");
 		

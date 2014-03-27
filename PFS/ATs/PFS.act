@@ -1,66 +1,75 @@
+//Create expense then delete it
+
 Package                 gui
 
-Click                   ViewExpense                          btnOpen
+Click					ViewExpense							addButton
 
-//Click                   StudentWindow                       sequentialButton
+Set                     EditExpense							amountField        "3.57"
 
-//Test                    StudentWindow                       studentIDText        100
+Set                     EditExpense	                        descriptionField	"Wreck-It Ralph"
 
-//Click                   StudentWindow                       sequentialButton
+Set                     EditExpense	                        datePicker			"2013-3-29"
 
-//Test                    StudentWindow                       studentIDText        200
+Click                   EditExpense                      	payToButton
 
-//Click                   StudentWindow                       sequentialButton
+Click					PaytoSelection						addButton
 
-//Test                    StudentWindow                       studentIDText        300
+Set						PayToCreation						nameField			"Walmart"
 
-//Click                   StudentWindow                       coursesButton
+Click					PayToCreation						okayButton
 
-//SelectTableByRowIndex   SCWindow                            table                0
+SelectTableByRowIndex	PaytoSelection						table				0
 
-//TestTableByColumnIndex  SCWindow                            table                0               "COMP3350"
+Click					PaytoSelection						okayButton
 
-//TestTableByColumnIndex  SCWindow                            table                1               "Software Development"
+Click                   EditExpense	                        creditRadio
 
-//TestTableByColumnLabel  SCWindow                            table                "Course ID"     "COMP3350"
+Click					EditExpense							btnEditLabels
 
-//TestTableByColumnLabel  SCWindow                            table                "Course Name"   "Software Development"
+Click					LabelSelectiom						btnNew
 
-//Click                   SCWindow                            closeButton
+Set						LabelCreation						testNewLabel		"Entertainment"
 
-//Set                     StudentWindow                       studentIDText        100
+Click					LabelCreation						btnDone
 
-//Click                   StudentWindow                       randomButton
+SelectTableByRowIndex	LabelSelection						choiceTable			0
 
-//Test                    StudentWindow                       studentIDText        100
+Click					LabelSelection						btnAdd
 
-//Test                    StudentWindow                       nameText             "Joe Cool"
+SelectTableByRowIndex	LabelSelection						pickedTable			0
 
-//Test                    StudentWindow                       addressText          "UMSU"
+Click					LabelSelection						btnRemove
 
-//Click                   StudentWindow                       closeButton
+SelectTableByRowIndex	LabelSelection						choiceTable			0
 
-//Click                   MainWindow                          coursesButton
+Click					LabelSelection						btnAdd
 
-//Click                   CourseWindow                        sequentialButton
+Click					LabelSelection						btnDone
 
-//Test                    CourseWindow                        courseIDText         "COMP3010"
+Click					EditExpense							btnSave
 
-//Click                   CourseWindow                        sequentialButton
+SelectTableByRowIndex   ViewExpense                         expenseTable		0
 
-//Test                    CourseWindow                        courseIDText         "COMP3020"
+TestTableByColumnIndex  ViewExpense                         expenseTable        0               1
 
-//Click                   CourseWindow                        sequentialButton
+TestTableByColumnIndex  ViewExpense                         expenseTable        1               "29/3/2013"
 
-//Test                    CourseWindow                        courseIDText         "COMP3350"
+TestTableByColumnIndex  ViewExpense                         expenseTable        2               Walmart
 
-//Click                   CourseWindow                        studentsButton
+TestTableByColumnIndex  ViewExpense                         expenseTable        3               "$3.57"
 
-//Click                   CSWindow                            closeButton
+TestTableByColumnIndex  ViewExpense                         expenseTable        4               "Wreck-it Ralph"
 
-//Click                   CourseWindow                        closeButton
+TestTableByColumnLabel  ViewExpense                         expenseTable        ID            1
 
-//Click                   MainWindow                          exitButton
+TestTableByColumnLabel  ViewExpense                         expenseTable        Date          "29/3/2013"
 
-//InvokeMethod            srsys.application.Main              shutDown
+TestTableByColumnLabel  ViewExpense                         expenseTable        "Pay To"        Walmart
 
+TestTableByColumnLabel  ViewExpense                         expenseTable        Amount        "$3.57"
+
+TestTableByColumnLabel  ViewExpense                         expenseTable        Description   "Wreck-it Ralph"
+
+Click					ViewExpense							deleteButton
+
+Click					ViewExpense							mntmExit

@@ -22,6 +22,10 @@ public class LabelSelection implements IDialog
 	
 	private Table choiceTable;
 	private Table pickedTable;
+	private Button btnNew;
+	private Button btnRemove;
+	private Button btnAdd;
+	private Button btnDone;
 	
 	private IDSet startingSet = IDSet.empty();
 	private ArrayList<Integer> selectedLabels = new ArrayList<Integer>();
@@ -106,15 +110,15 @@ public class LabelSelection implements IDialog
 		textSearchPickLabel = new Text(composite, SWT.BORDER);
 		textSearchPickLabel.setBounds(374, 10, 200, 31);
 		
-		Button btnAdd = new Button(composite, SWT.PUSH);
+		btnAdd = new Button(composite, SWT.PUSH);
 		btnAdd.setBounds(320, 155, 48, 35);
 		btnAdd.setText(">>>");
 		
-		Button btnRemove = new Button(composite, SWT.PUSH);
+		btnRemove = new Button(composite, SWT.PUSH);
 		btnRemove.setBounds(216, 155, 48, 35);
 		btnRemove.setText("<<<");
 		
-		Button btnNew = new Button(composite, SWT.PUSH);
+		btnNew = new Button(composite, SWT.PUSH);
 		btnNew.setBounds(10, 344, 108, 35);
 		btnNew.setText("Create Label");
 		
@@ -122,7 +126,7 @@ public class LabelSelection implements IDialog
 		btnCancel.setBounds(10, 385, 63, 35);
 		btnCancel.setText("Cancel");
 		
-		Button btnDone = new Button(composite, SWT.PUSH);
+		btnDone = new Button(composite, SWT.PUSH);
 		btnDone.setBounds(519, 380, 55, 35);
 		btnDone.setText("Done");
 		

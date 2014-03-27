@@ -44,30 +44,30 @@ public class ViewExpense implements IWindow
 	private int sCountPay=0;
 	private int sCountDesc=0;
 	
-	Button btnOpen;
-	TableColumn tblclmnId;
-	TableColumn tblclmnDate;
-	TableColumn tblclmnPayTo;
-	TableColumn tblclmnAmount;
-	TableColumn tblclmnDescription;
-	Button addButton;
-	Button duplicateButton;
-	Button deleteButton;
-	Button graphButton;
-	Menu menu;
-	Menu menu_1;
-	Menu menu_3;
-	Menu menu_2;
-	MenuItem mntmNewExpense;
-	MenuItem mntmOpenSelected;
-	MenuItem mntmDuplicateSelected;
-	MenuItem mntmDeleteSelected;
-	MenuItem mntmNewSubmenu;
-	MenuItem mntmExit;
-	MenuItem mntmFilter;
-	MenuItem mntmCreateFilter;
-	MenuItem mntmViewCommonLabels;
-	MenuItem mntmAction;
+	private Button btnOpen;
+	private TableColumn tblclmnId;
+	private TableColumn tblclmnDate;
+	private TableColumn tblclmnPayTo;
+	private TableColumn tblclmnAmount;
+	private TableColumn tblclmnDescription;
+	private Button addButton;
+	private Button duplicateButton;
+	private Button deleteButton;
+	private Button graphButton;
+	private Menu menu;
+	private Menu menu_1;
+	private Menu menu_3;
+	private Menu menu_2;
+	private MenuItem mntmNewExpense;
+	private MenuItem mntmOpenSelected;
+	private MenuItem mntmDuplicateSelected;
+	private MenuItem mntmDeleteSelected;
+	private MenuItem mntmNewSubmenu;
+	private MenuItem mntmExit;
+	private MenuItem mntmFilter;
+	private MenuItem mntmCreateFilter;
+	private MenuItem mntmViewCommonLabels;
+	private MenuItem mntmAction;
 	
 		
 	/**
