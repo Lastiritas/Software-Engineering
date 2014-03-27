@@ -43,6 +43,32 @@ public class ViewExpense implements IWindow
 	private int sCountMoney=0;
 	private int sCountPay=0;
 	private int sCountDesc=0;
+	
+	Button btnOpen;
+	TableColumn tblclmnId;
+	TableColumn tblclmnDate;
+	TableColumn tblclmnPayTo;
+	TableColumn tblclmnAmount;
+	TableColumn tblclmnDescription;
+	Button addButton;
+	Button duplicateButton;
+	Button deleteButton;
+	Button graphButton;
+	Menu menu;
+	Menu menu_1;
+	Menu menu_3;
+	Menu menu_2;
+	MenuItem mntmNewExpense;
+	MenuItem mntmOpenSelected;
+	MenuItem mntmDuplicateSelected;
+	MenuItem mntmDeleteSelected;
+	MenuItem mntmNewSubmenu;
+	MenuItem mntmExit;
+	MenuItem mntmFilter;
+	MenuItem mntmCreateFilter;
+	MenuItem mntmViewCommonLabels;
+	MenuItem mntmAction;
+	
 		
 	/**
 	 * Open the window.
@@ -88,27 +114,27 @@ public class ViewExpense implements IWindow
 		expenseTable.setHeaderVisible(true);
 		expenseTable.setLinesVisible(true);
 		
-		TableColumn tblclmnId = new TableColumn(expenseTable, SWT.NONE);
+		tblclmnId = new TableColumn(expenseTable, SWT.NONE);
 		tblclmnId.setWidth(50);
 		tblclmnId.setText("ID");
 		
-		TableColumn tblclmnDate = new TableColumn(expenseTable, SWT.NONE);
+		tblclmnDate = new TableColumn(expenseTable, SWT.NONE);
 		tblclmnDate.setWidth(125);
 		tblclmnDate.setText("Date");
 		
-		TableColumn tblclmnPayTo = new TableColumn(expenseTable, SWT.NONE);
+		tblclmnPayTo = new TableColumn(expenseTable, SWT.NONE);
 		tblclmnPayTo.setWidth(250);
 		tblclmnPayTo.setText("Pay To");
 		
-		TableColumn tblclmnAmount = new TableColumn(expenseTable, SWT.NONE);
+		tblclmnAmount = new TableColumn(expenseTable, SWT.NONE);
 		tblclmnAmount.setWidth(100);
 		tblclmnAmount.setText("Amount");
 		
-		TableColumn tblclmnDescription = new TableColumn(expenseTable, SWT.NONE);
+		tblclmnDescription = new TableColumn(expenseTable, SWT.NONE);
 		tblclmnDescription.setWidth(250);
 		tblclmnDescription.setText("Description");
 		
-		Button addButton = new Button(composite, SWT.NONE);
+		addButton = new Button(composite, SWT.NONE);
 		addButton.setBounds(210, 613, 94, 28);
 		addButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -118,7 +144,7 @@ public class ViewExpense implements IWindow
 		});
 		addButton.setText("+");
 		
-		Button duplicateButton = new Button(composite, SWT.NONE);
+		duplicateButton = new Button(composite, SWT.NONE);
 		duplicateButton.setBounds(110, 613, 94, 28);
 		duplicateButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -128,7 +154,7 @@ public class ViewExpense implements IWindow
 		});
 		duplicateButton.setText("Duplicate");
 		
-		Button deleteButton = new Button(composite, SWT.NONE);
+		deleteButton = new Button(composite, SWT.NONE);
 		deleteButton.setBounds(10, 613, 94, 28);
 		deleteButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -138,7 +164,7 @@ public class ViewExpense implements IWindow
 		});
 		deleteButton.setText("-");
 		
-		Button graphButton = new Button(composite, SWT.NONE);
+		graphButton = new Button(composite, SWT.NONE);
 		graphButton.setBounds(679, 613, 94, 28);
 		graphButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -153,7 +179,7 @@ public class ViewExpense implements IWindow
 		});
 		graphButton.setText("Graph");
 		
-		Button btnOpen = new Button(composite, SWT.NONE);
+		btnOpen = new Button(composite, SWT.NONE);
 		btnOpen.setBounds(779, 613, 94, 28);
 		btnOpen.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -289,17 +315,17 @@ public class ViewExpense implements IWindow
 			}
 		});
 		
-		Menu menu = new Menu(shell, SWT.BAR);
+		menu = new Menu(shell, SWT.BAR);
 		menu.setLocation(new Point(0, 0));
 		shell.setMenuBar(menu);
 		
-		MenuItem mntmNewSubmenu = new MenuItem(menu, SWT.CASCADE);
+		mntmNewSubmenu = new MenuItem(menu, SWT.CASCADE);
 		mntmNewSubmenu.setText("File");
 		
-		Menu menu_1 = new Menu(mntmNewSubmenu);
+		menu_1 = new Menu(mntmNewSubmenu);
 		mntmNewSubmenu.setMenu(menu_1);
 		
-		MenuItem mntmExit = new MenuItem(menu_1, SWT.NONE);
+		mntmExit = new MenuItem(menu_1, SWT.NONE);
 		mntmExit.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -308,13 +334,13 @@ public class ViewExpense implements IWindow
 		});
 		mntmExit.setText("Exit");
 		
-		MenuItem mntmFilter = new MenuItem(menu, SWT.CASCADE);
+		mntmFilter = new MenuItem(menu, SWT.CASCADE);
 		mntmFilter.setText("Filter");
 		
-		Menu menu_3 = new Menu(mntmFilter);
+		menu_3 = new Menu(mntmFilter);
 		mntmFilter.setMenu(menu_3);
 		
-		MenuItem mntmCreateFilter = new MenuItem(menu_3, SWT.NONE);
+		mntmCreateFilter = new MenuItem(menu_3, SWT.NONE);
 		mntmCreateFilter.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -330,7 +356,7 @@ public class ViewExpense implements IWindow
 		});
 		mntmCreateFilter.setText("Create Filter");
 		
-		MenuItem mntmViewCommonLabels = new MenuItem(menu_3, SWT.NONE);
+		mntmViewCommonLabels = new MenuItem(menu_3, SWT.NONE);
 		mntmViewCommonLabels.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -346,13 +372,13 @@ public class ViewExpense implements IWindow
 		});
 		mntmViewCommonLabels.setText("View Common Labels");
 		
-		MenuItem mntmAction = new MenuItem(menu, SWT.CASCADE);
+		mntmAction = new MenuItem(menu, SWT.CASCADE);
 		mntmAction.setText("Action");
-		
-		Menu menu_2 = new Menu(mntmAction);
+				
+		menu_2 = new Menu(mntmAction);
 		mntmAction.setMenu(menu_2);
 		
-		MenuItem mntmNewExpense = new MenuItem(menu_2, SWT.NONE);
+		mntmNewExpense = new MenuItem(menu_2, SWT.NONE);
 		mntmNewExpense.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -361,7 +387,7 @@ public class ViewExpense implements IWindow
 		});
 		mntmNewExpense.setText("New Expense");
 		
-		MenuItem mntmOpenSelected = new MenuItem(menu_2, SWT.NONE);
+		mntmOpenSelected = new MenuItem(menu_2, SWT.NONE);
 		mntmOpenSelected.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -370,7 +396,7 @@ public class ViewExpense implements IWindow
 		});
 		mntmOpenSelected.setText("Open Selected");
 		
-		MenuItem mntmDuplicateSelected = new MenuItem(menu_2, SWT.NONE);
+		mntmDuplicateSelected = new MenuItem(menu_2, SWT.NONE);
 		mntmDuplicateSelected.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -379,7 +405,7 @@ public class ViewExpense implements IWindow
 		});
 		mntmDuplicateSelected.setText("Duplicate Selected");
 		
-		MenuItem mntmDeleteSelected = new MenuItem(menu_2, SWT.NONE);
+		mntmDeleteSelected = new MenuItem(menu_2, SWT.NONE);
 		mntmDeleteSelected.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
