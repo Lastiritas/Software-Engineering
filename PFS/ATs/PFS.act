@@ -1,0 +1,66 @@
+Package                 gui
+
+Click                   ViewExpense                          btnOpen
+
+//Click                   StudentWindow                       sequentialButton
+
+//Test                    StudentWindow                       studentIDText        100
+
+//Click                   StudentWindow                       sequentialButton
+
+//Test                    StudentWindow                       studentIDText        200
+
+//Click                   StudentWindow                       sequentialButton
+
+//Test                    StudentWindow                       studentIDText        300
+
+//Click                   StudentWindow                       coursesButton
+
+//SelectTableByRowIndex   SCWindow                            table                0
+
+//TestTableByColumnIndex  SCWindow                            table                0               "COMP3350"
+
+//TestTableByColumnIndex  SCWindow                            table                1               "Software Development"
+
+//TestTableByColumnLabel  SCWindow                            table                "Course ID"     "COMP3350"
+
+//TestTableByColumnLabel  SCWindow                            table                "Course Name"   "Software Development"
+
+//Click                   SCWindow                            closeButton
+
+//Set                     StudentWindow                       studentIDText        100
+
+//Click                   StudentWindow                       randomButton
+
+//Test                    StudentWindow                       studentIDText        100
+
+//Test                    StudentWindow                       nameText             "Joe Cool"
+
+//Test                    StudentWindow                       addressText          "UMSU"
+
+//Click                   StudentWindow                       closeButton
+
+//Click                   MainWindow                          coursesButton
+
+//Click                   CourseWindow                        sequentialButton
+
+//Test                    CourseWindow                        courseIDText         "COMP3010"
+
+//Click                   CourseWindow                        sequentialButton
+
+//Test                    CourseWindow                        courseIDText         "COMP3020"
+
+//Click                   CourseWindow                        sequentialButton
+
+//Test                    CourseWindow                        courseIDText         "COMP3350"
+
+//Click                   CourseWindow                        studentsButton
+
+//Click                   CSWindow                            closeButton
+
+//Click                   CourseWindow                        closeButton
+
+//Click                   MainWindow                          exitButton
+
+//InvokeMethod            srsys.application.Main              shutDown
+
