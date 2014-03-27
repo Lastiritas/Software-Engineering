@@ -328,11 +328,11 @@ public class ViewExpense implements IWindow
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				IDialog miningDialog = new MinedView();
-				ExpenseFilter filter = (ExpenseFilter)miningDialog.open();
+				Object filter = miningDialog.open();
 				
 				if(filter != null)
 				{
-					refreshWholeList(filter);
+					refreshWholeList((ExpenseFilter)filter);
 				}
 				// else - do nothing
 			}

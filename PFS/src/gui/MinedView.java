@@ -34,7 +34,7 @@ public class MinedView implements IDialog
 	
 	private Collection<IDSet> frequentSets = null;
 	
-	private ExpenseFilter outputFilter = new ExpenseFilter();
+	private ExpenseFilter outputFilter = null;
 	private Composite composite;
 	
 	/**
@@ -99,7 +99,7 @@ public class MinedView implements IDialog
 		btnCancel.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				closeWithReturn(null);
+				shell.close();
 			}
 		});
 		btnCancel.setText("Cancel");
@@ -109,7 +109,12 @@ public class MinedView implements IDialog
 		btnView.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				closeWithReturn(generateFilterFromGUI());
+				if(table.getSelectionIndex()!=-1)
+				{
+					outputFilter = new ExpenseFilter();
+					outputFilter = generateFilterFromGUI();
+				}
+				shell.close();
 			}
 		});
 		btnView.setText("View");
@@ -183,11 +188,5 @@ public class MinedView implements IDialog
 		output.assignLabels(set, SetOperation.INTERSECTION);
 		
 		return output;
-	}
-	
-	private void closeWithReturn(ExpenseFilter filter)
-	{		
-		outputFilter = filter;
-		shell.close();
 	}
 }
