@@ -8,7 +8,6 @@ import org.eclipse.swt.events.*;
 
 import acceptanceTests.EventLoop;
 import acceptanceTests.Register;
-import system.Manager;
 import system.PFSystem;
 import util.StringMatch;
 import domainobjects.*;
@@ -188,20 +187,9 @@ public class LabelSelection implements IDialog
 			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
-				LabelCreation createLabel = new LabelCreation();
-				String labelName = createLabel.open();
-				
-				if(labelName != null)
-				{
-					final Manager labelManager = PFSystem.getCurrent().getLabelSystem();
-					
-					final int newID = labelManager.create();
-					
-					domainobjects.Label newLabel = new domainobjects.Label(labelName);
-					labelManager.update(newID, newLabel);
-					
-					refreshList();
-				}
+				IWindow createLabel = new LabelCreation();
+				createLabel.open();
+				refreshList();
 			}
 		});
 		
