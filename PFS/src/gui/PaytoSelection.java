@@ -1,4 +1,5 @@
 package gui;
+
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.SWT;
@@ -12,8 +13,6 @@ import system.PFSystem;
 import util.StringMatch;
 import domainobjects.IDSet;
 
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Composite;
@@ -28,8 +27,8 @@ public class PaytoSelection implements IDialog
 	private Shell shell;
 	private Text textSearchPayTo;
 	private Table table;
-	private int selectedID = 1;
-	private boolean madeSelection = false;
+	private int selectedID = -1;
+	private int tempID;
 	private Button addButton;
 	private Button okayButton;
 	
@@ -70,17 +69,6 @@ public class PaytoSelection implements IDialog
 		shell = new Shell(SWT.SYSTEM_MODAL | SWT.DIALOG_TRIM);
 		shell.setSize(487, 359);
 		shell.setText("PayTo Manager");
-		shell.addListener(SWT.Close, new Listener()
-		{
-			@Override
-			public void handleEvent(Event event)
-			{
-				if(!madeSelection)
-				{
-					selectedID = 1;
-				}
-			}
-		});
 		
 		Composite composite = new Composite(shell, SWT.NONE);
 		composite.setBounds(0, 0, 481, 319);
@@ -90,19 +78,17 @@ public class PaytoSelection implements IDialog
 		
 		table = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
 		table.setBounds(10, 37, 461, 231);
-		table.addSelectionListener(new SelectionAdapter() {
+		table.addSelectionListener(new SelectionAdapter() 
+		{
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				final int selected = table.getSelectionIndex();
 				
 				if(selected != -1)
 				{
-					selectedID = Integer.parseInt(table.getItem(selected).getText(0));
+					tempID = Integer.parseInt(table.getItem(selected).getText(0));
 				}
-				else
-				{
-					selectedID = 1;
-				}
+
 			}
 		});
 		table.setHeaderVisible(true);
@@ -123,8 +109,6 @@ public class PaytoSelection implements IDialog
 			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
-				selectedID = -1;
-				madeSelection = true;
 				shell.close();
 			}
 		});
@@ -137,7 +121,7 @@ public class PaytoSelection implements IDialog
 			@Override
 			public void widgetSelected(SelectionEvent arg0) 
 			{
-				madeSelection = true;
+				selectedID = tempID;
 				shell.close();
 			}
 		});

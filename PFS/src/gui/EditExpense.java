@@ -15,7 +15,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Composite;
 
 import domainobjects.Expense;
-import domainobjects.IDHelper;
 import domainobjects.IDSet;
 import domainobjects.Money;
 import domainobjects.PayTo;
@@ -212,7 +211,7 @@ public class EditExpense implements IWindow
 				
 				final int newPayToID = (int)window.open();
 				
-				if(IDHelper.isIdValid(newPayToID))
+				if(newPayToID!=-1)
 				{
 					updatePayToGUI(newPayToID);
 				}
