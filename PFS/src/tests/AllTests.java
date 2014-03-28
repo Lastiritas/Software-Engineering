@@ -6,6 +6,7 @@ import tests.domainobject.ExpenseTest;
 import tests.domainobject.IDSetTest;
 import tests.domainobject.LabelTest;
 import tests.domainobject.PayToTest;
+import tests.util.SanitizerTests;
 import tests.util.SortTests;
 import tests.util.StringMatchTests;
 import junit.framework.Test;
@@ -45,5 +46,6 @@ public class AllTests
 	{
 		suite.addTestSuite(StringMatchTests.class);
 		suite.addTestSuite(SortTests.class);
+		suite.addTestSuite(SanitizerTests.class);
 	}
 }
