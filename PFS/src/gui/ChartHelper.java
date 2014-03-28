@@ -131,7 +131,7 @@ public class ChartHelper
 		return output;
 	}
 	
-	public String[] getDistinctStringArray(String[] array)
+	public String[] getDistinctStringArray(String[] array, int sizeToReturn)
 	{
 		int size = array.length;
 		String[] distinctArray = new String[size];
@@ -152,8 +152,8 @@ public class ChartHelper
 			}
 		}
 		
-		String[] output = new String[sizeDistinct];
-		System.arraycopy(distinctArray, 0, output, 0, sizeDistinct);
+		String[] output = new String[sizeToReturn];
+		System.arraycopy(distinctArray, 0, output, 0, sizeToReturn);
 		
 		return output;
 	}
@@ -178,7 +178,7 @@ public class ChartHelper
 		switch(axis)
 		{
 			case LOCATION:
-				return getDistinctStringArray(sortedPayTos);
+				return getDistinctStringArray(sortedPayTos, 10);
 			case LABELS:
 				return getLabelNames();
 			default:
@@ -212,9 +212,6 @@ public class ChartHelper
 		}
 	}
 	
-	//xAxisValues - labelIds {1,2,3,4,5,6,7,8,9...}
-		//sortedInput - sortedLabelIds {1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,...}
-		//sortedAmountsByFilter - sortedLabelAmounts
 	private double[] getYAxisStringValues(String[] xAxisValues, String[] originalInput, String[] sortedInput)
 	{
 		int[] sortedAmountsByFilter = new int[numberOfExpenses];
@@ -223,7 +220,8 @@ public class ChartHelper
 		double[] amountYAxis = new double[xAxisValues.length];
 		
 		int currentXAxisValue = 0;
-		for(int i=0; i<numberOfExpenses; i++)
+		int limit = xAxisValues.length-1;
+		for(int i=0; i<numberOfExpenses && currentXAxisValue < limit; i++)
 		{
 			while(xAxisValues[currentXAxisValue].compareTo(sortedInput[i]) != 0)
 			{

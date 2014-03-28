@@ -220,7 +220,7 @@ public class EditExpense implements IWindow
 		
 		
 		datePicker.setDay(expense.getDate().getDay());
-		datePicker.setMonth(expense.getDate().getMonth());
+		datePicker.setMonth(expense.getDate().getMonth()-1);
 		datePicker.setYear(expense.getDate().getYear());
 		
 		updatePayToGUI(expense.getPayTo());
@@ -246,7 +246,7 @@ public class EditExpense implements IWindow
 	{
 		SimpleDate date = SimpleDate.Now();
 		date.setDay(datePicker.getDay());
-		date.setMonth(datePicker.getMonth());
+		date.setMonth(datePicker.getMonth()+1);
 		date.setYear(datePicker.getYear());
 		
 		return date;

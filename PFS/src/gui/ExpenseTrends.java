@@ -39,7 +39,6 @@ public class ExpenseTrends
 	private Font fontTitle;
 	private Font fontAxis;
 	private Font fontAxisValues;
-	private Font fontForLocations;
 	private Font fontForLabels;
 	
 	public void setExpenseIDs(IDSet ids)
@@ -93,7 +92,6 @@ public class ExpenseTrends
 		fontTitle = new Font(Display.getDefault(), "Times New Romans", 16, SWT.BOLD);
 		fontAxis = new Font(Display.getDefault(), "Times New Romans", 10, SWT.BOLD);
 		fontAxisValues = new Font(Display.getDefault(), "Times New Romans", 8, SWT.NORMAL);
-		fontForLocations = new Font(Display.getDefault(), "Times New Romans", 6, SWT.NORMAL);
 		fontForLabels = new Font(Display.getDefault(), "Times New Romans", 8, SWT.NORMAL);
 		
 		createTabs(tabFolder);
@@ -230,15 +228,11 @@ public class ExpenseTrends
 		Chart chart = setChartProperties(parent);
 		IAxis xAxis = chart.getAxisSet().getXAxis(0);
 		IAxis yAxis = chart.getAxisSet().getYAxis(0);
-		IAxisTick xTick = xAxis.getTick();
 		
 		//Set titles
 		chart.getTitle().setText("Expense Trends by Location");
 		xAxis.getTitle().setText("Location");
 		yAxis.getTitle().setText("Amount");
-		
-		//Override the font for locations
-		xTick.setFont(fontForLocations);
 		
 		String[] xAxisValues= chartHelper.getXAxisStringValues(XAxis.LOCATION);
 		double[] ySeries = chartHelper.getYAxisStringValues(xAxisValues, XAxis.LOCATION);
