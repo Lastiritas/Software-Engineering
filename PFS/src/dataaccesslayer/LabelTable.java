@@ -3,6 +3,7 @@ package dataaccesslayer;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import util.Sanitizer;
 import domainobjects.IDHelper;
 import domainobjects.Label;
 
@@ -28,7 +29,7 @@ public class LabelTable extends DatabaseTable
 			
 			int nextId = getMaxIdForTable();
 			
-			String values = String.format("%d, '%s'", nextId, label.getName());
+			String values = String.format("%d, '%s'", nextId, Sanitizer.sanitize(label.getName()));
 			String cmdString = String.format("Insert into Label Values(%s)", values);
 			
 			int insertedSuccessful = statement.executeUpdate(cmdString);
@@ -56,7 +57,7 @@ public class LabelTable extends DatabaseTable
 		
 		try
 		{
-			String values = String.format("name='%s'", label.getName());
+			String values = String.format("name='%s'", Sanitizer.sanitize(label.getName()));
 			String where = String.format("where labelID=%d", inId);
 			String cmdString = String.format("Update Label Set %s %s", values, where);
 	
@@ -89,7 +90,7 @@ public class LabelTable extends DatabaseTable
 		{
 			result.next();
 	
-			String name = result.getString("name");
+			String name = Sanitizer.desanitize(result.getString("name"));
 						
 			return new Label(name);
 		}

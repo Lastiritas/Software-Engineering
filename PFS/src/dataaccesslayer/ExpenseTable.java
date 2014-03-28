@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Vector;
 
+import util.Sanitizer;
 import domainobjects.Expense;
 import domainobjects.IDHelper;
 import domainobjects.IDSet;
@@ -38,7 +39,7 @@ public class ExpenseTable extends DatabaseTable
 								expense.getDate().toInteger(), 
 								expense.getAmount().getTotalCents(), 
 								PaymentMethodHelper.toInteger(expense.getPaymentMethod()), 
-								expense.getDescription(), 
+								Sanitizer.sanitize(expense.getDescription()), 
 								expense.getPayTo());
 						
 			String cmdString = String.format("Insert into Expenses Values(%s)", values);
@@ -76,7 +77,7 @@ public class ExpenseTable extends DatabaseTable
 								expense.getDate().toInteger(), 
 								expense.getAmount().getTotalCents(), 
 								PaymentMethodHelper.toInteger(expense.getPaymentMethod()),
-								expense.getDescription(), 
+								Sanitizer.sanitize(expense.getDescription()), 
 								expense.getPayTo());
 			
 			String where = String.format("where expenseID=%d", inId);
@@ -233,7 +234,7 @@ public class ExpenseTable extends DatabaseTable
 			date = SimpleDate.parseDate(result.getInt("date"));
 			cents = result.getInt("cents");
 			paymentMethod = PaymentMethodHelper.toPaymentMethod(result.getInt("paymentMethod"));
-			description = result.getString("description");
+			description = Sanitizer.desanitize(result.getString("description"));
 			payTo = result.getInt("payTo");
 			labels = getExpenseLabelsByExpenseID(expenseId);
 			

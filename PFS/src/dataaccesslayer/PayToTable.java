@@ -3,6 +3,7 @@ package dataaccesslayer;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import util.Sanitizer;
 import domainobjects.IDHelper;
 import domainobjects.PayTo;
 
@@ -28,7 +29,7 @@ public class PayToTable extends DatabaseTable
 			
 			int nextId = getMaxIdForTable();
 			
-			String values = String.format("%d, '%s'", nextId, payTo.getName());
+			String values = String.format("%d, '%s'", nextId, Sanitizer.sanitize(payTo.getName()));
 			String cmdString = String.format("Insert into PAYTO (PAYTOID, LOCATION) Values(%s)", values);
 			
 			int insertedSuccessful = statement.executeUpdate(cmdString);
@@ -56,7 +57,7 @@ public class PayToTable extends DatabaseTable
 		
 		try
 		{
-			String values = String.format("location='%s'", payTo.getName());
+			String values = String.format("location='%s'", Sanitizer.sanitize(payTo.getName()));
 			String where = String.format("where payToID=%d", inId);
 			String cmdString = String.format("Update PayTo Set %s %s", values, where);
 			
@@ -88,7 +89,7 @@ public class PayToTable extends DatabaseTable
 		try
 		{
 			result.next();
-			String location = result.getString("location");
+			String location = Sanitizer.desanitize(result.getString("location"));
 			
 			return new PayTo(location);
 		}
