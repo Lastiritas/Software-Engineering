@@ -96,12 +96,13 @@ public class LabelCreation implements IWindow
 			{
 				String temp = textNewLabel.getText();
 				boolean exist = false;
-				final int labelIds = PFSystem.getCurrent().getLabelSystem().getAllIDs().getSize();
-				domainobjects.Label label;
 				
-				for(int i=0; i<labelIds; i++)
+				IDSet ids = PFSystem.getCurrent().getLabelSystem().getAllIDs();
+				
+				for(int i = 0; i < ids.getSize(); i++)
 				{
-					label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(i+1);
+					int id = ids.getValue(i);
+					domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
 				
 					if(label.getName().equalsIgnoreCase(temp))
 					{

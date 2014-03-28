@@ -87,12 +87,12 @@ public class PayToCreation implements IWindow
 			{
 				String tempName = nameField.getText();
 				boolean exist = false;
-				final int paytoIds = PFSystem.getCurrent().getPayToSystem().getAllIDs().getSize();
-				PayTo payto;
+				IDSet ids = PFSystem.getCurrent().getPayToSystem().getAllIDs();
 				
-				for(int i = 0; i < paytoIds; i++)
+				for(int i = 0; i < ids.getSize(); i++)
 				{
-					payto = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(i+1);
+					int id = ids.getValue(i);
+					PayTo payto = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(id);
 					
 					if(payto.getName().equalsIgnoreCase(tempName))
 					{
