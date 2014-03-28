@@ -41,6 +41,7 @@ public class FilterCreation implements IDialog
 	
 	private Button payToFilterCheck;
 	private Button selectPayToButton;
+	private Button removePayToButton;
 	
 	private Button expenseAllRadio;
 	private Button expenseSomeRadio;
@@ -267,6 +268,7 @@ public class FilterCreation implements IDialog
 				
 				payToTable.setEnabled(isSelected);
 				selectPayToButton.setEnabled(isSelected);
+				removePayToButton.setEnabled(isSelected);
 			}
 		});
 		payToFilterCheck.setText("Filter by pay to");
@@ -279,8 +281,6 @@ public class FilterCreation implements IDialog
 			public void widgetSelected(SelectionEvent arg0) {
 				IDialog selection = new PaytoSelection();
 				final int payToID = (int)selection.open();
-				
-				payToTable.removeAll();
 				
 				PayTo payTo = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(payToID);
 				
@@ -305,6 +305,24 @@ public class FilterCreation implements IDialog
 		tblclmnName = new TableColumn(payToTable, SWT.NONE);
 		tblclmnName.setWidth(100);
 		tblclmnName.setText("Name");
+		
+		removePayToButton = new Button(composite_4, SWT.NONE);
+		removePayToButton.setEnabled(false);
+		removePayToButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				if(payToTable.getSelectionCount() == 0)
+				{
+					return;
+				}
+				final int selectedIndex = payToTable.getSelectionIndex();
+				payToTable.remove(selectedIndex);
+				
+				
+			}
+		});
+		removePayToButton.setBounds(141, 189, 109, 28);
+		removePayToButton.setText("Remove Pay To");
 		
 		Button filterButton = new Button(composite_5, SWT.NONE);
 		filterButton.setBounds(649, 641, 94, 28);
@@ -421,8 +439,7 @@ public class FilterCreation implements IDialog
 	
 	private IDSet getPayToSet()
 	{
-		final int id = Integer.parseInt(payToTable.getItem(0).getText(0));
-		return IDSet.createFromValue(id);
+		return GUIHelper.getIdsFromTable(payToTable);
 	}
 	
 	private void closeWithReturn(ExpenseFilter filter)
