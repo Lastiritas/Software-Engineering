@@ -219,8 +219,10 @@ public class EditExpense implements IWindow
 			}
 		});
 		
-		final SimpleDate date = expense.getDate();
-		datePicker.setDate(date.getMonth(), date.getDay(), date.getYear());
+		
+		datePicker.setDay(expense.getDate().getDay());
+		datePicker.setMonth(expense.getDate().getMonth());
+		datePicker.setYear(expense.getDate().getYear());
 		
 		updatePayToGUI(expense.getPayTo());
 
