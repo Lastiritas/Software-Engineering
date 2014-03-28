@@ -1,4 +1,81 @@
 =================================================================================
+ITERATION 3
+=================================================================================
+
+Big User Stories for Iteration 3 (priority):
+
+  - Visualization of Data (Medium)
+  - Correlation Detection (High)
+  - Acceptance Testing (High)
+
+===========
+Deveolper Tasks for Iteration 3 (expected days):
+
+  -System:
+    - System Caching (2)
+    
+  - GUI:
+    - Visualization of Spending (3)
+    
+===========
+Detailed User Stories for Iteration 3 (expected days):
+
+  - Place and Date Correlation (1)
+  - Date and Label Correlation (1)
+  - Visualize Payment Methods (1)
+  - Visualize Spending By Month (1)
+  - Visualize Spending By Location (1)
+  - Visualize Spending By Label (1)
+  - Visualize Location based on Day (1)
+  - Visualize Labels based on Day (1)
+
+===========
+Bugs fixed:
+
+  - Database not saving data
+  - Edit expense window not saving the change
+  - Closing PayTo selection window not returning PayTo
+  - Closing Label selection window not returning Label
+  - PayTo Filtering
+  - Edit expense showing current date
+  - Creating label does not filter correctly
+  - Month off by one in View Expense
+  - Database statement errors
+  - PayTo manager not sorting the entries when ID/Name is selected
+
+===========
+Meetings
+
+
+
+===========
+Tasks Completed by Team Members:
+
+  - Aaron Vaage
+    - 
+    
+  - Jeremy Vogt
+    - 
+    
+  - Josh Krcadinac
+    - 
+    
+  -Madeline Lavergne
+    -
+    
+  - Rafael Lastiri
+    - Fixed the previous issue with database not saving data (1 day)
+    - Fixed issues related when closing PayTo Selection Window (1 day)
+    - Fixed issues related when closing Label Selection Window (1 day)
+    - Refactor sorting class so it can be used by many other classes (3 days)
+    - Spike: Researched on the most appropriate library to display charts (1 day)
+    - Visualization of Data (5 days)
+    	- Visualization for amount spent by Payment Method (2 days)
+    	- Visualization for amount spent by Month (1 day)
+    	- Visualization for amount spent by Location (1 day)
+    	- Visualization for amount spent by Label (1 day)
+
+=================================================================================
 ITERATION 2
 =================================================================================
 
@@ -33,7 +110,7 @@ Big User Stories for Iteration 2 (priority):
 		unique features to set our system apart from existing systems. 
   
 ===========
-Deveolper Tasks for Iteration 2 (expected datys):
+Deveolper Tasks for Iteration 2 (expected days):
 
   - Domain Objects:
     - Filter (1)
