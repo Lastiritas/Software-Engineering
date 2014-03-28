@@ -13,10 +13,9 @@ import domainobjects.*;
 public class LabelCreation implements IDialog
 {
 	protected Shell shell;
-	protected List listExsistingLabel;
+	protected Table existingLabel;
 	private Text textNewLabel;
 
-	private String allLabel[];
 	private String retLabel=null;
 	private Composite composite;
 	
@@ -66,58 +65,22 @@ public class LabelCreation implements IDialog
 		
 		textNewLabel = new Text(composite, SWT.BORDER);
 		textNewLabel.setBounds(10, 10, 290, 31);
+		textNewLabel.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent arg0)
+			{
+				refreshList();
+				
+				final String text = textNewLabel.getText();
+				if(text.length()>0)
+				{
+					filterTable(existingLabel,text);
+				}
+			}
+		});
 		
 		btnCancel = new Button(composite, SWT.NONE);
 		btnCancel.setBounds(10, 253, 75, 25);
 		btnCancel.setText("Cancel");
-		
-		btnDone = new Button(composite, SWT.NONE);
-		btnDone.setBounds(225, 253, 75, 25);
-		btnDone.setText("Done");
-		
-		listExsistingLabel = new List(composite, SWT.BORDER);
-		listExsistingLabel.setBounds(10, 47, 290, 200);
-		
-		listExsistingLabel.addSelectionListener(new SelectionAdapter() 
-		{
-			@Override
-			public void widgetSelected(SelectionEvent arg0)
-			{
-				if(listExsistingLabel.getSelectionCount() == 0)
-				{
-					return;
-				}
-				
-				textNewLabel.setText(listExsistingLabel.getSelection()[0]); 
-			}
-		});
-		
-		btnDone.addSelectionListener(new SelectionAdapter() 
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
-				String temp = textNewLabel.getText();
-				boolean exsist = false;
-				
-				for(int i=0; i<allLabel.length; i++)
-				{
-					if(allLabel[i].equalsIgnoreCase(temp))
-					{
-						exsist=true;
-						break;
-					}
-				}
-				
-				if(!exsist)
-					retLabel=temp;
-				else
-					;//notify user of exsisting choice
-				
-				shell.close();
-			}
-		});
-		
 		btnCancel.addSelectionListener(new SelectionAdapter() 
 		{
 			@Override
@@ -127,59 +90,97 @@ public class LabelCreation implements IDialog
 			}
 		});
 		
-		//listeners
-		textNewLabel.addKeyListener(new KeyAdapter() 
+		btnDone = new Button(composite, SWT.NONE);
+		btnDone.setBounds(225, 253, 75, 25);
+		btnDone.setText("Done");
+		btnDone.addSelectionListener(new SelectionAdapter() 
 		{
-			public void keyPressed(KeyEvent e)
+			@Override
+			public void widgetSelected(SelectionEvent e)
 			{
-				String input = textNewLabel.getText();
-				if(!(input.length() ==0 && (e.character == 8 || e.character == 127)))
+				String temp = textNewLabel.getText();
+				boolean exist = false;
+				final int labelIds = PFSystem.getCurrent().getLabelSystem().getAllIDs().getSize();
+				domainobjects.Label label;
+				
+				for(int i=0; i<labelIds; i++)
 				{
-					if((e.character >32 && e.character <127) ||e.character == 8 || e.character == 127)
+					label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(i);
+				
+					if(label.getName().equalsIgnoreCase(temp))
 					{
-						if(e.character >32 && e.character <127)
-							input += e.character;
-						refreshList();
-						
-						for(int i=0; i<listExsistingLabel.getItemCount(); i++)
-						{
-							if(!StringMatch.match(listExsistingLabel.getItem(i),input))
-							{
-								listExsistingLabel.remove(listExsistingLabel.getItem(i));
-								i=-1;
-							}
-						}
-						
+						exist=true;
+						break;
 					}
 				}
+				
+				if(!exist)
+				{
+					retLabel=temp;
+				}
+				
+				shell.close();
 			}
 		});
 		
-		//list population
-		loadList();
-		
-	}
-	
-	private void loadList()
-	{
-		IDSet labelIDs = PFSystem.getCurrent().getLabelSystem().getAllIDs();
-		allLabel = new String[labelIDs.getSize()];
-		
-		for(int i=0; i <labelIDs.getSize(); i++)
+		existingLabel = new Table(composite, SWT.BORDER);
+		existingLabel.setBounds(10, 47, 290, 200);
+		existingLabel.setHeaderVisible(true);
+		existingLabel.setLinesVisible(true);
+		existingLabel.addSelectionListener(new SelectionAdapter() 
 		{
-			final int id = labelIDs.getValue(i);
-			domainobjects.Label label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(id);
-			
-			allLabel[i] = label.getName();
-		}	
+			@Override
+			public void widgetSelected(SelectionEvent arg0)
+			{
+				if(existingLabel.getSelectionCount() == 0)
+				{
+					return;
+				}
+				
+				textNewLabel.setText(existingLabel.getSelection()[0].getText(1)); 
+			}
+		});
+		
+		TableColumn tblclmnId = new TableColumn(existingLabel,SWT.NONE);
+		tblclmnId.setWidth(100);
+		tblclmnId.setText("ID");
+		
+		TableColumn tblclmnLabel = new TableColumn(existingLabel, SWT.NONE);
+		tblclmnLabel.setWidth(100);
+		tblclmnLabel.setText("Label");
 		
 		refreshList();
 	}
 	
 	private void refreshList()
 	{
-		listExsistingLabel.removeAll();
-		for(int i=0; i <allLabel.length; i++)
-			listExsistingLabel.add(allLabel[i]);
+		existingLabel.removeAll();
+		
+		IDSet labels = PFSystem.getCurrent().getLabelSystem().getAllIDs();
+		
+		for(int i=0; i <labels.getSize(); i++)
+		{
+			final int id = labels.getValue(i);
+			GUIHelper.addLabelToTable(existingLabel, id);
+		}
+	}
+	
+	private static void filterTable(Table inTable, String inFilterText)
+	{					
+		assert(inTable != null);
+		assert(inFilterText != null);
+		assert(inFilterText.length() > 0);
+		
+		final int originalTableSize = inTable.getItemCount();
+			
+		for(int i = originalTableSize - 1; i >= 0; i--)
+		{
+			final String label = inTable.getItem(i).getText(1);
+					
+			if(!StringMatch.match(label, inFilterText))
+			{
+				inTable.remove(i);	
+			}
+		}
 	}
 }
