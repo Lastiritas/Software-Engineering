@@ -3,6 +3,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.events.ModifyEvent;
@@ -129,6 +130,16 @@ public class PayToCreation implements IWindow
 		
 		existingPayto = new Table(composite, SWT.BORDER);
 		existingPayto.setBounds(10, 47, 424, 207);
+		existingPayto.setHeaderVisible(true);
+		existingPayto.setLinesVisible(true);
+		
+		TableColumn tblclmnId = new TableColumn(existingPayto,SWT.NONE);
+		tblclmnId.setWidth(100);
+		tblclmnId.setText("ID");
+		
+		TableColumn tblclmnLabel = new TableColumn(existingPayto, SWT.NONE);
+		tblclmnLabel.setWidth(100);
+		tblclmnLabel.setText("Pay To");
 		
 		refreshList();
 	}
