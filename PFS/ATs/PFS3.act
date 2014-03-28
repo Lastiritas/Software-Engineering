@@ -1,37 +1,121 @@
-//Create empty expense, duplicate then delete 
+//Customer can view expensed sorted by date, id, amount and description
 
 Package                 gui
 
-Click					ViewExpense							addButton
+//Entry #1
 
-Click					EditExpense							btnCancel
+Click					ViewExpense					addButton
 
-SelectTableByRowIndex	ViewExpense							expenseTable		0
+Set                     EditExpense					amountField        "3.57"
 
-Click					ViewExpense							duplicateButton
+Set                     EditExpense	                descriptionField	"Wreck-It Ralph"
 
-SelectTableByRowIndex   ViewExpense                         expenseTable		1
+Set                     EditExpense	                datePicker			"2013-3-29"
 
-TestTableByColumnIndex  ViewExpense                         expenseTable        0               2
+Click                   EditExpense                 payToButton
 
-TestTableByColumnIndex  ViewExpense                         expenseTable        1               "27/3/2014"
+Click					PaytoSelection				addButton
 
-TestTableByColumnIndex  ViewExpense                         expenseTable        2               Walmart
+Set						PayToCreation				nameField			"Walmart"
 
-TestTableByColumnIndex  ViewExpense                         expenseTable        3               "$0.00"
+Click					PayToCreation				okayButton
 
-TestTableByColumnIndex  ViewExpense                         expenseTable        4               ""
+SelectTableByRowIndex	PaytoSelection				table				0
 
-TestTableByColumnLabel  ViewExpense                         expenseTable        ID            2
+Click					PaytoSelection				okayButton
 
-TestTableByColumnLabel  ViewExpense                         expenseTable        Date          "27/3/2014"
+Click                   EditExpense	                creditRadio
 
-TestTableByColumnLabel  ViewExpense                         expenseTable        "Pay To"        Walmart
+Click					EditExpense					btnSave
 
-TestTableByColumnLabel  ViewExpense                         expenseTable        Amount        "$0.00"
+//Entry #2
 
-TestTableByColumnLabel  ViewExpense                         expenseTable        Description   ""
+Click					ViewExpense					addButton
 
-Click					ViewExpense							mntmDeleteSelected
+Set                     EditExpense					amountField        "4.57"
 
-Click					ViewExpense							mntmExit
+Set                     EditExpense	                descriptionField	"Buy"
+
+Set                     EditExpense	                datePicker			"2014-3-29"
+
+Click                   EditExpense                 payToButton
+
+Click					PaytoSelection				addButton
+
+Set						PayToCreation				nameField			"Place"
+
+Click					PayToCreation				okayButton
+
+SelectTableByRowIndex	PaytoSelection				table				0
+
+Click					PaytoSelection				okayButton
+
+Click                   EditExpense	                creditRadio
+
+Click					EditExpense					btnSave
+
+//Test view + sorting
+
+Click					ViewExpense					tblclmnId
+
+SelectTableByRowIndex   ViewExpense                 expenseTable		0
+
+TestTableByColumnIndex  ViewExpense                 expenseTable        0               2
+
+Click					ViewExpense					tblclmnDate
+
+SelectTableByRowIndex   ViewExpense                 expenseTable		0
+
+TestTableByColumnIndex  ViewExpense                 expenseTable        1               "29/3/2013"
+
+Click					ViewExpense					tblclmnDate
+
+SelectTableByRowIndex   ViewExpense                 expenseTable		0
+
+TestTableByColumnIndex  ViewExpense                 expenseTable        1               "29/3/2014"
+
+Click					ViewExpense					tblclmnPayTo
+
+SelectTableByRowIndex   ViewExpense                 expenseTable		0
+
+TestTableByColumnIndex  ViewExpense                 expenseTable        2               "Place"
+
+Click					ViewExpense					tblclmnPayTo
+
+SelectTableByRowIndex   ViewExpense                 expenseTable		0
+
+TestTableByColumnIndex  ViewExpense                 expenseTable        2               "Walmart"
+
+Click					ViewExpense					tblclmnAmount
+
+SelectTableByRowIndex   ViewExpense                 expenseTable		0
+
+TestTableByColumnIndex  ViewExpense                 expenseTable        3               "$3.57"
+
+Click					ViewExpense					tblclmnAmount
+
+SelectTableByRowIndex   ViewExpense                 expenseTable		0
+
+TestTableByColumnIndex  ViewExpense                 expenseTable        3               "$4.57"
+
+Click					ViewExpense					tblclmnDescription
+
+SelectTableByRowIndex   ViewExpense                 expenseTable		0
+
+TestTableByColumnIndex  ViewExpense                 expenseTable        4               "Buy"
+
+Click					ViewExpense					tblclmnDescription
+
+SelectTableByRowIndex   ViewExpense                 expenseTable		0
+
+TestTableByColumnIndex  ViewExpense                 expenseTable        4               "Wreck-It Ralph"
+
+SelectTableByRowIndex   ViewExpense                 expenseTable		0
+
+Click					ViewExpense					deleteButton
+
+SelectTableByRowIndex   ViewExpense                 expenseTable		0
+
+Click					ViewExpense					deleteButton
+
+Click					ViewExpense					mntmExit
