@@ -102,7 +102,7 @@ public class LabelCreation implements IWindow
 				
 				for(int i=0; i<labelIds; i++)
 				{
-					label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(i);
+					label = (domainobjects.Label)PFSystem.getCurrent().getLabelSystem().getDataByID(i+1);
 				
 					if(label.getName().equalsIgnoreCase(temp))
 					{

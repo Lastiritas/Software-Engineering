@@ -92,7 +92,7 @@ public class PayToCreation implements IWindow
 				
 				for(int i = 0; i < paytoIds; i++)
 				{
-					payto = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(i);
+					payto = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(i+1);
 					
 					if(payto.getName().equalsIgnoreCase(tempName))
 					{
