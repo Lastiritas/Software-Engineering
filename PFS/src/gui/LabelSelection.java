@@ -9,7 +9,6 @@ import org.eclipse.swt.events.*;
 import acceptanceTests.EventLoop;
 import acceptanceTests.Register;
 import system.PFSystem;
-import util.StringMatch;
 import domainobjects.*;
 
 public class LabelSelection implements IDialog
@@ -233,7 +232,7 @@ public class LabelSelection implements IDialog
 				final String text = textSearchPickLabel.getText();
 				if(text.length() > 0)
 				{
-					filterTable(pickedTable, text);
+					GUIHelper.filterTable(pickedTable, text);
 				}
 			}
 		});
@@ -244,32 +243,13 @@ public class LabelSelection implements IDialog
 				final String text = textSearchLabel.getText();
 				if(text.length() > 0)
 				{
-					filterTable(choiceTable, text);
+					GUIHelper.filterTable(choiceTable, text);
 				}
 			}
 		});
 						
 		refreshList();
 		refreshPickList();
-	}
-	
-	private static void filterTable(Table inTable, String inFilterText)
-	{					
-		assert(inTable != null);
-		assert(inFilterText != null);
-		assert(inFilterText.length() > 0);
-		
-		final int originalTableSize = inTable.getItemCount();
-			
-		for(int i = originalTableSize - 1; i >= 0; i--)
-		{
-			final String label = inTable.getItem(i).getText(1);
-					
-			if(!StringMatch.match(label, inFilterText))
-			{
-				inTable.remove(i);	
-			}
-		}
 	}
 	
 	private void refreshList()

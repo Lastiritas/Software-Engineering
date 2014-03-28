@@ -7,6 +7,7 @@ import org.eclipse.swt.widgets.TableItem;
 import domainobjects.IDSet;
 import domainobjects.PayTo;
 import system.PFSystem;
+import util.StringMatch;
 
 public class GUIHelper 
 {
@@ -69,5 +70,24 @@ public class GUIHelper
 		final TableItem tableItem = new TableItem(inTable, SWT.NONE);
 		tableItem.setText(0, "" + inId);
 		tableItem.setText(1, payto.getName());
+	}
+	
+	public static void filterTable(Table inTable, String inFilterText)
+	{					
+		assert(inTable != null);
+		assert(inFilterText != null);
+		assert(inFilterText.length() > 0);
+		
+		final int originalTableSize = inTable.getItemCount();
+			
+		for(int i = originalTableSize - 1; i >= 0; i--)
+		{
+			final String payTo = inTable.getItem(i).getText(1);
+					
+			if(!StringMatch.match(payTo, inFilterText))
+			{
+				inTable.remove(i);	
+			}
+		}
 	}
 }

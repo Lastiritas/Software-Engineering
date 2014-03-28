@@ -7,7 +7,6 @@ import org.eclipse.swt.events.*;
 import acceptanceTests.EventLoop;
 import acceptanceTests.Register;
 import system.PFSystem;
-import util.StringMatch;
 import domainobjects.*;
 
 public class LabelCreation implements IWindow
@@ -70,7 +69,7 @@ public class LabelCreation implements IWindow
 				final String text = textNewLabel.getText();
 				if(text.length()>0)
 				{
-					filterTable(existingLabel,text);
+					GUIHelper.filterTable(existingLabel,text);
 				}
 			}
 		});
@@ -157,24 +156,5 @@ public class LabelCreation implements IWindow
 		IDSet labels = PFSystem.getCurrent().getLabelSystem().getAllIDs();
 
 		GUIHelper.addLabelsToTable(existingLabel, labels);
-	}
-	
-	private static void filterTable(Table inTable, String inFilterText)
-	{					
-		assert(inTable != null);
-		assert(inFilterText != null);
-		assert(inFilterText.length() > 0);
-		
-		final int originalTableSize = inTable.getItemCount();
-			
-		for(int i = originalTableSize - 1; i >= 0; i--)
-		{
-			final String label = inTable.getItem(i).getText(1);
-					
-			if(!StringMatch.match(label, inFilterText))
-			{
-				inTable.remove(i);	
-			}
-		}
 	}
 }

@@ -10,7 +10,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
 import system.PFSystem;
-import util.StringMatch;
 import domainobjects.IDSet;
 
 import org.eclipse.swt.widgets.Table;
@@ -148,31 +147,12 @@ public class PaytoSelection implements IDialog
 				final String text = textSearchPayTo.getText();
 				if(text.length() > 0)
 				{
-					filterTable(table, text);
+					GUIHelper.filterTable(table, text);
 				}
 			}
 		});
 		
 		refreshList();
-	}
-	
-	private static void filterTable(Table inTable, String inFilterText)
-	{					
-		assert(inTable != null);
-		assert(inFilterText != null);
-		assert(inFilterText.length() > 0);
-		
-		final int originalTableSize = inTable.getItemCount();
-			
-		for(int i = originalTableSize - 1; i >= 0; i--)
-		{
-			final String payTo = inTable.getItem(i).getText(1);
-					
-			if(!StringMatch.match(payTo, inFilterText))
-			{
-				inTable.remove(i);	
-			}
-		}
 	}
 	
 	private void refreshList()

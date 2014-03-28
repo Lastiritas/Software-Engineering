@@ -1,4 +1,5 @@
 package gui;
+
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Button;
@@ -14,7 +15,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import domainobjects.IDSet;
 import domainobjects.PayTo;
 import system.PFSystem;
-import util.StringMatch;
 
 import org.eclipse.swt.widgets.Composite;
 
@@ -122,7 +122,7 @@ public class PayToCreation implements IWindow
 				final String text = nameField.getText();
 				if(text.length()>0)
 				{
-					filterTable(existingPayto,text);
+					GUIHelper.filterTable(existingPayto,text);
 				}
 			}
 		});
@@ -152,24 +152,5 @@ public class PayToCreation implements IWindow
 		
 		GUIHelper.addPayTosToTable(existingPayto, paytos);
 		
-	}
-	
-	private static void filterTable(Table inTable, String inFilterText)
-	{					
-		assert(inTable != null);
-		assert(inFilterText != null);
-		assert(inFilterText.length() > 0);
-		
-		final int originalTableSize = inTable.getItemCount();
-			
-		for(int i = originalTableSize - 1; i >= 0; i--)
-		{
-			final String label = inTable.getItem(i).getText(1);
-					
-			if(!StringMatch.match(label, inFilterText))
-			{
-				inTable.remove(i);	
-			}
-		}
 	}
 }
