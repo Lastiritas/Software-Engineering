@@ -58,7 +58,13 @@ Tasks Completed by Team Members:
     - 
     
   - Josh Krcadinac
-    - 
+    - Listener for close (red X) on select windows and fix for display current date bug (1/2 day)
+    - Code cleanup in gui and refactoring (2 days)
+    - Made Sort tests and update AllTests.txt (1 day)
+    - Fixed issue with no selection crashing when trying to open, and refactored counters (1/2 day)
+    - AT scripts, .bat and .java test runners made, apply ATR requirements to gui (3 days)
+    - Fixed search field bug in PayTo/Label creation windows, upgrade lists to tables (1 day)
+    - Made Sanitizer class and tests for DB input + output and applied it (1 day)
     
   -Madeline Lavergne
     -
