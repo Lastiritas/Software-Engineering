@@ -10,13 +10,12 @@ import system.PFSystem;
 import util.StringMatch;
 import domainobjects.*;
 
-public class LabelCreation implements IDialog
+public class LabelCreation implements IWindow
 {
 	protected Shell shell;
 	protected Table existingLabel;
 	private Text textNewLabel;
 
-	private String retLabel=null;
 	private Composite composite;
 	
 	private Button btnDone;
@@ -27,7 +26,7 @@ public class LabelCreation implements IDialog
 	 * 
 	 */
 
-	public String open()
+	public void open()
 	{
 		Display display =Display.getDefault();
 		Register.newWindow(this);
@@ -45,8 +44,6 @@ public class LabelCreation implements IDialog
 				}
 			}
 		}
-		
-		return retLabel;
 	}
 	
 	
@@ -116,7 +113,8 @@ public class LabelCreation implements IDialog
 				
 				if(!exist)
 				{
-					retLabel=temp;
+					final int newLabelID = PFSystem.getCurrent().getLabelSystem().create();
+					PFSystem.getCurrent().getLabelSystem().update(newLabelID, new domainobjects.Label(temp));
 				}
 				
 				shell.close();
@@ -157,12 +155,8 @@ public class LabelCreation implements IDialog
 		existingLabel.removeAll();
 		
 		IDSet labels = PFSystem.getCurrent().getLabelSystem().getAllIDs();
-		
-		for(int i=0; i <labels.getSize(); i++)
-		{
-			final int id = labels.getValue(i);
-			GUIHelper.addLabelToTable(existingLabel, id);
-		}
+
+		GUIHelper.addLabelsToTable(existingLabel, labels);
 	}
 	
 	private static void filterTable(Table inTable, String inFilterText)

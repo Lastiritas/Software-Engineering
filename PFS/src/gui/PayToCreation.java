@@ -2,11 +2,11 @@ package gui;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
@@ -24,9 +24,8 @@ public class PayToCreation implements IWindow
 {
 
 	protected Shell shell;
-	protected List list;
+	protected Table existingPayto;
 	private Text nameField;
-	private String allName[];
 	private Composite composite;
 	private Button okayButton;
 	
@@ -86,20 +85,25 @@ public class PayToCreation implements IWindow
 			public void widgetSelected(SelectionEvent arg0) 
 			{
 				String tempName = nameField.getText();
-				boolean existName = false;
+				boolean exist = false;
+				final int paytoIds = PFSystem.getCurrent().getPayToSystem().getAllIDs().getSize();
+				PayTo payto;
 				
-				for(int i = 0; i < allName.length && !existName; i++)
+				for(int i = 0; i < paytoIds; i++)
 				{
-					if(allName[i].equalsIgnoreCase(tempName))
+					payto = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(i);
+					
+					if(payto.getName().equalsIgnoreCase(tempName))
 					{
-						existName = true;
+						exist = true;
+						break;
 					}
 				}
 				
-				if(!existName)
+				if(!exist)
 				{
-					final int newLabelID = PFSystem.getCurrent().getPayToSystem().create();
-					PFSystem.getCurrent().getPayToSystem().update(newLabelID, new PayTo(nameField.getText()));
+					final int newPaytoID = PFSystem.getCurrent().getPayToSystem().create();
+					PFSystem.getCurrent().getPayToSystem().update(newPaytoID, new PayTo(tempName));
 				}
 
 				shell.close();
@@ -109,71 +113,52 @@ public class PayToCreation implements IWindow
 		
 		nameField = new Text(composite, SWT.BORDER);
 		nameField.setBounds(10, 10, 424, 31);
-		nameField.addKeyListener(new KeyAdapter()
-		{
-			public void keyPressed(KeyEvent e)
+		nameField.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent arg0)
 			{
-				String input = nameField.getText();
-				if(!(input.length() ==0 && (e.character == 8 || e.character == 127)))
+				refreshList();
+				
+				final String text = nameField.getText();
+				if(text.length()>0)
 				{
-					if((e.character >32 && e.character <127) ||e.character == 8 || e.character == 127)
-					{
-						if(e.character >32 && e.character <127)
-							input += e.character;
-						refreshList();
-						
-						for(int i=0; i<list.getItemCount(); i++)
-						{
-							if(!StringMatch.match(list.getItem(i),input))
-							{
-								list.remove(list.getItem(i));
-								i=-1;
-							}
-						}
-						
-					}
+					filterTable(existingPayto,text);
 				}
 			}
 		});
 		nameField.setMessage("Name");
 		
-		list = new List(composite, SWT.BORDER);
-		list.setBounds(10, 47, 424, 207);
-		
-		loadList();
-
-	}
-	
-	private void loadList()
-	{
-		IDSet payToIDs = PFSystem.getCurrent().getPayToSystem().getAllIDs();
-		
-		int length = payToIDs.getSize();
-		allName = new String[length];
-		
-		for(int i=0; i<length; i++)
-		{
-			final int id = payToIDs.getValue(i);
-			final PayTo payto = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(id);
-			
-			allName[i] = payto.getName();
-		}
+		existingPayto = new Table(composite, SWT.BORDER);
+		existingPayto.setBounds(10, 47, 424, 207);
 		
 		refreshList();
-		refreshList_1();
 	}
 	
 	private void refreshList()
 	{
-		list.removeAll();
-		for(int i=0; i< allName.length; i ++)
-		{
-			list.add(allName[i]);
-		}
+		existingPayto.removeAll();
+		
+		IDSet paytos = PFSystem.getCurrent().getPayToSystem().getAllIDs();
+		
+		GUIHelper.addPayTosToTable(existingPayto, paytos);
 		
 	}
 	
-	private void refreshList_1()
-	{
+	private static void filterTable(Table inTable, String inFilterText)
+	{					
+		assert(inTable != null);
+		assert(inFilterText != null);
+		assert(inFilterText.length() > 0);
+		
+		final int originalTableSize = inTable.getItemCount();
+			
+		for(int i = originalTableSize - 1; i >= 0; i--)
+		{
+			final String label = inTable.getItem(i).getText(1);
+					
+			if(!StringMatch.match(label, inFilterText))
+			{
+				inTable.remove(i);	
+			}
+		}
 	}
 }
