@@ -1,9 +1,9 @@
 All Tests for the Personal Finanace system
-  tests.domainobjectstests.ExpenseTest
+  tests.domainobject.ExpenseTest
     testCentsAndDollars - Good
     testGetters - Good
     testCreation - Good
-  tests.domainobjectstests.IDSetTest
+  tests.domainobject.IDSetTest
     testUnion - Good
     testEquals - Good
     testContains - Good
@@ -15,12 +15,11 @@ All Tests for the Personal Finanace system
     testSetDifferenceWithEmptyAndEmptySet - Good
     testSetDifferenceWithFullAndEmptySet - Good
     testSetDifferenceWithEmptyAndFullSet - Good
-  tests.domainobjectstests.LabelTest
+  tests.domainobject.LabelTest
     test_Create_a_label - Good
-  domainonjectstests.PayToTest
-    test_Create_a_payTo_with_Branch - Good
-    test_Create_a_payTo_without_Branch - Good
-  tests.dataAccessLayerTests.DatabaseTests
+  tests.domainonject.PayToTest
+    test_Create_a_payTo - Good
+  tests.dataAccessLayer.DatabaseTests
     test_Getting_all_expense_Ids_should_return_the_previously_added_id - Good
     test_Getting_all_label_Ids_should_return_the_previously_added_id - Good
     test_Getting_all_payTo_Ids_should_return_the_previously_added_id - Good
@@ -32,7 +31,7 @@ All Tests for the Personal Finanace system
     test_Update_payTo - Good
     test_Add_and_get_an_empty_expense - Good
     test_Add_and_delete_an_expense_successfully - Good
-  tests.dataAccessLayerTests.StubDatabaseTests
+  tests.dataAccessLayer.StubDatabaseTests
     test_Getting_all_expense_Ids_should_return_the_previously_added_id - Good
     test_Getting_all_label_Ids_should_return_the_previously_added_id - Good
     test_Getting_all_payTo_Ids_should_return_the_previously_added_id - Good
@@ -43,7 +42,7 @@ All Tests for the Personal Finanace system
     test_Update_label - Good
     test_Add_and_get_a_payTo - Good
     test_Update_payTo - Good
-  tests.utiltests.StringMatchTests
+  tests.util.SortTests
     testSortStringDesc - Good
     testSortIDDesc - Good
     testSortDateDesc - Good
@@ -52,7 +51,14 @@ All Tests for the Personal Finanace system
     testSortMoneyAsc - Good
     testSortStringAsc - Good
     testSortDateAsc - Good
+  tests.util.StringMatchTests
     testMatchString - Good
     testMatchFailChar - Good
     testMAtchFailString - Good
     testMatchChar - Good
+  tests.util.SanitizerTests
+    testSanitizeMultCharReplace - Good
+    testSanitizeMultChar - Good
+    testSanitizeOneCharReplace - Good
+    testSanitizeOneChar - Good
+    testSanitizeNoChar - Good
