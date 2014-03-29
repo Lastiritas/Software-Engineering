@@ -26,7 +26,7 @@ Click                   EditExpense	                        creditRadio
 
 Click					EditExpense							btnEditLabels
 
-Click					LabelSelectiom						btnNew
+Click					LabelSelection						btnNew
 
 Set						LabelCreation						textNewLabel		"Entertainment"
 
