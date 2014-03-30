@@ -53,7 +53,6 @@ public class ViewExpense implements IWindow
 	private Button addButton;
 	private Button duplicateButton;
 	private Button deleteButton;
-	private Button graphButton;
 	private Menu menu;
 	private Menu menu_1;
 	private Menu menu_3;
@@ -163,21 +162,6 @@ public class ViewExpense implements IWindow
 			}
 		});
 		deleteButton.setText("-");
-		
-		graphButton = new Button(composite, SWT.NONE);
-		graphButton.setBounds(679, 613, 94, 28);
-		graphButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				//PerDayWindow window = new PerDayWindow();
-				final IDSet expenseIDs = GUIHelper.getIdsFromTable(expenseTable);
-				
-				ExpenseTrends window = new ExpenseTrends();
-				window.setExpenseIDs(expenseIDs);
-				window.open();
-			}
-		});
-		graphButton.setText("Graph");
 		
 		btnOpen = new Button(composite, SWT.NONE);
 		btnOpen.setBounds(779, 613, 94, 28);
@@ -421,9 +405,26 @@ public class ViewExpense implements IWindow
 		mntmReview.setMenu(menu_4);
 		
 		MenuItem mntmGraph = new MenuItem(menu_4, SWT.NONE);
+		mntmGraph.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				final IDSet expenseIDs = GUIHelper.getIdsFromTable(expenseTable);
+				
+				ExpenseTrends window = new ExpenseTrends();
+				window.setExpenseIDs(expenseIDs);
+				window.open();
+			}
+		});
 		mntmGraph.setText("Graph");
 		
 		MenuItem mntmTrends = new MenuItem(menu_4, SWT.NONE);
+		mntmTrends.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				PerDayWindow window = new PerDayWindow();
+				window.open();
+			}
+		});
 		mntmTrends.setText("Trends");
 		
 		refreshWholeList(new ExpenseFilter());
