@@ -414,6 +414,18 @@ public class ViewExpense implements IWindow
 		});
 		mntmDeleteSelected.setText("Delete Selected");
 		
+		MenuItem mntmReview = new MenuItem(menu, SWT.CASCADE);
+		mntmReview.setText("Review");
+		
+		Menu menu_4 = new Menu(mntmReview);
+		mntmReview.setMenu(menu_4);
+		
+		MenuItem mntmGraph = new MenuItem(menu_4, SWT.NONE);
+		mntmGraph.setText("Graph");
+		
+		MenuItem mntmTrends = new MenuItem(menu_4, SWT.NONE);
+		mntmTrends.setText("Trends");
+		
 		refreshWholeList(new ExpenseFilter());
 	}
 	
