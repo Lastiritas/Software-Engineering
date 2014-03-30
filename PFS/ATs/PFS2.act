@@ -2,6 +2,8 @@
 
 Package                 gui
 
+InvokeMethod			tests.AT.ATdatabase					startUp
+
 Click					ViewExpense							addButton
 
 Click					EditExpense							btnCancel
@@ -35,3 +37,5 @@ TestTableByColumnLabel  ViewExpense                         expenseTable        
 Click					ViewExpense							mntmDeleteSelected
 
 Click					ViewExpense							mntmExit
+
+InvokeMethod			tests.AT.ATdatabase					shutDown

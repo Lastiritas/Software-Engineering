@@ -2,6 +2,8 @@
 
 Package                 gui
 
+InvokeMethod			tests.AT.ATdatabase						startUp
+
 Click					ViewExpense							addButton
 
 Set                     EditExpense							amountField        "3.57"
@@ -73,3 +75,5 @@ TestTableByColumnLabel  ViewExpense                         expenseTable        
 Click					ViewExpense							deleteButton
 
 Click					ViewExpense							mntmExit
+
+InvokeMethod			tests.AT.ATdatabase					shutDown
