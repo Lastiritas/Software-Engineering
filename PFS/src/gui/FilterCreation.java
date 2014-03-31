@@ -46,6 +46,8 @@ public class FilterCreation implements IDialog
 	private Button expenseAllRadio;
 	private Button expenseSomeRadio;
 	
+	private Button filterButton;
+	
 	private ExpenseFilter outputFilter = null;
 	private Table labelTable;
 	private Table payToTable;
@@ -324,7 +326,7 @@ public class FilterCreation implements IDialog
 		removePayToButton.setBounds(141, 189, 109, 28);
 		removePayToButton.setText("Remove Pay To");
 		
-		Button filterButton = new Button(composite_5, SWT.NONE);
+		filterButton = new Button(composite_5, SWT.NONE);
 		filterButton.setBounds(649, 641, 94, 28);
 		filterButton.addSelectionListener(new SelectionAdapter() {
 			@Override

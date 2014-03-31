@@ -76,3 +76,5 @@ Click					ViewExpense				deleteButton
 	
 Click					ViewExpense				mntmExit
 
+InvokeMethod			tests.AT.ATdatabase		shutDown
+

@@ -1,0 +1,184 @@
+//Filter expenses
+
+package					gui
+
+InvokeMethod			tests.AT.ATdatabase					startUp
+ 
+//Create expense 1
+
+Click					ViewExpense							addButton
+
+Set                     EditExpense							amountField        "3.57"
+
+Set                     EditExpense	                        descriptionField	"Wreck-It Ralph"
+
+Set                     EditExpense	                        datePicker			"2013-3-29"
+
+Click					EditExpense							cashRadio
+
+Click                   EditExpense                      	payToButton
+
+Click					PaytoSelection						addButton
+
+Set						PayToCreation						nameField			"Walmart"
+
+Click					PayToCreation						okayButton
+
+SelectTableByRowIndex	PaytoSelection						table				0
+
+Click					PaytoSelection						okayButton
+
+Click					EditExpense							btnEditLabels
+
+Click					LabelSelection						btnNew
+
+Set						LabelCreation						textNewLabel		"Entertainment"
+
+Click					LabelCreation						btnDone
+
+SelectTableByRowIndex	LabelSelection						choiceTable			0
+
+Click					LabelSelection						btnAdd
+
+Click					LabelSelection						btnDone
+
+Click					EditExpense							btnSave
+
+//create expense 2
+
+Click					ViewExpense							addButton
+
+Set                     EditExpense							amountField        "15.00"
+
+Set                     EditExpense	                        descriptionField	""
+
+Set                     EditExpense	                        datePicker			"2014-3-29"
+
+Click					EditExpense							debitRadio
+
+Click                   EditExpense                      	payToButton
+
+Click					PaytoSelection						addButton
+
+Set						PayToCreation						nameField			"pay"
+
+Click					PayToCreation						okayButton
+
+SelectTableByRowIndex	PaytoSelection						table				0
+
+Click					PaytoSelection						okayButton
+
+Click					EditExpense							btnEditLabels
+
+Click					LabelSelection						btnNew
+
+Set						LabelCreation						textNewLabel		"label"
+
+Click					LabelCreation						btnDone
+
+SelectTableByRowIndex	LabelSelection						choiceTable			0
+
+Click					LabelSelection						btnAdd
+
+Click					LabelSelection						btnDone
+
+Click					EditExpense							btnSave
+
+//filter by  dateRange
+
+Click 					ViewExpense							mntmCreateFilter
+
+Click					FilterCreation						dateFilterCheck
+
+Set						FilterCreation						lowerDateSelect		"01/01/2011"
+
+Set						FilterCreation						upperDateSelect		"12/12/2013"
+
+Click					FilterCreation						filterButton
+
+//verify date filter
+
+SelectTableByRowIndex   ViewExpense                       	expenseTable		1				
+
+TestTableByColumnIndex  ViewExpense                         expenseTable        0               null
+
+//filter amount
+
+Click					ViewExpense							mntmCreateFilter
+
+Click					FilterCreation						amountFilterCheck
+
+Set						FilterCreation						lowerAmountText		"$14.00"
+
+Set						FilterCreation						upperAmountText		"$16.00"
+
+Click					FilterCreation						filterButton
+
+//verify amount filter
+
+SelectTableByRowIndex   ViewExpense                       	expenseTable		1				
+
+TestTableByColumnIndex  ViewExpense                         expenseTable        0               null
+
+//filter payment
+
+Click					ViewExpense							mntmCreateFilter
+
+Click					FilterCreation						paymentFilterCheck
+
+Click					FilterCreation						cashRadio
+
+Click					FilterCreation						filterButton
+
+//verify payment filter
+
+SelectTableByRowIndex   ViewExpense                       	expenseTable		1				
+
+TestTableByColumnIndex  ViewExpense                         expenseTable        0               null
+
+//filter by labels
+
+Click					ViewExpense							mntmCreateFilter
+
+Click					FilterCreation						labelFilterCheck
+
+Click					FilterCreation						selectLabelsButton
+
+SelectTableByRowIndex	LabelSelection						choiceTable			0
+
+Click					LabelSelection						btnAdd
+
+Click					LabelSelection						btnDone
+
+Click					FilterCreation						filterButton
+
+//verify label filter
+
+SelectTableByRowIndex   ViewExpense                       	expenseTable		1				
+
+TestTableByColumnIndex  ViewExpense                         expenseTable        0               null
+
+//filter by payTo
+
+Click					ViewExpense							mntmCreateFilter
+
+Click					FilterCreation						payToFilterCheck
+
+Click					FilterCreation						selectPayToButton
+
+SelectTableByRowIndex	PaytoSelection						table				0
+
+Click					PaytoSelection						okayButton
+
+Click					FilterCreation						filterButton
+
+//verify filter payto
+
+SelectTableByRowIndex   ViewExpense                       	expenseTable		1				
+
+TestTableByColumnIndex  ViewExpense                         expenseTable        0               null
+
+Click					ViewExpense							mntmExit
+
+InvokeMethod			tests.AT.ATdatabase					shutDown
+ 
