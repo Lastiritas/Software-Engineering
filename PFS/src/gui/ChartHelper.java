@@ -152,8 +152,17 @@ public class ChartHelper
 			}
 		}
 		
-		String[] output = new String[sizeToReturn];
-		System.arraycopy(distinctArray, 0, output, 0, sizeToReturn);
+		String[] output;
+		if(sizeDistinct < sizeToReturn)
+		{
+			output = new String[sizeDistinct];
+			System.arraycopy(distinctArray, 0, output, 0, sizeDistinct);
+		}
+		else
+		{
+			output = new String[sizeToReturn];
+			System.arraycopy(distinctArray, 0, output, 0, sizeToReturn);
+		}
 		
 		return output;
 	}
