@@ -1,0 +1,78 @@
+//testing graphs
+
+Package					gui
+
+InvokeMethod			tests.AT.ATdatabase		startUp
+
+Click					ViewExpense				addButton
+
+Set                 	EditExpense				amountField        "3.57"
+
+Set                 	EditExpense	       		descriptionField	"Wreck-It Ralph"
+
+Set                		EditExpense	        	datePicker			"2013-3-29"
+
+Click               	EditExpense         	payToButton
+
+Click					PaytoSelection			addButton
+
+Set						PayToCreation			nameField			"Walmart"
+
+Click					PayToCreation			okayButton
+
+SelectTableByRowIndex	PaytoSelection			table				0
+
+Click					PaytoSelection			okayButton
+
+Click                   EditExpense	    		creditRadio
+
+Click					EditExpense				btnEditLabels
+
+Click					LabelSelection			btnNew
+
+Set						LabelCreation			textNewLabel		"Entertainment"
+
+Click					LabelCreation			btnDone
+
+SelectTableByRowIndex	LabelSelection			choiceTable			0
+
+Click					LabelSelection			btnAdd
+
+SelectTableByRowIndex	LabelSelection			pickedTable			0
+
+Click					LabelSelection			btnRemove
+
+SelectTableByRowIndex	LabelSelection			choiceTable			0
+
+Click					LabelSelection			btnAdd
+
+Click					LabelSelection			btnDone
+
+Click					EditExpense				btnSave
+
+Click					ViewExpense				mnntmGraph
+
+Click					ExpenseTrends			tbtmChartOne
+
+//Test					ExpenseTrends			tbtmChartOne		"Visual Test of Graph"
+
+Click					ExpenseTrends			tbtmChartTwo
+
+//Test					ExpenseTrends			tbtmChartTwo		"Visual Test of Graph"
+
+Click					ExpenseTrends			tbtmChartThree
+
+//Test					ExpenseTrends			tbtmChartThree		"Visual Test of Graph"
+
+Click					ExpenseTrends			tbtmChartFour
+
+//Test					ExpenseTrends			tbtmChartFour		"Visual Test of Graph"
+	
+Click					ExpenseTrends			mntmExit
+	
+SelectTableByRowIndex	ViewExpense				expenseTable		0
+	
+Click					ViewExpense				deleteButton
+	
+Click					ViewExpense				mntmExit
+

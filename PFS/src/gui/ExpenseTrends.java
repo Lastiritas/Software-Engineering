@@ -3,11 +3,16 @@ package gui;
 import java.text.DecimalFormat;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
@@ -21,7 +26,6 @@ import org.swtchart.ISeriesLabel;
 
 import domainobjects.IDSet;
 import util.XAxis;
-
 import acceptanceTests.Register;
 import acceptanceTests.EventLoop;
 
@@ -30,6 +34,11 @@ public class ExpenseTrends
 	private IDSet expenseIDs;
 	private Shell shell;
 	private ChartHelper chartHelper;
+	private Menu menu;
+	private MenuItem mntmNewSubmenu;
+	private Menu menu_1;
+	private MenuItem mntmExit;
+	
 	
 	//Settings for charts
 	private Color colorTitle;
@@ -77,8 +86,27 @@ public class ExpenseTrends
 	{
 		shell = new Shell(SWT.SYSTEM_MODAL | SWT.DIALOG_TRIM);
 		shell.setText("Expenses");
-		shell.setSize(700, 670);
+		shell.setSize(700, 690);
 		shell.setLayout(null);
+		
+		menu = new Menu(shell, SWT.BAR);
+		menu.setLocation(new Point(0, 0));
+		shell.setMenuBar(menu);
+		
+		mntmNewSubmenu = new MenuItem(menu, SWT.CASCADE);
+		mntmNewSubmenu.setText("File");
+		
+		menu_1 = new Menu(mntmNewSubmenu);
+		mntmNewSubmenu.setMenu(menu_1);
+		
+		mntmExit = new MenuItem(menu_1, SWT.NONE);
+		mntmExit.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				shell.close();
+			}
+		});
+		mntmExit.setText("Exit");
 		
 		TabFolder tabFolder = new TabFolder(shell, SWT.NONE);
 		tabFolder.setBounds(0, 0, 700, 640);
