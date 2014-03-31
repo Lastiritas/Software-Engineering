@@ -41,12 +41,11 @@ Bugs fixed:
   - Creating label does not filter correctly
   - Month off by one in View Expense
   - Database statement errors
-  - PayTo manager not sorting the entries when ID/Name is selected
 
 ===========
 Meetings
 
-
+  - None
 
 ===========
 Tasks Completed by Team Members:
@@ -67,7 +66,11 @@ Tasks Completed by Team Members:
     - Made Sanitizer class and tests for DB input + output and applied it (1 day)
     
   -Madeline Lavergne
-    -
+    - Fixed Month off by one bug (1/2 day)
+    - Pay to Filtering bug fixed. (1 day)
+    	-Added GUI button for improved flow
+    -Draft 'View Trend' AT Script written (1/2 day)
+    -AT Script 'Filter and Find Expenses' written (1 day)
     
   - Rafael Lastiri
     - Fixed the previous issue with database not saving data (1 day)
