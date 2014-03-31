@@ -38,7 +38,10 @@ public class ExpenseTrends
 	private MenuItem mntmNewSubmenu;
 	private Menu menu_1;
 	private MenuItem mntmExit;
-	
+	private TabItem tbtmChartOne;
+	private TabItem tbtmChartTwo;
+	private TabItem tbtmChartThree;
+	private TabItem tbtmChartFour;
 	
 	//Settings for charts
 	private Color colorTitle;
@@ -128,7 +131,7 @@ public class ExpenseTrends
 	private void createTabs(TabFolder tabFolder)
 	{
 		//Payment Method tab
-		TabItem tbtmChartOne = new TabItem(tabFolder, SWT.NONE);
+		tbtmChartOne = new TabItem(tabFolder, SWT.NONE);
 		tbtmChartOne.setText("Expenses by Payment Method");
 		
 		Composite composite = new Composite(tabFolder, SWT.NONE);
@@ -138,7 +141,7 @@ public class ExpenseTrends
 		tbtmChartOne.setControl(composite);
 		
 		//Month tab
-		TabItem tbtmChartTwo = new TabItem(tabFolder, SWT.NONE);
+		tbtmChartTwo = new TabItem(tabFolder, SWT.NONE);
 		tbtmChartTwo.setText("Expenses by Month");
 		
 		Composite composite2 = new Composite(tabFolder, SWT.NONE);
@@ -148,7 +151,7 @@ public class ExpenseTrends
 		tbtmChartTwo.setControl(composite2);
 		
 		//Location tab
-		TabItem tbtmChartThree = new TabItem(tabFolder, SWT.NONE);
+		tbtmChartThree = new TabItem(tabFolder, SWT.NONE);
 		tbtmChartThree.setText("Expenses by Location");
 		
 		Composite composite3 = new Composite(tabFolder, SWT.NONE);
@@ -158,7 +161,7 @@ public class ExpenseTrends
 		tbtmChartThree.setControl(composite3);
 		
 		//Labels tab
-		TabItem tbtmChartFour = new TabItem(tabFolder, SWT.NONE);
+		tbtmChartFour = new TabItem(tabFolder, SWT.NONE);
 		tbtmChartFour.setText("Expenses by Labels");
 		
 		Composite composite4 = new Composite(tabFolder, SWT.NONE);

@@ -7,6 +7,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -31,7 +33,11 @@ import acceptanceTests.Register;
 
 public class PerDayWindow implements IDialog 
 {
-	private Shell shlDayView;
+	private Shell shell;
+	private Menu menu;
+	private Menu menu_1;
+	private MenuItem mntmNewSubmenu;
+	private MenuItem mntmExit;
 	
 	private Table table;
 	private Scale thresholdSlider;
@@ -57,12 +63,12 @@ public class PerDayWindow implements IDialog
 		Display display = Display.getDefault();
 		Register.newWindow(this);
 		createContents();
-		shlDayView.open();
-		shlDayView.layout();
+		shell.open();
+		shell.layout();
 		
 		if(EventLoop.isEnabled())
 		{
-			while (!shlDayView.isDisposed()) 
+			while (!shell.isDisposed()) 
 			{
 				if (!display.readAndDispatch()) 
 				{
@@ -80,13 +86,32 @@ public class PerDayWindow implements IDialog
 	 */
 	protected void createContents() 
 	{
-		shlDayView = new Shell(SWT.SYSTEM_MODAL | SWT.DIALOG_TRIM);
-		shlDayView.setSize(805, 541);
-		shlDayView.setMinimumSize(new Point(800, 550));
-		shlDayView.setText("Day View");
-		shlDayView.setLayout(null);
+		shell = new Shell(SWT.SYSTEM_MODAL | SWT.DIALOG_TRIM);
+		shell.setSize(805, 541);
+		shell.setMinimumSize(new Point(800, 570));
+		shell.setText("Day View");
+		shell.setLayout(null);
 		
-		composite = new Composite(shlDayView, SWT.NONE);
+		menu = new Menu(shell, SWT.BAR);
+		menu.setLocation(new Point(0, 0));
+		shell.setMenuBar(menu);
+		
+		mntmNewSubmenu = new MenuItem(menu, SWT.CASCADE);
+		mntmNewSubmenu.setText("File");
+		
+		menu_1 = new Menu(mntmNewSubmenu);
+		mntmNewSubmenu.setMenu(menu_1);
+		
+		mntmExit = new MenuItem(menu_1, SWT.NONE);
+		mntmExit.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				shell.close();
+			}
+		});
+		mntmExit.setText("Exit");
+		
+		composite = new Composite(shell, SWT.NONE);
 		composite.setBounds(0, 0, 805, 528);
 		
 		Composite composite_1 = new Composite(composite, SWT.NONE);

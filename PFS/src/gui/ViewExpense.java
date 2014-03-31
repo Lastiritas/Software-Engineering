@@ -67,7 +67,8 @@ public class ViewExpense implements IWindow
 	private MenuItem mntmCreateFilter;
 	private MenuItem mntmViewCommonLabels;
 	private MenuItem mntmAction;
-	
+	private MenuItem mntmGraph;
+	private MenuItem mntmTrends;
 		
 	/**
 	 * Open the window.
@@ -404,7 +405,7 @@ public class ViewExpense implements IWindow
 		Menu menu_4 = new Menu(mntmReview);
 		mntmReview.setMenu(menu_4);
 		
-		MenuItem mntmGraph = new MenuItem(menu_4, SWT.NONE);
+		mntmGraph = new MenuItem(menu_4, SWT.NONE);
 		mntmGraph.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -417,7 +418,7 @@ public class ViewExpense implements IWindow
 		});
 		mntmGraph.setText("Graph");
 		
-		MenuItem mntmTrends = new MenuItem(menu_4, SWT.NONE);
+		mntmTrends = new MenuItem(menu_4, SWT.NONE);
 		mntmTrends.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
