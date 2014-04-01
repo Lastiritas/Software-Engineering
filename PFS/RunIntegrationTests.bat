@@ -4,9 +4,9 @@ call setClasspath
 
 REM @echo on
 
-REM java junit.textui.TestRunner tests.IntegrationTests
+REM java junit.textui.TestRunner tests.IntegrateTests
 
-java junit.swingui.TestRunner tests.IntegrationTests
+java junit.swingui.TestRunner tests.IntegrateTests
 
 call RestoreDBTests
 

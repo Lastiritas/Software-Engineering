@@ -4,7 +4,7 @@ import tests.integrationtests.SeamTests;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-public class IntegrationTests
+public class IntegrateTests
 {
 	public static TestSuite suite;
 	
