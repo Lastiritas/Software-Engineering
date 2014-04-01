@@ -8,6 +8,7 @@ REM java junit.textui.TestRunner tests.AllTests
 
 java junit.swingui.TestRunner tests.AllTests
 
+call RestoreDBTests
 
 pause
 
