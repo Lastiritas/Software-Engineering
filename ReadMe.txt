@@ -17,7 +17,11 @@ Packages:
 
  	util - The package responsible for handling all classes that contain helper functions that could be used in any part of the application.
 
- 	utiltests - The package responsible for handing the testing of the util package.
+ 	utiltests - The package responsible for handling the testing of the util package.
+ 	
+ 	*datamining - The package reponsible for turning data into useful trends
+ 	
+ 	*dataminingtests - The package responsible for handling the testing of the datamining package.
 
  
  Main Files:
@@ -27,23 +31,21 @@ Packages:
 
  	PFSystem.java - The main access point to all systems from the system package.
  	
- 	*EditExpense.java - The main window that handles the editing and viewing of expeenses.
+ 	EditExpense.java - The main window that handles the editing and viewing of expeenses.
 
- 	ExpenseManagment.java - The system used to manage expenses.
-
- 	LabelManagement.java - The system used to manage labels.
-
- 	PayToManagement.java - The system used to manage payTos.
+ 	*Manager.java - The class used to manage expenses, labels and payTos. ExpenseManagment.java, LabelManagement.java and PayToManagement.java extend this class.
 
  	Expense.java - The main object used in this system. The expense is the core object for our expense tracking system.
 
  	IDSet.java - The most used class that contains a set of ids used by the system to get expenses, labels, or paytos.
 
  Architecture:
- 	GUI <--> System <--> *HSQL Database
+ 	GUI <--> System <--> HSQL Database
 
  	Domain Objects are used by the GUI, System, and Stub Database
  	
  	The system does not return collections of labels, paytos, or expenses. Instead it returns an ID set. The system can return a single expense, label, or payto based on a given id. This is to avoid accidently editing a value in the class and changing a value else where.
  	
- 	*The systemTests using jmock are not included in the test scripts as the are not threadsafe, but when run using and IDE they compile and pass.
+ 	The systemTests using jmock are not included in the test scripts as the are not threadsafe, but when run using and IDE they compile and pass.
+ 	
+ 	*The Acceptance Tests do not run properly as there is no way to access graph data using atr.jar. Also the way the the database is used the AT's cannot be properly executed.
