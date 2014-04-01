@@ -164,7 +164,9 @@ public class PFSystem
 		assert inSet != null;
 		assert inFrequencyPercent >= 0.0 && inFrequencyPercent <= 1.0 : "Invalid percent value, should be 0.0 to 1.0";
 		
-		return (int)(inSet.size() * inFrequencyPercent);
+		int minSup = (int)(inSet.size() * inFrequencyPercent);
+		
+		return Math.max(minSup, 1);	// never allow anything less than zero to be returned
 	}
 	
 	private static GroupedCollection[] createGroupsForDaysOfWeek()

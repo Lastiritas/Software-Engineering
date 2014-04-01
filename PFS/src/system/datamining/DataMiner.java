@@ -10,7 +10,7 @@ public final class DataMiner
 	public static ArrayList<IDSet> mine(Collection<IDSet> inData, int inMinSup)
 	{
 		assert inData != null : "Cannot mine on null set collection";
-		assert inMinSup >= 0 : "Cannot min with negative min sup";
+		assert inMinSup > 0 : "Cannot min with negative min sup";
 
 		final ArrayList<IDSet> domainItems = getDomainItems(inData);
 
