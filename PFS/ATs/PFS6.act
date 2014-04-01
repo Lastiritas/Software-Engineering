@@ -1,8 +1,6 @@
 //Trends
 
 package					gui
-
-InvokeMethod			tests.AT.ATdatabase					startUp
  
 //Create expense 1
 
@@ -54,7 +52,4 @@ TestTableByColumnIndex	PerDayWindow						table				6				"Entertainment"
 
 Click					PerDayWindow						mntmExit
 
-Click					ViewExpense							mntmExit
-
-InvokeMethod			tests.AT.ATdatabase					shutDown
- 
+Click					ViewExpense							mntmExit 

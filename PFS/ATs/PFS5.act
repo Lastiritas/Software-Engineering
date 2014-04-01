@@ -1,8 +1,6 @@
 //Filter expenses
 
 package					gui
-
-InvokeMethod			tests.AT.ATdatabase					startUp
  
 //Create expense 1
 
@@ -178,7 +176,4 @@ SelectTableByRowIndex   ViewExpense                       	expenseTable		1
 
 TestTableByColumnIndex  ViewExpense                         expenseTable        0               null
 
-Click					ViewExpense							mntmExit
-
-InvokeMethod			tests.AT.ATdatabase					shutDown
- 
+Click					ViewExpense							mntmExit 
