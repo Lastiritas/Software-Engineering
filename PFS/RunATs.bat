@@ -14,6 +14,8 @@ set SLEEP=1
 
 java -cp %CLASSPATH% acceptanceTests.TestRunner %SLEEP%
 
+call RestoreDBTests
+
 pause
 
 

@@ -10,5 +10,7 @@ java junit.swingui.TestRunner tests.IntegrateTests
 
 call RestoreDBTests
 
+call RestoreDB
+
 pause
 

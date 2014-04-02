@@ -10,6 +10,7 @@ public class SeamTests extends Seam
 
 	public PFSystem getPFS()
 	{
+		PFSystem.forceReal();
 		return PFSystem.getCurrent();
 	}
 

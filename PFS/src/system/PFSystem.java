@@ -170,6 +170,13 @@ public class PFSystem
 	public static void forceStub()
 	{
 		useStub = true;
+		current = null;
+	}
+	
+	public static void forceReal()
+	{
+		useStub = false;
+		current = null;
 	}
 	
 	public static PFSystem getCurrent()
