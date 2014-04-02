@@ -87,7 +87,7 @@ public class PerDayWindow implements IDialog
 	protected void createContents() 
 	{
 		shell = new Shell(SWT.SYSTEM_MODAL | SWT.DIALOG_TRIM);
-		shell.setSize(805, 541);
+		shell.setSize(811, 577);
 		shell.setMinimumSize(new Point(800, 570));
 		shell.setText("Day View");
 		shell.setLayout(null);
@@ -115,11 +115,11 @@ public class PerDayWindow implements IDialog
 		composite.setBounds(0, 0, 805, 528);
 		
 		Composite composite_1 = new Composite(composite, SWT.NONE);
-		composite_1.setBounds(10, 468, 488, 50);
+		composite_1.setBounds(10, 449, 488, 69);
 		composite_1.setLayout(null);
 		
 		thresholdSlider = new Scale(composite_1, SWT.NONE);
-		thresholdSlider.setBounds(10, 10, 468, 30);
+		thresholdSlider.setBounds(10, 10, 468, 49);
 		thresholdSlider.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				refreshList();
@@ -129,7 +129,7 @@ public class PerDayWindow implements IDialog
 		thresholdSlider.setSelection(50);
 		
 		table = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
-		table.setBounds(10, 10, 785, 452);
+		table.setBounds(10, 10, 785, 433);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		
@@ -163,7 +163,7 @@ public class PerDayWindow implements IDialog
 		
 		Group grpShow = new Group(composite, SWT.NONE);
 		grpShow.setText("Show");
-		grpShow.setBounds(504, 468, 291, 50);
+		grpShow.setBounds(504, 449, 291, 69);
 		
 		lablesPerDayRadio = new Button(grpShow, SWT.RADIO);
 		lablesPerDayRadio.addSelectionListener(new SelectionAdapter() {
@@ -173,7 +173,7 @@ public class PerDayWindow implements IDialog
 			}
 		});
 		lablesPerDayRadio.setSelection(true);
-		lablesPerDayRadio.setBounds(10, 10, 100, 18);
+		lablesPerDayRadio.setBounds(10, 27, 100, 18);
 		lablesPerDayRadio.setText("Labels Per Day");
 		
 		locationsPerDayRadio = new Button(grpShow, SWT.RADIO);
@@ -184,7 +184,7 @@ public class PerDayWindow implements IDialog
 			}
 		});
 		locationsPerDayRadio.setText("Locations Per Day");
-		locationsPerDayRadio.setBounds(160, 10, 117, 18);
+		locationsPerDayRadio.setBounds(164, 27, 117, 18);
 		
 		refreshList();
 	}
