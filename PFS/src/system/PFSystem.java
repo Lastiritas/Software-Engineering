@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import system.datamining.DataMiner;
 import dataaccesslayer.Database;
 import dataaccesslayer.IDatabase;
+import dataaccesslayer.StubDatabase;
 import domainobjects.Expense;
 import domainobjects.IDSet;
 import domainobjects.SimpleDate;
@@ -15,6 +16,16 @@ public class PFSystem
 	public PFSystem()
 	{
 		database.open("PFS");
+		
+		expenseSystem = new ExpenseManagement(database);
+		labelSystem = new LabelManagement(database);
+		payToSystem = new PayToManagement(database);
+	}
+	
+	private PFSystem(IDatabase db, String dbname)
+	{
+		database = db;
+		database.open(dbname);
 		
 		expenseSystem = new ExpenseManagement(database);
 		labelSystem = new LabelManagement(database);
@@ -154,8 +165,27 @@ public class PFSystem
 	private Manager labelSystem;
 	private Manager expenseSystem;
 	
+	private static boolean useStub = false;
+	
+	public static void forceStub()
+	{
+		useStub = true;
+	}
+	
 	public static PFSystem getCurrent()
 	{
+		if(current == null)
+		{
+			if(useStub)
+			{
+				current = new PFSystem(new StubDatabase(), "Test");
+			}
+			else
+			{
+				current = new PFSystem();
+			}
+		}
+		
 		return current;
 	}
 	
@@ -184,5 +214,5 @@ public class PFSystem
 		return groups;
 	}
 	
-	private static PFSystem current = new PFSystem();
+	private static PFSystem current = null;
 }

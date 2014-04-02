@@ -1,5 +1,6 @@
 package tests;
 
+import tests.integrationtests.SeamStubTests;
 import tests.integrationtests.SeamTests;
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -20,6 +21,7 @@ public class IntegrateTests
 	private static void testSeams()
 	{
 		suite.addTestSuite(SeamTests.class);
+		suite.addTestSuite(SeamStubTests.class);
 	}
 	
 }

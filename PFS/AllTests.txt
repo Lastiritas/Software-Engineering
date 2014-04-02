@@ -62,3 +62,643 @@ All Tests for the Personal Finanace system
     testSanitizeOneCharReplace - Good
     testSanitizeOneChar - Good
     testSanitizeNoChar - Good
+    
+    
+    
+Starting acceptance tests.
+
+Script C:\Users\Josh\git\Software-Engineering\PFS/ATs/PFS.act
+
+//Create                expense                             then                 delete          it
+
+Package                 gui
+
+Click                   ViewExpense                         addButton
+
+Set                     EditExpense                         amountField          "3.57"
+
+Set                     EditExpense                         descriptionField     "Wreck-It Ralph"
+
+Set                     EditExpense                         datePicker           "2013-3-29"
+
+Click                   EditExpense                         payToButton
+
+Click                   PaytoSelection                      addButton
+
+Set                     PayToCreation                       nameField            "Walmart"
+
+Click                   PayToCreation                       okayButton
+
+SelectTableByRowIndex   PaytoSelection                      table                0
+
+Click                   PaytoSelection                      okayButton
+
+Click                   EditExpense                         creditRadio
+
+Click                   EditExpense                         btnEditLabels
+
+Click                   LabelSelection                      btnNew
+
+Set                     LabelCreation                       textNewLabel         "Entertainment"
+
+Click                   LabelCreation                       btnDone
+
+SelectTableByRowIndex   LabelSelection                      choiceTable          0
+
+Click                   LabelSelection                      btnAdd
+
+SelectTableByRowIndex   LabelSelection                      pickedTable          0
+
+Click                   LabelSelection                      btnRemove
+
+SelectTableByRowIndex   LabelSelection                      choiceTable          0
+
+Click                   LabelSelection                      btnAdd
+
+Click                   LabelSelection                      btnDone
+
+Click                   EditExpense                         btnSave
+
+SelectTableByRowIndex   ViewExpense                         expenseTable         0
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         0               1
+Table values do not match: null*******************************
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         1               "29/3/2013"
+Table values do not match: null*******************************
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         2               Walmart
+Table values do not match: null*******************************
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         3               "$3.57"
+Table values do not match: null*******************************
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         4               "Wreck-it Ralph"
+Table values do not match: null*******************************
+
+TestTableByColumnLabel  ViewExpense                         expenseTable         ID              1
+Table values do not match: null*******************************
+
+TestTableByColumnLabel  ViewExpense                         expenseTable         Date            "29/3/2013"
+Table values do not match: null*******************************
+
+TestTableByColumnLabel  ViewExpense                         expenseTable         "Pay To"        Walmart
+Table values do not match: null*******************************
+
+TestTableByColumnLabel  ViewExpense                         expenseTable         Amount          "$3.57"
+Table values do not match: null*******************************
+
+TestTableByColumnLabel  ViewExpense                         expenseTable         Description     "Wreck-it Ralph"
+Table values do not match: null*******************************
+
+Click                   ViewExpense                         deleteButton
+
+Click                   ViewExpense                         mntmExit
+
+-------------------------------------------------------------------------------
+
+Script C:\Users\Josh\git\Software-Engineering\PFS/ATs/PFS.act
+
+Tests passed: 0; tests failed: 10; invalid parameters: 0; invalid commands: 0
+
+-------------------------------------------------------------------------------
+
+Script C:\Users\Josh\git\Software-Engineering\PFS/ATs/PFS2.act
+
+//Create                empty                               expense,             duplicate       then       delete
+
+Package                 gui
+
+Click                   ViewExpense                         addButton
+
+Click                   EditExpense                         btnCancel
+
+SelectTableByRowIndex   ViewExpense                         expenseTable         0
+
+Click                   ViewExpense                         duplicateButton
+
+SelectTableByRowIndex   ViewExpense                         expenseTable         1
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         0               2
+Table values do not match: null*******************************
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         1               "27/3/2014"
+Table values do not match: null*******************************
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         2               Walmart
+Table values do not match: null*******************************
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         3               "$0.00"
+Table values do not match: null*******************************
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         4               ""
+Table values do not match: null*******************************
+
+TestTableByColumnLabel  ViewExpense                         expenseTable         ID              2
+Table values do not match: null*******************************
+
+TestTableByColumnLabel  ViewExpense                         expenseTable         Date            "27/3/2014"
+Table values do not match: null*******************************
+
+TestTableByColumnLabel  ViewExpense                         expenseTable         "Pay To"        Walmart
+Table values do not match: null*******************************
+
+TestTableByColumnLabel  ViewExpense                         expenseTable         Amount          "$0.00"
+Table values do not match: null*******************************
+
+TestTableByColumnLabel  ViewExpense                         expenseTable         Description     ""
+Table values do not match: null*******************************
+
+Click                   ViewExpense                         mntmDeleteSelected
+
+Click                   ViewExpense                         mntmExit
+
+-------------------------------------------------------------------------------
+
+Script C:\Users\Josh\git\Software-Engineering\PFS/ATs/PFS2.act
+
+Tests passed: 0; tests failed: 10; invalid parameters: 0; invalid commands: 0
+
+-------------------------------------------------------------------------------
+
+Script C:\Users\Josh\git\Software-Engineering\PFS/ATs/PFS3.act
+
+//View                  Expense                             Sorted
+
+Package                 gui
+
+Click                   ViewExpense                         addButton
+
+Set                     EditExpense                         amountField          "3.57"
+
+Set                     EditExpense                         descriptionField     "Wreck-It Ralph"
+
+Set                     EditExpense                         datePicker           "2013-3-29"
+
+Click                   EditExpense                         payToButton
+
+Click                   PaytoSelection                      addButton
+
+Set                     PayToCreation                       nameField            "Walmart"
+
+Click                   PayToCreation                       okayButton
+
+SelectTableByRowIndex   PaytoSelection                      table                0
+
+Click                   PaytoSelection                      okayButton
+
+Click                   EditExpense                         creditRadio
+
+Click                   EditExpense                         btnSave
+
+Click                   ViewExpense                         addButton
+
+Click                   EditExpense                         btnSave
+
+Click                   ViewExpense                         tblclmnId
+
+SelectTableByRowIndex   ViewExpense                         expenseTable         0
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         0               2
+Table values do not match: null*******************************
+
+Click                   ViewExpense                         tblclmnDate
+
+SelectTableByRowIndex   ViewExpense                         expenseTable         0
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         1               "29/3/2013"
+Table values do not match: null*******************************
+
+Click                   ViewExpense                         tblclmnDate
+
+SelectTableByRowIndex   ViewExpense                         expenseTable         0
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         1               "28/3/2014"
+Table values do not match: null*******************************
+
+Click                   ViewExpense                         tblclmnPayTo
+
+SelectTableByRowIndex   ViewExpense                         expenseTable         0
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         2               "No One"
+Table values do not match: null*******************************
+
+Click                   ViewExpense                         tblclmnPayTo
+
+SelectTableByRowIndex   ViewExpense                         expenseTable         0
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         2               "Walmart"
+Table values do not match: null*******************************
+
+Click                   ViewExpense                         tblclmnAmount
+
+SelectTableByRowIndex   ViewExpense                         expenseTable         0
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         3               "$0.00"
+Table values do not match: null*******************************
+
+Click                   ViewExpense                         tblclmnAmount
+
+SelectTableByRowIndex   ViewExpense                         expenseTable         0
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         3               "$3.57"
+Table values do not match: null*******************************
+
+Click                   ViewExpense                         tblclmnDescription
+
+SelectTableByRowIndex   ViewExpense                         expenseTable         0
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         4               ""
+Table values do not match: null*******************************
+
+Click                   ViewExpense                         tblclmnDescription
+
+SelectTableByRowIndex   ViewExpense                         expenseTable         0
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         4               "Wreck-It Ralph"
+Table values do not match: null*******************************
+
+SelectTableByRowIndex   ViewExpense                         expenseTable         0
+
+Click                   ViewExpense                         deleteButton
+
+SelectTableByRowIndex   ViewExpense                         expenseTable         0
+
+Click                   ViewExpense                         deleteButton
+
+Click                   ViewExpense                         mntmExit
+
+-------------------------------------------------------------------------------
+
+Script C:\Users\Josh\git\Software-Engineering\PFS/ATs/PFS3.act
+
+Tests passed: 0; tests failed: 9; invalid parameters: 0; invalid commands: 0
+
+-------------------------------------------------------------------------------
+
+Script C:\Users\Josh\git\Software-Engineering\PFS/ATs/PFS4.act
+
+//testing               graphs
+
+Package                 gui
+
+Click                   ViewExpense                         addButton
+
+Set                     EditExpense                         amountField          "3.57"
+
+Set                     EditExpense                         descriptionField     "Wreck-It Ralph"
+
+Set                     EditExpense                         datePicker           "2013-3-29"
+
+Click                   EditExpense                         payToButton
+
+Click                   PaytoSelection                      addButton
+
+Set                     PayToCreation                       nameField            "Walmart"
+
+Click                   PayToCreation                       okayButton
+
+SelectTableByRowIndex   PaytoSelection                      table                0
+
+Click                   PaytoSelection                      okayButton
+
+Click                   EditExpense                         creditRadio
+
+Click                   EditExpense                         btnEditLabels
+
+Click                   LabelSelection                      btnNew
+
+Set                     LabelCreation                       textNewLabel         "Entertainment"
+
+Click                   LabelCreation                       btnDone
+
+SelectTableByRowIndex   LabelSelection                      choiceTable          0
+
+Click                   LabelSelection                      btnAdd
+
+SelectTableByRowIndex   LabelSelection                      pickedTable          0
+
+Click                   LabelSelection                      btnRemove
+
+SelectTableByRowIndex   LabelSelection                      choiceTable          0
+
+Click                   LabelSelection                      btnAdd
+
+Click                   LabelSelection                      btnDone
+
+Click                   EditExpense                         btnSave
+
+Click                   ViewExpense                         mntmGraph
+
+Click                   ExpenseTrends                       tbtmChartOne
+
+Test                    ExpenseTrends                       tbtmChartOne         "Visual Test of Graph"
+
+Click                   ExpenseTrends                       tbtmChartTwo
+
+Test                    ExpenseTrends                       tbtmChartTwo         "Visual Test of Graph"
+
+Click                   ExpenseTrends                       tbtmChartThree
+
+Test                    ExpenseTrends                       tbtmChartThree       "Visual Test of Graph"
+
+Click                   ExpenseTrends                       tbtmChartFour
+
+Test                    ExpenseTrends                       tbtmChartFour        "Visual Test of Graph"
+
+Click                   ExpenseTrends                       mntmExit
+
+SelectTableByRowIndex   ViewExpense                         expenseTable         0
+
+Click                   ViewExpense                         deleteButton
+
+Click                   ViewExpense                         mntmExit
+
+-------------------------------------------------------------------------------
+
+Script C:\Users\Josh\git\Software-Engineering\PFS/ATs/PFS4.act
+
+Tests passed: 0; tests failed: 0; invalid parameters: 0; invalid commands: 0
+
+-------------------------------------------------------------------------------
+
+Script C:\Users\Josh\git\Software-Engineering\PFS/ATs/PFS5.act
+
+//Filter                expenses
+
+package                 gui
+
+//Create                expense                             1
+
+Click                   ViewExpense                         addButton
+
+Set                     EditExpense                         amountField          "3.57"
+
+Set                     EditExpense                         descriptionField     "Wreck-It Ralph"
+
+Set                     EditExpense                         datePicker           "2013-3-29"
+
+Click                   EditExpense                         cashRadio
+
+Click                   EditExpense                         payToButton
+
+Click                   PaytoSelection                      addButton
+
+Set                     PayToCreation                       nameField            "Walmart"
+
+Click                   PayToCreation                       okayButton
+
+SelectTableByRowIndex   PaytoSelection                      table                0
+
+Click                   PaytoSelection                      okayButton
+
+Click                   EditExpense                         btnEditLabels
+
+Click                   LabelSelection                      btnNew
+
+Set                     LabelCreation                       textNewLabel         "Entertainment"
+
+Click                   LabelCreation                       btnDone
+
+SelectTableByRowIndex   LabelSelection                      choiceTable          0
+
+Click                   LabelSelection                      btnAdd
+
+Click                   LabelSelection                      btnDone
+
+Click                   EditExpense                         btnSave
+
+//create                expense                             2
+
+Click                   ViewExpense                         addButton
+
+Set                     EditExpense                         amountField          "15.00"
+
+Set                     EditExpense                         descriptionField     ""
+
+Set                     EditExpense                         datePicker           "2014-3-29"
+
+Click                   EditExpense                         debitRadio
+
+Click                   EditExpense                         payToButton
+
+Click                   PaytoSelection                      addButton
+
+Set                     PayToCreation                       nameField            "pay"
+
+Click                   PayToCreation                       okayButton
+
+SelectTableByRowIndex   PaytoSelection                      table                0
+
+Click                   PaytoSelection                      okayButton
+
+Click                   EditExpense                         btnEditLabels
+
+Click                   LabelSelection                      btnNew
+
+Set                     LabelCreation                       textNewLabel         "label"
+
+Click                   LabelCreation                       btnDone
+
+SelectTableByRowIndex   LabelSelection                      choiceTable          0
+
+Click                   LabelSelection                      btnAdd
+
+Click                   LabelSelection                      btnDone
+
+Click                   EditExpense                         btnSave
+
+//filter                by                                  dateRange
+
+Click                   ViewExpense                         mntmCreateFilter
+
+Click                   FilterCreation                      dateFilterCheck
+
+Set                     FilterCreation                      lowerDateSelect      "01/01/2011"
+
+Set                     FilterCreation                      upperDateSelect      "12/12/2013"
+
+Click                   FilterCreation                      filterButton
+
+//verify                date                                filter
+
+SelectTableByRowIndex   ViewExpense                         expenseTable         1
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         0               null
+Table values do not match: null*******************************
+
+//filter                amount
+
+Click                   ViewExpense                         mntmCreateFilter
+
+Click                   FilterCreation                      amountFilterCheck
+
+Set                     FilterCreation                      lowerAmountText      "$14.00"
+
+Set                     FilterCreation                      upperAmountText      "$16.00"
+
+Click                   FilterCreation                      filterButton
+
+//verify                amount                              filter
+
+SelectTableByRowIndex   ViewExpense                         expenseTable         1
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         0               null
+Table values do not match: null*******************************
+
+//filter                payment
+
+Click                   ViewExpense                         mntmCreateFilter
+
+Click                   FilterCreation                      paymentFilterCheck
+
+Click                   FilterCreation                      cashRadio
+
+Click                   FilterCreation                      filterButton
+
+//verify                payment                             filter
+
+SelectTableByRowIndex   ViewExpense                         expenseTable         1
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         0               null
+Table values do not match: null*******************************
+
+//filter                by                                  labels
+
+Click                   ViewExpense                         mntmCreateFilter
+
+Click                   FilterCreation                      labelFilterCheck
+
+Click                   FilterCreation                      selectLabelsButton
+
+SelectTableByRowIndex   LabelSelection                      choiceTable          0
+
+Click                   LabelSelection                      btnAdd
+
+Click                   LabelSelection                      btnDone
+
+Click                   FilterCreation                      filterButton
+
+//verify                label                               filter
+
+SelectTableByRowIndex   ViewExpense                         expenseTable         1
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         0               null
+Table values do not match: null*******************************
+
+//filter                by                                  payTo
+
+Click                   ViewExpense                         mntmCreateFilter
+
+Click                   FilterCreation                      payToFilterCheck
+
+Click                   FilterCreation                      selectPayToButton
+
+SelectTableByRowIndex   PaytoSelection                      table                0
+
+Click                   PaytoSelection                      okayButton
+
+Click                   FilterCreation                      filterButton
+
+//verify                filter                              payto
+
+SelectTableByRowIndex   ViewExpense                         expenseTable         1
+
+TestTableByColumnIndex  ViewExpense                         expenseTable         0               null
+Table values do not match: null*******************************
+
+Click                   ViewExpense                         mntmExit
+
+-------------------------------------------------------------------------------
+
+Script C:\Users\Josh\git\Software-Engineering\PFS/ATs/PFS5.act
+
+Tests passed: 0; tests failed: 5; invalid parameters: 0; invalid commands: 0
+
+-------------------------------------------------------------------------------
+
+Script C:\Users\Josh\git\Software-Engineering\PFS/ATs/PFS6.act
+
+//Trends
+
+package                 gui
+
+//Create                expense                             1
+
+Click                   ViewExpense                         addButton
+
+Set                     EditExpense                         amountField          "3.57"
+
+Set                     EditExpense                         descriptionField     "Wreck-It Ralph"
+
+Set                     EditExpense                         datePicker           "2014-3-29"
+
+Click                   EditExpense                         cashRadio
+
+Click                   EditExpense                         payToButton
+
+Click                   PaytoSelection                      addButton
+
+Set                     PayToCreation                       nameField            "Walmart"
+
+Click                   PayToCreation                       okayButton
+
+SelectTableByRowIndex   PaytoSelection                      table                0
+
+Click                   PaytoSelection                      okayButton
+
+Click                   EditExpense                         btnEditLabels
+
+Click                   LabelSelection                      btnNew
+
+Set                     LabelCreation                       textNewLabel         "Entertainment"
+
+Click                   LabelCreation                       btnDone
+
+SelectTableByRowIndex   LabelSelection                      choiceTable          0
+
+Click                   LabelSelection                      btnAdd
+
+Click                   LabelSelection                      btnDone
+
+Click                   EditExpense                         btnSave
+
+Click                   ViewExpense                         mntmTrends
+
+Set                     PerDayWindow                        thresholdSlider      1
+
+SelectTableByRowIndex   PerDayWindow                        table                0
+
+TestTableByColumnIndex  PerDayWindow                        table                6               "Entertainment"
+Table values do not match: null*******************************
+
+Click                   PerDayWindow                        mntmExit
+
+Click                   ViewExpense                         mntmExit
+
+-------------------------------------------------------------------------------
+
+Script C:\Users\Josh\git\Software-Engineering\PFS/ATs/PFS6.act
+
+Tests passed: 0; tests failed: 1; invalid parameters: 0; invalid commands: 0
+
+-------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+Totals for all scripts in directory C:\Users\Josh\Desktop\Software-Engineering-m
+aster\PFS
+
+Tests passed: 0; tests failed: 35; invalid parameters: 0; invalid commands: 0
+
+Number of scripts without any tests: 1
+
+Elapsed time: 123.448 seconds
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+C:\Users\Josh\Desktop\Software-Engineering-master\PFS>pause
+Press any key to continue . . .
