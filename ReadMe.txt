@@ -1,5 +1,7 @@
 Readme.txt
 
+*All reports regarding the system are in the SE Reports folder
+
 Packages: 
 	dataaccesslayer - The package responsible for handling the database backend and stub database. This package should only be used by the system package and never by the gui package.
 
