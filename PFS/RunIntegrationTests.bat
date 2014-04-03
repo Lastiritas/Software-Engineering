@@ -8,9 +8,4 @@ REM java junit.textui.TestRunner tests.IntegrateTests
 
 java junit.swingui.TestRunner tests.IntegrateTests
 
-call RestoreDBTests
-
 call RestoreDB
-
-pause
-

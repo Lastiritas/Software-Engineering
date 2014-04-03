@@ -12,6 +12,8 @@ import domainobjects.SimpleDate;
 
 public class StubDatabase implements IDatabase
 {	
+	private String name;
+	
 	public StubDatabase()
 	{
 		labelTable.add(new Label("Food"));
@@ -21,12 +23,13 @@ public class StubDatabase implements IDatabase
 	
 	public void open(String dbName)
 	{
-		System.out.println("The database has been opened\n");
+		name = dbName;
+		System.out.println("Opened Stub Database "+name);
 	}
 	
 	public void close()
 	{
-		System.out.println("The database has been closed\n");
+		System.out.println("Closed Stub Database "+name);
 	}
 			
 	@Override

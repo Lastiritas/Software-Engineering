@@ -63,6 +63,31 @@ All Tests for the Personal Finanace system
     testSanitizeOneChar - Good
     testSanitizeNoChar - Good
     
+Integration Tests for the Personal Finance System
+  tests.integrationtests.SeamTests
+    testPFSAddGetEmptyExpense - Good
+    testPFSAddGetExpense - Good
+    testPFSUpdateExpense - Good
+    testPFSGetAllExpenseIDReturnPrevAddID - Good
+    testPFSAddDeleteExpenseSuccess - Good
+    testPFSAddGetLabel - Good
+    testPFSUpdateLabel - Good
+    testPFSGetAllLabelIDReturnPrevAddedID - Good
+    testPFSAddGetPayto - Good
+    testPFSUpdatePayto - Good
+    testPFSGetPaytoIDReturnPrevAddedID - Good
+  tests.integrationtests.SeamTests
+    testPFSAddGetEmptyExpense - Good
+    testPFSAddGetExpense - Good
+    testPFSUpdateExpense - Good
+    testPFSGetAllExpenseIDReturnPrevAddID - Good
+    testPFSAddDeleteExpenseSuccess - Good
+    testPFSAddGetLabel - Good
+    testPFSUpdateLabel - Good
+    testPFSGetAllLabelIDReturnPrevAddedID - Good
+    testPFSAddGetPayto - Good
+    testPFSUpdatePayto - Good
+    testPFSGetPaytoIDReturnPrevAddedID - Good
     
     
 Starting acceptance tests.

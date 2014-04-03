@@ -196,7 +196,7 @@ public abstract class Seam extends TestCase
 		assertEquals(actualPayTo.getName(), expectedPayTo.getName());
 	}
 	
-	public void testPFSGettPaytoIDReturnPrevAddedID()
+	public void testPFSGetPaytoIDReturnPrevAddedID()
 	{
 		int expectedId = 0;
 		IDSet payToIds;
