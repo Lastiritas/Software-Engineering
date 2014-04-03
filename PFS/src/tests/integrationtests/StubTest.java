@@ -2,9 +2,9 @@ package tests.integrationtests;
 
 import system.PFSystem;
 
-public class SeamStubTests extends Seam
+public class StubTest extends SeamTests
 {	
-	public SeamStubTests(String arg0) {
+	public StubTest(String arg0) {
 		super(arg0);
 	}
 
