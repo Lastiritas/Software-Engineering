@@ -49,3 +49,4 @@ Packages:
  	The systemTests using jmock are not included in the test scripts as the are not threadsafe, but when run using and IDE they compile and pass.
  	
  	*The Acceptance Tests do not run properly as there is no way to access graph data using atr.jar. Also the way the the database is used the AT's cannot be properly executed.
+ 	**Even when the database was explicitly started up the tests returned null************** values every time.
