@@ -56,7 +56,17 @@ Meetings
 Tasks Completed by Team Members:
 
   - Aaron Vaage
-    - 
+    - Place and date correlation detection	(1 day)
+    - Label and date correlation detection 	(1 day)
+    - Implement caching system for database 	(2 days)
+    - Fixed edit window not saving changes 	(1 day)
+    - Refactor data access layer 		(1 day)
+    - Refactor management system 		(1 day)
+    - Wrote reports 				(1 day)			
+    	- revised planning report
+    	- retrospective report
+    	- refactoring report
+    - Fixed bugs				(2 days)
     
   - Jeremy Vogt
     - 
