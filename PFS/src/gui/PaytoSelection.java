@@ -120,7 +120,10 @@ public class PaytoSelection implements IDialog
 			@Override
 			public void widgetSelected(SelectionEvent arg0) 
 			{
-				selectedID = tempID;
+				if(tempID >0)
+				{
+					selectedID = tempID;
+				}
 				shell.close();
 			}
 		});

@@ -87,26 +87,30 @@ public class PayToCreation implements IWindow
 			{
 				String tempName = nameField.getText();
 				boolean exist = false;
-				IDSet ids = PFSystem.getCurrent().getPayToSystem().getAllIDs();
+				IDSet ids;
 				
-				for(int i = 0; i < ids.getSize(); i++)
+				if(!tempName.isEmpty())
 				{
-					int id = ids.getValue(i);
-					PayTo payto = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(id);
+					ids = PFSystem.getCurrent().getPayToSystem().getAllIDs();
 					
-					if(payto.getName().equalsIgnoreCase(tempName))
+					for(int i = 0; i < ids.getSize(); i++)
 					{
-						exist = true;
-						break;
+						int id = ids.getValue(i);
+						PayTo payto = (PayTo)PFSystem.getCurrent().getPayToSystem().getDataByID(id);
+						
+						if(payto.getName().equalsIgnoreCase(tempName))
+						{
+							exist = true;
+							break;
+						}
+					}
+					
+					if(!exist)
+					{
+						final int newPaytoID = PFSystem.getCurrent().getPayToSystem().create();
+						PFSystem.getCurrent().getPayToSystem().update(newPaytoID, new PayTo(tempName));
 					}
 				}
-				
-				if(!exist)
-				{
-					final int newPaytoID = PFSystem.getCurrent().getPayToSystem().create();
-					PFSystem.getCurrent().getPayToSystem().update(newPaytoID, new PayTo(tempName));
-				}
-
 				shell.close();
 			}
 		});
